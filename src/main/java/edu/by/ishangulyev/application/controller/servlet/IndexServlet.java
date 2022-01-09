@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 
-@WebServlet(name = "IndexServlet", value = "/")
+@WebServlet(name = "IndexServlet", value = "/main")
 public class IndexServlet extends HttpServlet
 {
     private final String JSP_PATH = "jsp/main.jsp";
@@ -19,9 +19,7 @@ public class IndexServlet extends HttpServlet
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException
     {
-        String one = req.getParameter("one");
-        req.setAttribute("one",one);
-        req.getRequestDispatcher(JSP_PATH).forward(req,resp);
+
     }
 
     @Override

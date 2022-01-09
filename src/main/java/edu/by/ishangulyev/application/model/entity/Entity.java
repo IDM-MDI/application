@@ -2,7 +2,7 @@ package edu.by.ishangulyev.application.model.entity;
 
 public abstract class Entity
 {
-    private long id;
+    protected long id;
 
     public long getId()
     {

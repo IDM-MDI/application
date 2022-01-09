@@ -2,23 +2,20 @@
 <html>
 <head>
     <title>Магазин цифровых гаджетов</title>
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" type="text/css">
 </head>
 <body>
-<nav class = "navbar navbar-default">
-    <div class="navbar-header">
-        <a href="https://google.com">Welcome to the Miami</a>
+<nav class="navbar navbar-dark">
+    <div class="nav">
+      <a class="navbar-brand" href="https://google.com">Welcome to the Miami</a>
     </div>
-    <div>
-        <ul class = "navbar-nav">
-            <li class="nav-item"><a href="#">Gadgets</a></li>
-            <li class="nav-item"><a href="#">Cart</a></li>
-            <li class="nav-item"><a href="#">Search</a></li>
-            <li class="nav-item"><a href="#">About Us</a></li>
-            <li class="nav-item"><a href="#">Sign-Up</a></li>
-            <li class="nav-item"><a href="#">Sign-In</a></li>
-        </ul>
-    </div>
+    <ul class="nav navbar-nav"></ul>
+    <li><a href="#">Gadgets</a></li>
+    <li><a href="#">Cart</a></li>
+    <li><a href="#">Search</a></li>
+    <li><a href="#">About Us</a></li>
+    <li><a href="#">Sign-Up</a></li>
+    <li><a href="#">Sign-In</a></li>
 </nav>
 </body>
 </html>

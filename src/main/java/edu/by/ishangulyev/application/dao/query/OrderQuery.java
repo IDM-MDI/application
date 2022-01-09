@@ -1,5 +1,5 @@
 package edu.by.ishangulyev.application.dao.query;
 
-public enum VideoQuery
+public enum OrderQuery
 {
 }
