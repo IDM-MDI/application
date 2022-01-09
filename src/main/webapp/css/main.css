@@ -1,0 +1,50 @@
+@import "button_miami.css";
+@import "sign.css";
+html{
+    background: url(../img/background.jpg) no-repeat center center;
+    min-height: 100%;
+    background-size: cover;
+}
+
+header{
+    background:rgba(149,100,219,0.1);
+    width: 98%;
+    height: 110px;
+    margin: 5px;
+    text-align: center;
+    border-radius: 8px;
+    border: 3px solid rgb(0, 40, 70);
+}
+main{
+    background:rgba(149,100,219,0.1);
+    width: 80%;
+    height: 900px;
+    margin: 5px;
+    text-align: center;
+    border-radius: 8px;
+    border: 3px solid rgb(0, 40, 70);
+}
+aside{
+    background:rgba(149,100,219,0.1);
+    height: 900px;
+    width: 17.5%;
+    margin: 5px;
+    text-align: center;
+    border-radius: 8px;
+    border: 3px solid rgb(0, 40, 70);
+}
+footer{
+    background:rgba(149,100,219,0.1);
+    width: 98%;
+    height: 110px;
+    margin: 5px;
+    text-align: center;
+    border-radius: 8px;
+    border: 3px solid rgb(0, 40, 70);
+}
+:is(footer:hover,aside:hover,main:hover,header:hover){
+    background:rgba(149,100,219,0.3);
+    border: 3px solid rgb(0, 180, 230);
+    box-shadow: 0 0 15px -1px rgb(0, 180, 230),
+    0 0 12px -1px rgb(0, 180, 230) inset;
+}

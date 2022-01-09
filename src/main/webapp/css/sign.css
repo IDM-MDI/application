@@ -1,0 +1,56 @@
+#reg-button{
+    background: rgba(58,62,64,0.85);
+    width: 800px;
+    height: 170px;
+    margin: 30px 20%;
+    text-align: center;
+    border-radius: 8px;
+    border: 3px solid rgba(120, 0, 50);
+}
+#reg-h2{
+    font-family: 'M PLUS 1', sans-serif;
+    font-weight: 350;
+    font-size:5.9em;
+    margin: 0 0 0;
+    color: rgb(210, 210, 76);
+}
+main{
+    display: flex;
+    flex-direction: column;
+}
+.l-login-button{
+    background: rgba(58,62,64,0.85);
+    width: 300px;
+    height: 100px;
+    margin: 30px -100px 0 300px;
+    text-align: center;
+    border-radius: 8px;
+    border: 3px solid rgba(210, 210, 76, 50);
+}
+.i-sign-up{
+    width:90%;
+    border:2px solid #aaa;
+    border-radius:4px;
+    margin:10% 0;
+    outline:none;
+    padding: 8px;
+    box-sizing:border-box;
+    transition:.3s;
+}
+.i-sign-up:focus{
+    border-color:dodgerBlue;
+    box-shadow:0 0 8px 0 dodgerBlue;
+}
+.log-pas{
+    display: flex;
+    flex-direction: row;
+}
+#email{
+    width: 500px;
+    margin: 30px -100px 00px 450px;
+}
+#email-sign-up{
+    width:90%;
+    margin:6% 0;
+    padding: 8px;
+}
