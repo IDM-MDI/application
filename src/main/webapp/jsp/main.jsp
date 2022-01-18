@@ -15,7 +15,7 @@
     <li><a href="#">Search</a></li>
     <li><a href="#">About Us</a></li>
     <li><a href="#">Sign-Up</a></li>
-    <li><a href="#">Sign-In</a></li>
+    <li><a href="/sign-in">Sign-In</a></li>
 </nav>
 </body>
 </html>

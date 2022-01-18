@@ -1,9 +1,13 @@
 package edu.by.ishangulyev.application.dao;
 
 import edu.by.ishangulyev.application.connection.ConnectionPool;
+import edu.by.ishangulyev.application.exception.DataBaseException;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class DaoEntity<T>
 {
@@ -22,9 +26,9 @@ public abstract class DaoEntity<T>
         }
     }
 
-    public abstract List<T> getAll();
-    public abstract T update(T entity);
-    public abstract T getEntityById(long id);
+    public abstract List<T> getAll() throws DataBaseException;
+    public abstract boolean update(T entity);
+    public abstract Optional<T> getEntityById(long id) throws DataBaseException;
     public abstract boolean delete(long id);
     public abstract boolean create(T entity);
 
@@ -32,5 +36,6 @@ public abstract class DaoEntity<T>
         connectionPool.releaseConnection(connection);
     }
 
+    public abstract void fillStatement(PreparedStatement statement, T entity) throws SQLException;
 
 }

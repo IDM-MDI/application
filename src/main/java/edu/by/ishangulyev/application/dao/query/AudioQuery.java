@@ -22,6 +22,12 @@ public enum AudioQuery
             {
 
             },
-    UPDATE_BY_ID,
-    INSERT;
+    UPDATE_BY_ID
+            {
+
+            },
+    INSERT
+            {
+
+            };
 }

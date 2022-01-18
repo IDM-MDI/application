@@ -1,6 +1,6 @@
 package edu.by.ishangulyev.application.dao.query;
 
-public enum UserQuery
+public enum CategoryQuery
 {
     SELECT_ALL
             {
