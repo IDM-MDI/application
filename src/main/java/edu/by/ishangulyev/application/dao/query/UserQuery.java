@@ -14,15 +14,7 @@ public enum UserQuery
             {
 
             },
-    DELETE_BY_ID
-            {
-
-            },
     UPDATE
-            {
-
-            },
-    UPDATE_BY_ID
             {
 
             },

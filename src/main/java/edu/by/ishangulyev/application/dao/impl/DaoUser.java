@@ -1,12 +1,8 @@
 package edu.by.ishangulyev.application.dao.impl;
 
 import edu.by.ishangulyev.application.dao.DaoEntity;
-import edu.by.ishangulyev.application.dao.ResultSetExecutor;
-import edu.by.ishangulyev.application.dao.query.CategoryQuery;
 import edu.by.ishangulyev.application.dao.query.UserQuery;
 import edu.by.ishangulyev.application.exception.DataBaseException;
-import edu.by.ishangulyev.application.model.entity.impl.Battery;
-import edu.by.ishangulyev.application.model.entity.impl.Category;
 import edu.by.ishangulyev.application.model.entity.impl.User;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -19,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DaoUser  extends DaoEntity<User> implements ResultSetExecutor<User>
+public class DaoUser  extends DaoEntity<User>
 {
     private static final Logger logger = LogManager.getLogger();
 
@@ -33,7 +29,7 @@ public class DaoUser  extends DaoEntity<User> implements ResultSetExecutor<User>
             ResultSet set = statement.executeQuery();
             while(set.next())
             {
-                result.add(execute(set));
+                result.add(getValues(set));
             }
         }
         catch (SQLException e)
@@ -81,7 +77,7 @@ public class DaoUser  extends DaoEntity<User> implements ResultSetExecutor<User>
 
             if (set.next())
             {
-                entity = Optional.of(execute(set));
+                entity = Optional.of(getValues(set));
             }
         } catch (SQLException e) {
             logger.error("query has failed", e);
@@ -143,7 +139,7 @@ public class DaoUser  extends DaoEntity<User> implements ResultSetExecutor<User>
     }
 
     @Override
-    public User execute(ResultSet set) throws SQLException
+    public User getValues(ResultSet set) throws SQLException
     {
         return null;
     }

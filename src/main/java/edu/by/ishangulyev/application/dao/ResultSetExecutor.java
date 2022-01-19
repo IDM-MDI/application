@@ -5,5 +5,5 @@ import java.sql.SQLException;
 
 public interface ResultSetExecutor<T>
 {
-    T execute(ResultSet set) throws SQLException;
+    T getValues(ResultSet set) throws SQLException;
 }

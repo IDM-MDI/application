@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class DaoEntity<T>
+public abstract class DaoEntity<T> implements ResultSetExecutor<T>
 {
     protected Connection connection;
     protected ConnectionPool connectionPool;

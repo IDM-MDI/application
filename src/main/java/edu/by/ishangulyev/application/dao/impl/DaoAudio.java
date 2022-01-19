@@ -2,12 +2,10 @@ package edu.by.ishangulyev.application.dao.impl;
 
 import edu.by.ishangulyev.application.dao.ColumnName;
 import edu.by.ishangulyev.application.dao.DaoEntity;
-import edu.by.ishangulyev.application.dao.ResultSetExecutor;
 import edu.by.ishangulyev.application.dao.query.AudioQuery;
-import edu.by.ishangulyev.application.dao.query.CategoryQuery;
 import edu.by.ishangulyev.application.exception.DataBaseException;
 import edu.by.ishangulyev.application.model.entity.impl.Audio;
-import edu.by.ishangulyev.application.model.entity.impl.Category;
+import edu.by.ishangulyev.application.model.entity.impl.AudioType;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,9 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DaoAudio extends DaoEntity<Audio> implements ResultSetExecutor<Audio>
+public class DaoAudio extends DaoEntity<Audio>
 {
     private static final Logger logger = LogManager.getLogger();
+    private final ColumnName column = ColumnName.AUDIO;
+
     public DaoAudio()
     {
         super();
@@ -37,7 +37,7 @@ public class DaoAudio extends DaoEntity<Audio> implements ResultSetExecutor<Audi
             ResultSet set = statement.executeQuery();
             while(set.next())
             {
-                result.add(execute(set));
+                result.add(getValues(set));
             }
         }
         catch (SQLException e)
@@ -59,6 +59,7 @@ public class DaoAudio extends DaoEntity<Audio> implements ResultSetExecutor<Audi
         try (PreparedStatement statement = connection.prepareStatement(AudioQuery.UPDATE.toString()))
         {
             fillStatement(statement,entity);
+            statement.setLong(4,entity.getId());
             result = statement.executeUpdate() > 0;
         }
         catch (SQLException e)
@@ -85,7 +86,7 @@ public class DaoAudio extends DaoEntity<Audio> implements ResultSetExecutor<Audi
 
             if (set.next())
             {
-                entity = Optional.of(execute(set));
+                entity = Optional.of(getValues(set));
             }
         } catch (SQLException e) {
             logger.error("query has failed", e);
@@ -143,12 +144,20 @@ public class DaoAudio extends DaoEntity<Audio> implements ResultSetExecutor<Audi
     @Override
     public void fillStatement(PreparedStatement statement, Audio entity) throws SQLException
     {
-
+        statement.setString(1,entity.getName());
+        statement.setString(2,entity.getType().toString());
+        statement.setInt(3,entity.getFrequency());
     }
 
     @Override
-    public Audio execute(ResultSet set) throws SQLException
+    public Audio getValues(ResultSet set) throws SQLException
     {
-        return null;
+        Audio result = new Audio();
+        AudioType type = AudioType.valueOf(set.getString(column.getType()));
+        result.setId(set.getLong(column.getId()));
+        result.setName(set.getString(column.getName()));
+        result.setType(type);
+        result.setFrequency(set.getInt(column.getFrequency()));
+        return result;
     }
 }

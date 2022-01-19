@@ -2,7 +2,6 @@ package edu.by.ishangulyev.application.dao.impl;
 
 import edu.by.ishangulyev.application.dao.ColumnName;
 import edu.by.ishangulyev.application.dao.DaoEntity;
-import edu.by.ishangulyev.application.dao.ResultSetExecutor;
 import edu.by.ishangulyev.application.dao.query.CategoryQuery;
 import edu.by.ishangulyev.application.exception.DataBaseException;
 import edu.by.ishangulyev.application.model.entity.impl.Category;
@@ -17,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DaoCategory extends DaoEntity<Category> implements ResultSetExecutor<Category>
+public class DaoCategory extends DaoEntity<Category>
 {
     private static final Logger logger = LogManager.getLogger();
     private final ColumnName column = ColumnName.CATEGORY;
@@ -37,7 +36,7 @@ public class DaoCategory extends DaoEntity<Category> implements ResultSetExecuto
             ResultSet set = statement.executeQuery();
             while(set.next())
             {
-                result.add(execute(set));
+                result.add(getValues(set));
             }
         }
         catch (SQLException e)
@@ -85,7 +84,7 @@ public class DaoCategory extends DaoEntity<Category> implements ResultSetExecuto
 
             if (set.next())
             {
-                entity = Optional.of(execute(set));
+                entity = Optional.of(getValues(set));
             }
         } catch (SQLException e) {
             logger.error("query has failed", e);
@@ -141,7 +140,7 @@ public class DaoCategory extends DaoEntity<Category> implements ResultSetExecuto
     }
 
     @Override
-    public Category execute(ResultSet set) throws SQLException
+    public Category getValues(ResultSet set) throws SQLException
     {
         Category result = new Category();
         result.setId(set.getLong(column.getId()));

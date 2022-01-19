@@ -1,6 +1,7 @@
 package edu.by.ishangulyev.application.controller.command;
 
 import edu.by.ishangulyev.application.controller.command.impl.LanguageCommand;
+import edu.by.ishangulyev.application.controller.command.impl.SignInCommand;
 import edu.by.ishangulyev.application.controller.command.impl.SignUpCommand;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -10,7 +11,7 @@ public enum CommandType
     {
         public ActionCommand getCommand()
         {
-            return new SignUpCommand();
+            return new SignInCommand();
         }
     },
     SIGN_UP()

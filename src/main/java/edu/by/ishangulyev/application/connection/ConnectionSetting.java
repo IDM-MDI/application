@@ -27,7 +27,7 @@ public class ConnectionSetting
             prop.load(input);
 
             // get the property value and print it out
-            Class.forName("com.mysql.jdbc.Driver").getDeclaredConstructor().newInstance();
+            Class.forName("com.mysql.cj.jdbc.Driver").getDeclaredConstructor().newInstance();
             url = prop.getProperty("url");
             username = prop.getProperty("username");
             password = prop.getProperty("password");

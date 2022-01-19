@@ -5,18 +5,6 @@ public enum ColumnName
     AUDIO
     {
         @Override
-        public String getId()
-        {
-            return "id";
-        }
-
-        @Override
-        public String getName()
-        {
-            return "name";
-        }
-
-        @Override
         public String getType()
         {
             return "audiotype";
@@ -31,18 +19,6 @@ public enum ColumnName
     BATTERY
     {
         @Override
-        public String getId()
-        {
-            return "id";
-        }
-
-        @Override
-        public String getName()
-        {
-            return "name";
-        }
-
-        @Override
         public String getMaH()
         {
             return "mah";
@@ -51,12 +27,6 @@ public enum ColumnName
     CART
     {
         @Override
-        public String getId()
-        {
-            return "id";
-        }
-
-        @Override
         public String getUserID()
         {
             return "userID";
@@ -64,29 +34,10 @@ public enum ColumnName
     },
     CATEGORY
     {
-        public String getName()
-        {
-            return "name";
-        }
-        public String getId()
-        {
-            return "id";
-        }
+
     },
     CPU
     {
-        @Override
-        public String getId()
-        {
-            return "id";
-        }
-
-        @Override
-        public String getName()
-        {
-            return "name";
-        }
-
         @Override
         public String getCore()
         {
@@ -107,17 +58,6 @@ public enum ColumnName
     },
     GADGET
     {
-        @Override
-        public String getId()
-        {
-            return "id";
-        }
-
-        @Override
-        public String getName()
-        {
-            return "name";
-        }
         @Override
         public String getSmallDescription()
         {
@@ -172,18 +112,6 @@ public enum ColumnName
     MEMORY
     {
         @Override
-        public String getId()
-        {
-            return "id";
-        }
-
-        @Override
-        public String getName()
-        {
-            return "name";
-        }
-
-        @Override
         public String getType()
         {
             return "memorytype";
@@ -197,12 +125,6 @@ public enum ColumnName
     },
     ORDER
     {
-        @Override
-        public String getId()
-        {
-            return "id";
-        }
-
         @Override
         public String getCartID()
         {
@@ -218,15 +140,9 @@ public enum ColumnName
     USER
     {
         @Override
-        public String getId()
-        {
-            return "id";
-        }
-
-        @Override
         public String getName()
         {
-            return "name";
+            return "username";
         }
 
         @Override
@@ -256,18 +172,6 @@ public enum ColumnName
     VIDEO
     {
         @Override
-        public String getId()
-        {
-            return "id";
-        }
-
-        @Override
-        public String getName()
-        {
-            return "name";
-        }
-
-        @Override
         public String getType()
         {
             return "videotype";
@@ -295,11 +199,11 @@ public enum ColumnName
 
     public String getId()
     {
-        return null;
+        return "id";
     }
     public String getName()
     {
-        return null;
+        return "name";
     }
     public String getType()
     {

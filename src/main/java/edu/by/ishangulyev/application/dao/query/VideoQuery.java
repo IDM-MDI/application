@@ -3,31 +3,43 @@ package edu.by.ishangulyev.application.dao.query;
 public enum VideoQuery
 {
     SELECT_ALL
-            {
-
-            },
+    {
+        @Override
+        public String toString()
+        {
+            return super.toString();
+        }
+    },
     SELECT_BY_ID
-            {
-
-            },
+    {
+        @Override
+        public String toString()
+        {
+            return super.toString();
+        }
+    },
     DELETE
-            {
-
-            },
-    DELETE_BY_ID
-            {
-
-            },
+    {
+        @Override
+        public String toString()
+        {
+            return super.toString();
+        }
+    },
     UPDATE
-            {
-
-            },
-    UPDATE_BY_ID
-            {
-
-            },
+    {
+        @Override
+        public String toString()
+        {
+            return super.toString();
+        }
+    },
     INSERT
-            {
-
-            };
+    {
+        @Override
+        public String toString()
+        {
+            return super.toString();
+        }
+    };
 }
