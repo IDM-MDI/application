@@ -7,7 +7,7 @@ public enum VideoQuery
         @Override
         public String toString()
         {
-            return super.toString();
+            return "SELECT * FROM videos;";
         }
     },
     SELECT_BY_ID
@@ -15,7 +15,7 @@ public enum VideoQuery
         @Override
         public String toString()
         {
-            return super.toString();
+            return "SELECT * FROM videos WHERE id = ?";
         }
     },
     DELETE
@@ -23,7 +23,7 @@ public enum VideoQuery
         @Override
         public String toString()
         {
-            return super.toString();
+            return "DELETE FROM videos WHERE id = ?";
         }
     },
     UPDATE
@@ -31,7 +31,7 @@ public enum VideoQuery
         @Override
         public String toString()
         {
-            return super.toString();
+            return "UPDATE videos SET name = ?,resolution = ?,ratio = ?,brightness = ?,videotype = ? WHERE id = ?";
         }
     },
     INSERT
@@ -39,7 +39,7 @@ public enum VideoQuery
         @Override
         public String toString()
         {
-            return super.toString();
+            return "INSERT INTO videos(name,resolution,ratio,brightness,videotype) VALUES(?,?,?,?,?)";
         }
     };
 }
