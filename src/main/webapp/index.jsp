@@ -5,6 +5,6 @@
     <title>JSP - Hello World</title>
 </head>
 <body>
-<c:redirect url="/main"/>
+<c:redirect url = "/controller?jsp_switcher=index"/>
 </body>
 </html>
