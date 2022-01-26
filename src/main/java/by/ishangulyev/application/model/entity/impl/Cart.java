@@ -3,13 +3,13 @@ package by.ishangulyev.application.model.entity.impl;
 import by.ishangulyev.application.model.entity.Entity;
 
 public class Cart extends Entity {
-    private long userID;
+    private String userID;
 
-    public long getUserID() {
+    public String getUserID() {
         return userID;
     }
 
-    public void setUserID(long userID) {
+    public void setUserID(String userID) {
         this.userID = userID;
     }
 

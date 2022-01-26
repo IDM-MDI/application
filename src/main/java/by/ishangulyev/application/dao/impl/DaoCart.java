@@ -106,14 +106,14 @@ public class DaoCart extends DaoEntity<Cart> {
 
     @Override
     public void fillStatement(PreparedStatement statement, Cart entity) throws SQLException {
-        statement.setLong(1, entity.getUserID());
+        statement.setString(1, entity.getUserID());
     }
 
     @Override
     public Cart getValues(ResultSet set) throws SQLException {
         Cart result = new Cart();
         result.setId(set.getLong(ColumnName.ID));
-        result.setUserID(set.getLong(ColumnName.CART_USERID));
+        result.setUserID(set.getString(ColumnName.CART_USERID));
         return result;
     }
 }

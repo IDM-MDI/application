@@ -2,7 +2,8 @@ package by.ishangulyev.application.controller.command;
 
 public enum RequestParameter {
     COMMAND(),
-    JSP_SWITCHER();
+    JSP_SWITCHER(),
+    LANGUAGE();
 //    private String value;
 //
 //    RequestParameter(String value){

@@ -14,6 +14,10 @@ public class UserValidator {
         return instance;
     }
 
+    public boolean isUserValid(User entity){
+        return isEmailValid(entity) && isPasswordValid(entity);
+    }
+
     public boolean isEmailValid(User entity){
         boolean result = false;
         if(entity.getEmail().matches(EMAIL_REGEX)){
