@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DaoCart extends DaoEntity<Cart> {
+public class DaoCart extends DaoEntity<Long,Cart> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
@@ -55,7 +55,7 @@ public class DaoCart extends DaoEntity<Cart> {
     }
 
     @Override
-    public Optional<Cart> getEntityById(long id) throws DataBaseException {
+    public Optional<Cart> getEntityById(Long id) throws DataBaseException {
         Optional<Cart> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(CartQuery.SELECT_BY_ID.getValue())) {
@@ -75,7 +75,7 @@ public class DaoCart extends DaoEntity<Cart> {
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean delete(Long id) {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(CartQuery.DELETE.getValue())) {
             statement.setLong(1, id);

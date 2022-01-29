@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DaoAudio extends DaoEntity<Audio> {
+public class DaoAudio extends DaoEntity<Long,Audio> {
     private static final Logger logger = LogManager.getLogger();
 
     public DaoAudio() {
@@ -59,7 +59,7 @@ public class DaoAudio extends DaoEntity<Audio> {
     }
 
     @Override
-    public Optional<Audio> getEntityById(long id) throws DataBaseException {
+    public Optional<Audio> getEntityById(Long id) throws DataBaseException {
         Optional<Audio> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(AudioQuery.SELECT_BY_ID.getValue())) {
@@ -79,7 +79,7 @@ public class DaoAudio extends DaoEntity<Audio> {
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean delete(Long id) {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(AudioQuery.DELETE.getValue())) {
             statement.setLong(1, id);

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DaoMemory extends DaoEntity<Memory> {
+public class DaoMemory extends DaoEntity<Long,Memory> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
@@ -56,7 +56,7 @@ public class DaoMemory extends DaoEntity<Memory> {
     }
 
     @Override
-    public Optional<Memory> getEntityById(long id) throws DataBaseException {
+    public Optional<Memory> getEntityById(Long id) throws DataBaseException {
         Optional<Memory> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(MemoryQuery.SELECT_BY_ID.getValue())) {
@@ -76,7 +76,7 @@ public class DaoMemory extends DaoEntity<Memory> {
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean delete(Long id) {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(MemoryQuery.DELETE.getValue())) {
             statement.setLong(1, id);

@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DaoVideo extends DaoEntity<Video> {
+public class DaoVideo extends DaoEntity<Long,Video> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
@@ -56,7 +56,7 @@ public class DaoVideo extends DaoEntity<Video> {
     }
 
     @Override
-    public Optional<Video> getEntityById(long id) throws DataBaseException {
+    public Optional<Video> getEntityById(Long id) throws DataBaseException {
         Optional<Video> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(VideoQuery.SELECT_BY_ID.getValue())) {
@@ -76,7 +76,7 @@ public class DaoVideo extends DaoEntity<Video> {
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean delete(Long id) {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(VideoQuery.DELETE.getValue())) {
             statement.setLong(1, id);

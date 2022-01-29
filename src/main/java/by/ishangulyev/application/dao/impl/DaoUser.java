@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DaoUser extends DaoEntity<User> {
+public class DaoUser extends DaoEntity<String,User> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
@@ -56,7 +56,7 @@ public class DaoUser extends DaoEntity<User> {
     }
 
     @Override
-    public Optional<User> getEntityById(long id) throws DataBaseException {
+    public Optional<User> getEntityById(String email) throws DataBaseException {
         Optional<User> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(UserQuery.SELECT_BY_ID.getValue())) {
@@ -76,7 +76,7 @@ public class DaoUser extends DaoEntity<User> {
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean delete(String email) {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(UserQuery.DELETE.getValue())) {
             statement.setLong(1, id);

@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DaoOrder extends DaoEntity<Order> {
+public class DaoOrder extends DaoEntity<Long,Order> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
@@ -55,7 +55,7 @@ public class DaoOrder extends DaoEntity<Order> {
     }
 
     @Override
-    public Optional<Order> getEntityById(long id) throws DataBaseException {
+    public Optional<Order> getEntityById(Long id) throws DataBaseException {
         Optional<Order> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(OrderQuery.SELECT_BY_ID.getValue())) {
@@ -75,7 +75,7 @@ public class DaoOrder extends DaoEntity<Order> {
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean delete(Long id) {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(OrderQuery.DELETE.getValue())) {
             statement.setLong(1, id);

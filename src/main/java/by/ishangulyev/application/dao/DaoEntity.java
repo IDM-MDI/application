@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
-public abstract class DaoEntity<T> implements ResultSetExecutor<T> {
+public abstract class DaoEntity<U,T> implements ResultSetExecutor<T> {
     protected Connection connection;
     protected ConnectionPool connectionPool;
 
@@ -22,9 +22,9 @@ public abstract class DaoEntity<T> implements ResultSetExecutor<T> {
 
     public abstract boolean update(T entity);
 
-    public abstract Optional<T> getEntityById(long id) throws DataBaseException;
+    public abstract Optional<T> getEntityById(U id) throws DataBaseException;
 
-    public abstract boolean delete(long id);
+    public abstract boolean delete(U id);
 
     public abstract boolean create(T entity);
 

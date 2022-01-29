@@ -18,6 +18,7 @@ import java.util.Properties;
 public class LanguageService {
     private final String RU_PATH = "src/main/resources/language/russian.properties";
     private final String EN_PATH = "src/main/resources/language/english.properties";
+    private final SetPage setPage = new SetPage();
 
     public Cookie createCookie(LanguageType type){
         Cookie language = null;
@@ -32,21 +33,38 @@ public class LanguageService {
         return language;
     }
     public void setLanguageAtPage(HttpServletRequest request, JspPath jsp){
+        switch (jsp){
+            case INDEX -> {
+                setPage.setIndex(request);
+            }
+            case SIGN_IN -> {
+                setPage.setSignIn(request);
+            }
+            case SIGN_UP -> {
+                setPage.setSignUp(request);
+            }
+            case GADGETS -> {
+                setPage.setGadgets(request);
+            }
+            case USERS -> {
+                setPage.setUsers(request);
+            }
+            case ERROR4XX -> {
+                setPage.setError400(request);
+            }
+            case ERROR5XX -> {
+                setPage.setError500(request);
+            }
+        }
     }
 
-    private Map<String,String> getProperties(String path,JspPath jsp){
-        Map<String,String> result = new HashMap<>();
+    private Properties getProperty(String path,JspPath jsp){
+        Properties prop = new Properties();
         try (InputStream input = new FileInputStream(path)) {
-            Properties prop = new Properties();
-
-            // load a properties file
             prop.load(input);
-            prop.getProperty(jsp.name().toLowerCase() + "_title");
-
-
         } catch (IOException ex) {
-            //ex.printStackTrace();
+
         }
-        return result;
+        return prop;
     }
 }

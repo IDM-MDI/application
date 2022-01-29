@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DaoGadget extends DaoEntity<Gadget> {
+public class DaoGadget extends DaoEntity<Long,Gadget> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
@@ -55,7 +55,7 @@ public class DaoGadget extends DaoEntity<Gadget> {
     }
 
     @Override
-    public Optional<Gadget> getEntityById(long id) throws DataBaseException {
+    public Optional<Gadget> getEntityById(Long id) throws DataBaseException {
         Optional<Gadget> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(GadgetQuery.SELECT_BY_ID.getValue())) {
@@ -75,7 +75,7 @@ public class DaoGadget extends DaoEntity<Gadget> {
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean delete(Long id) {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(GadgetQuery.DELETE.getValue())) {
             statement.setLong(1, id);

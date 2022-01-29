@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DaoCpu extends DaoEntity<Cpu> {
+public class DaoCpu extends DaoEntity<Long,Cpu> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
@@ -55,7 +55,7 @@ public class DaoCpu extends DaoEntity<Cpu> {
     }
 
     @Override
-    public Optional<Cpu> getEntityById(long id) throws DataBaseException {
+    public Optional<Cpu> getEntityById(Long id) throws DataBaseException {
         Optional<Cpu> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(CpuQuery.SELECT_BY_ID.getValue())) {
@@ -75,7 +75,7 @@ public class DaoCpu extends DaoEntity<Cpu> {
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean delete(Long id) {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(CpuQuery.DELETE.getValue())) {
             statement.setLong(1, id);

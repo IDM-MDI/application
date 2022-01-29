@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class DaoBattery extends DaoEntity<Battery> {
+public class DaoBattery extends DaoEntity<Long,Battery> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
@@ -55,7 +55,7 @@ public class DaoBattery extends DaoEntity<Battery> {
     }
 
     @Override
-    public Optional<Battery> getEntityById(long id) throws DataBaseException {
+    public Optional<Battery> getEntityById(Long id) throws DataBaseException {
         Optional<Battery> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(BatteryQuery.SELECT_BY_ID.getValue())) {
@@ -75,7 +75,7 @@ public class DaoBattery extends DaoEntity<Battery> {
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean delete(Long id) {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(BatteryQuery.DELETE.getValue())) {
             statement.setLong(1, id);
