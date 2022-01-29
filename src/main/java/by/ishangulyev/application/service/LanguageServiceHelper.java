@@ -2,7 +2,7 @@ package by.ishangulyev.application.service;
 
 import jakarta.servlet.http.HttpServletRequest;
 
-public class SetPage {
+public class LanguageServiceHelper {
     public void setIndex(HttpServletRequest request){
     }
     public void setSignUp(HttpServletRequest request){

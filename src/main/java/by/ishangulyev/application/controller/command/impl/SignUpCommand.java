@@ -36,7 +36,7 @@ public class SignUpCommand implements ActionCommand {
             cart.create(userCart);
         }
         else{
-            router.setPagePath(JspPath.SIGN_UP.getValue());
+            router.setPagePath(JspPath.SIGN_UP);
         }
         return router;
     }

@@ -60,7 +60,7 @@ public class DaoUser extends DaoEntity<String,User> {
         Optional<User> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(UserQuery.SELECT_BY_ID.getValue())) {
-            statement.setLong(1, id);
+            statement.setString(1, email);
             ResultSet set = statement.executeQuery();
 
             if (set.next()) {
@@ -79,7 +79,7 @@ public class DaoUser extends DaoEntity<String,User> {
     public boolean delete(String email) {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(UserQuery.DELETE.getValue())) {
-            statement.setLong(1, id);
+            statement.setString(1, email);
             result = statement.executeUpdate() > 0;
         } catch (SQLException e) {
             logger.log(Level.WARN, "", e);

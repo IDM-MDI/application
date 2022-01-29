@@ -4,14 +4,14 @@ import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
 import by.ishangulyev.application.controller.command.JspPath;
-import by.ishangulyev.application.controller.command.RequestParameter;
+import by.ishangulyev.application.controller.command.RequestParameterName;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class JspSwitcherCommand implements ActionCommand {
     private JspPath path;
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
-        switch (request.getParameter(RequestParameter.JSP_SWITCHER.name().toLowerCase())){
+        switch (request.getParameter(RequestParameterName.JSP_SWITCHER.name().toLowerCase())){
             case "index" -> path = JspPath.INDEX;
             case "gadgets" -> path = JspPath.GADGETS;
             case "users" -> path = JspPath.USERS;

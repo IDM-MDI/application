@@ -1,8 +1,9 @@
 package by.ishangulyev.application.controller;
 
-import by.ishangulyev.application.controller.command.CommandType;
-import by.ishangulyev.application.controller.command.RequestParameter;
 import by.ishangulyev.application.controller.command.ActionCommand;
+import by.ishangulyev.application.service.LanguageService;
+import by.ishangulyev.application.service.RequestService;
+import by.ishangulyev.application.service.SessionService;
 import by.ishangulyev.application.validator.ParameterValidator;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -20,6 +21,9 @@ import java.io.IOException;
 public class IndexServlet extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
     private final ParameterValidator validator = new ParameterValidator();
+    private final SessionService sessionService = new SessionService();
+    private final RequestService requestService = new RequestService();
+    private final LanguageService languageService = new LanguageService();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         processRequest(req, resp);
@@ -32,23 +36,17 @@ public class IndexServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if(validator.isParameterValid(req)){
-            String commandName = req.getParameterNames().nextElement().toUpperCase();
-
-            CommandType commandType = commandName.equals(RequestParameter.COMMAND.name())?
-                    CommandType.valueOf(req.getParameter(commandName)):
-                    CommandType.valueOf(commandName.toUpperCase());
-
-            ActionCommand command = commandType.getCommand();
+            sessionService.sessionHandler(req,resp);
+            ActionCommand command = requestService.getCommand(req);
             Router router = command.execute(req,resp);
-            RouterType routingType = router.getRouterType();
-            String resultPage = router.getPagePath();
-            switch (routingType) {
+            languageService.setLanguageAtPage(req,router);
+            switch (router.getRouterType()) {
                 case FORWARD: {
-                    req.getRequestDispatcher(resultPage).forward(req, resp);
+                    req.getRequestDispatcher(router.getPagePath().getValue()).forward(req, resp);
                 }
                 break;
                 case REDIRECT: {
-                    resp.sendRedirect(req.getContextPath() + resultPage);
+                    resp.sendRedirect(req.getContextPath() + router.getPagePath().getValue());
                 }
                 break;
                 default: {

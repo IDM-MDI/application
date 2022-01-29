@@ -1,26 +1,29 @@
 package by.ishangulyev.application.controller;
 
 import by.ishangulyev.application.controller.command.JspPath;
+import by.ishangulyev.application.controller.command.LanguageType;
 
 public class Router {
-    private String pagePath;
+    private JspPath pagePath;
     private RouterType type;
+    private LanguageType language;
 
-    public Router(String pagePath, RouterType routerType) {
+    public Router(JspPath pagePath, RouterType routerType,LanguageType language) {
         this.pagePath = pagePath;
         this.type = routerType;
+        this.language = language;
     }
-
     public Router(JspPath pagePath, RouterType routerType) {
-        this.pagePath = pagePath.getValue();
+        this.pagePath = pagePath;
         this.type = routerType;
+        this.language = LanguageType.RU;
     }
 
-    public String getPagePath() {
+    public JspPath getPagePath() {
         return pagePath;
     }
 
-    public void setPagePath(String pagePath) {
+    public void setPagePath(JspPath pagePath) {
         this.pagePath = pagePath;
     }
 

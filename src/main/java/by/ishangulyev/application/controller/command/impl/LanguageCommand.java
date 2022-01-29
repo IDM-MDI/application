@@ -5,29 +5,17 @@ import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
 import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.controller.command.LanguageType;
-import by.ishangulyev.application.controller.command.RequestParameter;
-import by.ishangulyev.application.service.LanguageService;
-import by.ishangulyev.application.validator.CookieValidator;
+import by.ishangulyev.application.service.SessionService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class LanguageCommand implements ActionCommand {
-    private LanguageService service = new LanguageService();
-    private CookieValidator validator = new CookieValidator();
+    private SessionService service = new SessionService();
+    private LanguageType type;
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) {
-        Router router = new Router(JspPath.INDEX, RouterType.FORWARD);
-        if(!validator.isLanguageExist(request.getCookies())){
-            switch (request.getParameter(RequestParameter.LANGUAGE.name().toLowerCase())){
-                case "ru"->{
-                    service.createCookie(LanguageType.RU);
-                }
-                case "en"->{
-                    service.createCookie(LanguageType.EN);
-                }
-            }
-        }
-        return router;
+        this.type = LanguageType.valueOf(request.getParameter("language").toUpperCase());
+        return new Router(JspPath.INDEX, RouterType.FORWARD,type);
     }
 }

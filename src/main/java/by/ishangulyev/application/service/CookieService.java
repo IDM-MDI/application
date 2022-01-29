@@ -16,6 +16,8 @@ public class CookieService {
     private LanguageService languageService;
     private PasswordHashService passwordHashService;
     private CookieValidator validator;
+    private LanguageType languageType;
+    private User user;
 
     public CookieService(){
         languageService = new LanguageService();
@@ -23,17 +25,18 @@ public class CookieService {
         validator = new CookieValidator();
     }
 
-    public void cookieHandler(HttpServletRequest request, HttpServletResponse response, JspPath jsp){
+    public void cookieHandler(HttpServletRequest request, HttpServletResponse response){
         Cookie[] cookies = request.getCookies();
         if(validator.isCookieExist(cookies,"language")){
-            languageService.setLanguageAtPage(request,jsp);
+            String language = getCookie(cookies,"language").getValue();
+            this.languageType = LanguageType.valueOf(language);
         }
         else{
             response.addCookie(languageService.createCookie(LanguageType.RU));
         }
-
+        
         if(validator.isLoginValid(cookies)){
-            User user = findUser(cookies);
+            this.user = findUser(cookies);
         }
     }
     public Cookie getCookie(Cookie[] cookies,String name){
@@ -45,7 +48,7 @@ public class CookieService {
         }
         return result;
     }
-    public User findUser(Cookie[] cookies){
+    private User findUser(Cookie[] cookies){
         DaoUser dao = new DaoUser();
         Optional<User> userOptional;
         User result = null;
@@ -58,8 +61,16 @@ public class CookieService {
                 }
             }
         } catch (DataBaseException e) {
-            e.printStackTrace();
+            // TODO: 1/30/2022  
         }
         return result;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public LanguageType getLanguageType() {
+        return languageType;
     }
 }

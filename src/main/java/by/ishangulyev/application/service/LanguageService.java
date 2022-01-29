@@ -1,59 +1,55 @@
 package by.ishangulyev.application.service;
 
+import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.controller.command.LanguageType;
-import by.ishangulyev.application.validator.CookieValidator;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 import java.util.Properties;
 
 public class LanguageService {
     private final String RU_PATH = "src/main/resources/language/russian.properties";
     private final String EN_PATH = "src/main/resources/language/english.properties";
-    private final SetPage setPage = new SetPage();
+    private final LanguageServiceHelper languageServiceHelper = new LanguageServiceHelper();
 
     public Cookie createCookie(LanguageType type){
         Cookie language = null;
         switch (type){
             case RU -> {
-                language = new Cookie("language","ru");
+                language = new Cookie("language","RU");
             }
             case EN -> {
-                language = new Cookie("language","en");
+                language = new Cookie("language","EN");
             }
         }
         return language;
     }
-    public void setLanguageAtPage(HttpServletRequest request, JspPath jsp){
-        switch (jsp){
+    public void setLanguageAtPage(HttpServletRequest request, Router router){
+        switch (router.getPagePath()){
             case INDEX -> {
-                setPage.setIndex(request);
+                languageServiceHelper.setIndex(request);
             }
             case SIGN_IN -> {
-                setPage.setSignIn(request);
+                languageServiceHelper.setSignIn(request);
             }
             case SIGN_UP -> {
-                setPage.setSignUp(request);
+                languageServiceHelper.setSignUp(request);
             }
             case GADGETS -> {
-                setPage.setGadgets(request);
+                languageServiceHelper.setGadgets(request);
             }
             case USERS -> {
-                setPage.setUsers(request);
+                languageServiceHelper.setUsers(request);
             }
             case ERROR4XX -> {
-                setPage.setError400(request);
+                languageServiceHelper.setError400(request);
             }
             case ERROR5XX -> {
-                setPage.setError500(request);
+                languageServiceHelper.setError500(request);
             }
         }
     }
@@ -62,7 +58,7 @@ public class LanguageService {
         Properties prop = new Properties();
         try (InputStream input = new FileInputStream(path)) {
             prop.load(input);
-        } catch (IOException ex) {
+        } catch (IOException e) {
 
         }
         return prop;
