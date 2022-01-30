@@ -39,6 +39,7 @@ public class IndexServlet extends HttpServlet {
             sessionService.sessionHandler(req,resp);
             ActionCommand command = requestService.getCommand(req);
             Router router = command.execute(req,resp);
+            router.setLanguage(sessionService.getType());
             languageService.setLanguageAtPage(req,router);
             switch (router.getRouterType()) {
                 case FORWARD: {
@@ -55,6 +56,7 @@ public class IndexServlet extends HttpServlet {
             }
         }
     }
+
 
 }
 

@@ -10,9 +10,10 @@ import jakarta.servlet.http.HttpSession;
 
 public class SessionService {
     private CookieService cookieService = new CookieService();
+    private LanguageType type;
 
     public void sessionHandler(HttpServletRequest request, HttpServletResponse response){
-       HttpSession session = request.getSession(true);
+       HttpSession session = request.getSession();
        if(session.isNew()){
            cookieService.cookieHandler(request,response);
            Cookie[] cookies = request.getCookies();
@@ -23,7 +24,8 @@ public class SessionService {
     public void initSession(HttpSession session){
         session.setAttribute("user",cookieService.getUser());
         session.setMaxInactiveInterval(1800);
-        session.setAttribute("language",cookieService.getLanguageType());
+        this.type = cookieService.getLanguageType();
+        session.setAttribute("language",type);
     }
     public void addUser(HttpServletRequest request,User user){
         request.getSession().setAttribute("user",user);
@@ -33,5 +35,10 @@ public class SessionService {
     }
     public void addLanguage(HttpServletRequest request, LanguageType type){
         request.getSession().setAttribute("language",type);
+        this.type = type;
+    }
+
+    public LanguageType getType() {
+        return type;
     }
 }

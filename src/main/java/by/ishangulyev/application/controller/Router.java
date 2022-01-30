@@ -34,4 +34,12 @@ public class Router {
     public void setRouterType(RouterType routerType) {
         this.type = routerType;
     }
+
+    public void setLanguage(LanguageType language) {
+        this.language = language;
+    }
+
+    public LanguageType getLanguage() {
+        return language;
+    }
 }

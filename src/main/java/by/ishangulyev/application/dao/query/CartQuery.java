@@ -5,7 +5,7 @@ public enum CartQuery {
     SELECT_BY_ID("SELECT * FROM carts WHERE id = ?"),
     DELETE("DELETE FROM carts WHERE id = ?"),
     UPDATE("UPDATE carts SET userID = ? WHERE id = ?"),
-    INSERT("INSERT INTO battery(userID) VALUES(?)");
+    INSERT("INSERT INTO carts(userID) VALUES(?)");
     private String value;
 
     CartQuery(String value){

@@ -12,8 +12,6 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class LanguageService {
-    private final String RU_PATH = "src/main/resources/language/russian.properties";
-    private final String EN_PATH = "src/main/resources/language/english.properties";
     private final LanguageServiceHelper languageServiceHelper = new LanguageServiceHelper();
 
     public Cookie createCookie(LanguageType type){
@@ -30,37 +28,14 @@ public class LanguageService {
     }
     public void setLanguageAtPage(HttpServletRequest request, Router router){
         switch (router.getPagePath()){
-            case INDEX -> {
-                languageServiceHelper.setIndex(request);
-            }
-            case SIGN_IN -> {
-                languageServiceHelper.setSignIn(request);
-            }
-            case SIGN_UP -> {
-                languageServiceHelper.setSignUp(request);
-            }
-            case GADGETS -> {
-                languageServiceHelper.setGadgets(request);
-            }
-            case USERS -> {
-                languageServiceHelper.setUsers(request);
-            }
-            case ERROR4XX -> {
-                languageServiceHelper.setError400(request);
-            }
-            case ERROR5XX -> {
-                languageServiceHelper.setError500(request);
-            }
+            case INDEX -> languageServiceHelper.setIndex(request,router);
+            case SIGN_IN -> languageServiceHelper.setSignIn(request,router);
+            case SIGN_UP -> languageServiceHelper.setSignUp(request,router);
+            case GADGETS -> languageServiceHelper.setGadgets(request,router);
+            case USERS -> languageServiceHelper.setUsers(request,router);
+            case ERROR4XX -> languageServiceHelper.setError400(request,router);
+            case ERROR5XX -> languageServiceHelper.setError500(request,router);
+            case ACCOUNT -> languageServiceHelper.setAccount(request,router);
         }
-    }
-
-    private Properties getProperty(String path,JspPath jsp){
-        Properties prop = new Properties();
-        try (InputStream input = new FileInputStream(path)) {
-            prop.load(input);
-        } catch (IOException e) {
-
-        }
-        return prop;
     }
 }

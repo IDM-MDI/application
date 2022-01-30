@@ -17,7 +17,7 @@ public class ConnectionSetting {
     private String password;
 
     private ConnectionSetting() {
-        try (InputStream input = getClass().getResourceAsStream(PATH)) {
+        try (InputStream input = getClass().getClassLoader().getResourceAsStream(PATH)) {
 
             Properties prop = new Properties();
 

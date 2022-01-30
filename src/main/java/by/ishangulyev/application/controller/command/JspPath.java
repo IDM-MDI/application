@@ -7,7 +7,8 @@ public enum JspPath {
     GADGETS("jsp/gadgets.jsp"),
     USERS("jsp/users.jsp"),
     ERROR4XX("jsp/error4xx.jsp"),
-    ERROR5XX("jsp/error5xx.jsp");
+    ERROR5XX("jsp/error5xx.jsp"),
+    ACCOUNT("jsp/account.jsp");
 
     private String value;
 

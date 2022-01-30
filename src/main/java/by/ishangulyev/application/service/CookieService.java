@@ -73,4 +73,11 @@ public class CookieService {
     public LanguageType getLanguageType() {
         return languageType;
     }
+
+    public void addLanguage(HttpServletRequest request,HttpServletResponse response, String language) {
+        Cookie cookie = getCookie(request.getCookies(),"language");
+        cookie.setMaxAge(60*60);
+        cookie.setValue(language.toUpperCase());
+        response.addCookie(cookie);
+    }
 }
