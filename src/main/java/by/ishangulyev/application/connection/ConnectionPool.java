@@ -21,7 +21,7 @@ public class ConnectionPool {
 
     private ConnectionPool() {
         free = new LinkedBlockingDeque<>(POOL_SIZE);
-        used = new LinkedBlockingDeque<ProxyConnection>(POOL_SIZE);
+        used = new LinkedBlockingDeque<>(POOL_SIZE);
         fillConnection();
     }
 

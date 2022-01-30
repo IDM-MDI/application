@@ -12,7 +12,7 @@ public class RequestService {
         RequestParameterName commandName = RequestParameterName.valueOf(req.getParameterNames().nextElement().toUpperCase());
         RequestParameterValue commandValue = null;
         if(!(commandName == RequestParameterName.JSP_SWITCHER || commandName == RequestParameterName.LANGUAGE)){
-            commandValue = RequestParameterValue.valueOf(req.getParameter(commandName.name().toLowerCase()));
+            commandValue = RequestParameterValue.valueOf(req.getParameter(commandName.name().toLowerCase()).toUpperCase());
         }
         switch(commandName){
             case USER -> {

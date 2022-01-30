@@ -12,10 +12,12 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,6 +96,10 @@ public class DaoUser extends DaoEntity<String,User> {
     public boolean create(User entity) {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(UserQuery.INSERT.getValue())) {
+            entity.setDate(new Date(System.currentTimeMillis()));
+            if(entity.getRole() == null){
+                entity.setRole(Role.USER);
+            }
             fillStatement(statement, entity);
             result = statement.executeUpdate() > 0;
         } catch (SQLException e) {
@@ -107,7 +113,10 @@ public class DaoUser extends DaoEntity<String,User> {
 
     @Override
     public void fillStatement(PreparedStatement statement, User entity) throws SQLException {
-
+        statement.setString(1, entity.getEmail());
+        statement.setString(2, entity.getPass());
+        statement.setDate(3, entity.getDate());
+        statement.setString(4,entity.getRole().name());
     }
 
     @Override

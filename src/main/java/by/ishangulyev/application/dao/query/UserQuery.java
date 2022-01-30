@@ -5,7 +5,7 @@ public enum UserQuery {
     SELECT_BY_ID("SELECT * FROM users WHERE id = ?"),
     DELETE("DELETE FROM users WHERE id = ?"),
     UPDATE("UPDATE users SET username = ?,email = ?,password = ?,create_time = ?,role = ? WHERE id = ?"),
-    INSERT("INSERT INTO users(username,email,password,create_time,role) VALUES(?,?,?,?,?)");
+    INSERT("INSERT INTO users(email,password,create_time,role) VALUES(?,?,?,?)");
 
     private String value;
     UserQuery(String value) {

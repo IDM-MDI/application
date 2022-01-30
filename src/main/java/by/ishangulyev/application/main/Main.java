@@ -1,8 +1,11 @@
 package by.ishangulyev.application.main;
 
 import by.ishangulyev.application.controller.command.RequestParameterValue;
+import by.ishangulyev.application.dao.impl.DaoUser;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.AudioType;
+import by.ishangulyev.application.model.entity.impl.Role;
+import by.ishangulyev.application.model.entity.impl.User;
 import by.ishangulyev.application.util.HashPassGenerator;
 
 import java.security.NoSuchAlgorithmException;
@@ -20,7 +23,6 @@ public class Main {
 //        ColumnName name = ColumnName.VIDEO;
 //        AudioType audioType = AudioType.MONO;
 //        System.out.println(audioType.name());
-        System.out.println(HashPassGenerator.generate("hello world"));
-        System.out.println(RequestParameterValue.valueOf("asd"));
+        System.out.println(HashPassGenerator.generate("qwerty12345"));
     }
 }

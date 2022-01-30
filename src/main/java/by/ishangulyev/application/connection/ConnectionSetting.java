@@ -11,13 +11,13 @@ import java.util.Properties;
 
 public class ConnectionSetting {
     private static final ConnectionSetting INSTANCE = new ConnectionSetting();
-    private final String PATH = "src/main/resources/property/database.properties";
+    private final String PATH = "property/database.properties";
     private String url;
     private String username;
     private String password;
 
     private ConnectionSetting() {
-        try (InputStream input = new FileInputStream(PATH)) {
+        try (InputStream input = getClass().getResourceAsStream(PATH)) {
 
             Properties prop = new Properties();
 

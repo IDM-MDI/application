@@ -26,7 +26,7 @@ public class SignInCommand implements ActionCommand {
             userOptional = dao.getEntityById((String) request.getAttribute("email"));
             if(userOptional.isPresent()){
                 String password = userOptional.get().getPass();
-                if(password.equals(request.getAttribute("pass"))){
+                if(password.equals(request.getParameter("password"))){
                     user = userOptional.get();
                     sessionServic.addUser(request,user);
                 }

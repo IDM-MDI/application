@@ -9,27 +9,30 @@ import by.ishangulyev.application.dao.impl.DaoUser;
 import by.ishangulyev.application.model.entity.impl.Cart;
 import by.ishangulyev.application.model.entity.impl.Role;
 import by.ishangulyev.application.model.entity.impl.User;
+import by.ishangulyev.application.util.HashPassGenerator;
 import by.ishangulyev.application.validator.UserValidator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 
 public class SignUpCommand implements ActionCommand {
     private DaoUser registration;
     private DaoCart cart;
-
-    public SignUpCommand(){
-        registration = new DaoUser();
-        cart = new DaoCart();
-    }
-
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) {
         Router router = new Router(JspPath.SIGN_IN, RouterType.FORWARD);
         UserValidator validator = UserValidator.getInstance();
         User user = fillEntityInfo(request);
         if(validator.isUserValid(user)){
+            registration = new DaoUser();
+            cart = new DaoCart();
+            try {
+                user.setPass(HashPassGenerator.generate(user.getPass()));
+            } catch (NoSuchAlgorithmException e) {
+                // TODO: 1/30/2022  
+            }
             registration.create(user);
             Cart userCart = new Cart();
             userCart.setUserID(user.getEmail());
@@ -43,12 +46,11 @@ public class SignUpCommand implements ActionCommand {
 
     private User fillEntityInfo(HttpServletRequest req){
         User result = new User();
-        User user = new User();
-        user.setName((String) req.getAttribute("name"));
-        user.setEmail((String) req.getAttribute("login"));
-        user.setPass((String) req.getAttribute("password"));
-        user.setRole(Role.USER);
-        user.setDate(new Date(System.currentTimeMillis()));
+        result.setName((String) req.getParameter("name"));
+        result.setEmail((String) req.getParameter("email"));
+        result.setPass((String) req.getParameter("password"));
+        result.setRole(Role.USER);
+        result.setDate(new Date(System.currentTimeMillis()));
         return result;
     }
 }
