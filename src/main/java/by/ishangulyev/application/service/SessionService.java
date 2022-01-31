@@ -12,18 +12,20 @@ public class SessionService {
     private CookieService cookieService = new CookieService();
     private LanguageType type;
 
-    public void sessionHandler(HttpServletRequest request, HttpServletResponse response){
-       HttpSession session = request.getSession();
+    public HttpSession sessionHandler(HttpServletRequest request, HttpServletResponse response){
+        request.getSession().invalidate();
+        HttpSession session = request.getSession();
        if(session.isNew()){
            cookieService.cookieHandler(request,response);
            Cookie[] cookies = request.getCookies();
            initSession(session);
        }
+       return session;
     }
 
     public void initSession(HttpSession session){
         session.setAttribute("user",cookieService.getUser());
-        session.setMaxInactiveInterval(1800);
+        session.setMaxInactiveInterval(60);
         this.type = cookieService.getLanguageType();
         session.setAttribute("language",type);
     }

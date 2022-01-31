@@ -38,6 +38,11 @@ public class CookieService {
         if(validator.isLoginValid(cookies)){
             this.user = findUser(cookies);
         }
+        else{
+            this.user = new User();
+            response.addCookie(new Cookie("email",null));
+            response.addCookie(new Cookie("pass",null));
+        }
     }
     public Cookie getCookie(Cookie[] cookies,String name){
         Cookie result = null;
@@ -80,4 +85,5 @@ public class CookieService {
         cookie.setValue(language.toUpperCase());
         response.addCookie(cookie);
     }
+
 }
