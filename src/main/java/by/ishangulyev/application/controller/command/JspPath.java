@@ -1,7 +1,7 @@
 package by.ishangulyev.application.controller.command;
 
 public enum JspPath {
-    INDEX("index.jsp"),
+    INDEX("jsp/main.jsp"),
     SIGN_IN("jsp/signin.jsp"),
     SIGN_UP("jsp/signup.jsp"),
     GADGETS("jsp/gadgets.jsp"),
