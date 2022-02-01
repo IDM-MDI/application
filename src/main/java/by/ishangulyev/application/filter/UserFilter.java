@@ -1,14 +1,19 @@
 package by.ishangulyev.application.filter;
 
+import by.ishangulyev.application.service.SessionService;
+import by.ishangulyev.application.validator.SessionValidator;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
 @WebFilter(urlPatterns = {"/controller"},servletNames = {"IndexServlet"})
 public class UserFilter implements Filter {
+    private final SessionService sessionService = new SessionService();
+    private final SessionValidator validator = new SessionValidator();
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);
@@ -18,6 +23,13 @@ public class UserFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+        HttpSession session = sessionService.sessionHandler(request,response);
+        if(validator.isAdminPage(request) && !validator.isAdmin(session)){
+            return;
+        }
+        else if(validator.isUserPage(request) && !validator.isUser(session)){
+            return;
+        }
         filterChain.doFilter(servletRequest,servletResponse);
     }
 
