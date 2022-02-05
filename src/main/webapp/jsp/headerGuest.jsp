@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <header class="p-3 bg-dark text-white">
     <div class="container">
@@ -20,6 +21,21 @@
             <div class="text-end">
                 <a href="${pageContext.request.contextPath}/controller?jsp_switcher=signin" class="btn btn-outline-light me-2">${signinTranslate}</a>
                 <a href="${pageContext.request.contextPath}/controller?jsp_switcher=signup" class="btn btn-warning">${signupTranslate}</a>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle"
+                        type="button" id="dropdownMenu1" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    ${languageTranslate}
+                </button>
+                <div class="dropdown-menu w-75" aria-labelledby="dropdownMenu1">
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?language=ru">
+                        <img src="${pageContext.request.contextPath}/img/1200px-Flag_of_Russia.svg.png" alt="mdo" width="64" height="32">
+                    </a>
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?language=en">
+                        <img src="${pageContext.request.contextPath}/img/1235px-US_flag_51_stars.svg.png" alt="mdo" width="64" height="32">
+                    </a>
+                </div>
             </div>
         </div>
     </div>

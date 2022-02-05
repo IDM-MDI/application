@@ -15,14 +15,14 @@ public class CookieValidator {
     public boolean isCookieNull(Cookie[] cookies,String name){
         boolean result = false;
         for (Cookie i:cookies) {
-            if(i.getName().equals(name) && i.getValue() == null){
+            if(i.getName().equals(name) && (i.getValue() == null || i.getValue().isEmpty())){
                 result = true;
             }
         }
         return result;
     }
     public boolean isLoginValid(Cookie[] cookies){
-       return isCookieNull(cookies,"pass") && isCookieNull(cookies,"email")
+       return !isCookieNull(cookies,"pass") && !isCookieNull(cookies,"email")
                 && isCookieExist(cookies,"pass") && isCookieExist(cookies,"email");
     }
 }

@@ -37,6 +37,7 @@ public class ColumnName {
     public static final String USER_PASS = "password";
     public static final String USER_TIME = "create_time";
     public static final String USER_ROLE = "role";
+    public static final String USER_PHOTO = "photo";
 
     public static final String VIDEO_TYPE = "videotype";
     public static final String VIDEO_BRIGHTNESS = "brightness";

@@ -1,11 +1,13 @@
 package by.ishangulyev.application.controller;
 
 import by.ishangulyev.application.controller.command.ActionCommand;
+import by.ishangulyev.application.controller.command.LanguageType;
 import by.ishangulyev.application.service.LanguageService;
 import by.ishangulyev.application.service.RequestService;
 import by.ishangulyev.application.service.SessionService;
 import by.ishangulyev.application.validator.ParameterValidator;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,10 +21,12 @@ import java.io.IOException;
 
 
 @WebServlet(name = "IndexServlet", urlPatterns = {"/controller"})
+@MultipartConfig(fileSizeThreshold = 1024 * 1024,
+                 maxFileSize = 1024 * 1024 * 15,
+                 maxRequestSize = 1024 * 1024)
 public class IndexServlet extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
     private final ParameterValidator validator = new ParameterValidator();
-    private final SessionService sessionService = new SessionService();
     private final RequestService requestService = new RequestService();
     private final LanguageService languageService = new LanguageService();
     private HttpSession session;
@@ -37,16 +41,13 @@ public class IndexServlet extends HttpServlet {
         processRequest(req, resp);
     }
 
-    @Override public void destroy() {
-        session.invalidate();
-    }
+    @Override public void destroy() {}
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if(validator.isParameterValid(req)){
-            HttpSession session = sessionService.sessionHandler(req,resp);
             ActionCommand command = requestService.getCommand(req);
             Router router = command.execute(req,resp);
-            router.setLanguage(sessionService.getType());
+            router.setLanguage((LanguageType) req.getSession().getAttribute("language"));
             languageService.setLanguageAtPage(req,router);
             switch (router.getRouterType()) {
                 case FORWARD: {

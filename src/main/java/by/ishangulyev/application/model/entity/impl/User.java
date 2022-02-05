@@ -3,6 +3,7 @@ package by.ishangulyev.application.model.entity.impl;
 import by.ishangulyev.application.model.entity.Entity;
 
 import java.sql.Date;
+import java.util.Base64;
 
 public class User extends Entity {
     private String name;
@@ -10,6 +11,8 @@ public class User extends Entity {
     private String pass;
     private Date date;
     private Role role;
+    private byte[] photo;
+    private String photoToString;
 
     public String getName() {
         return name;
@@ -49,5 +52,26 @@ public class User extends Entity {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
+    }
+
+    public String getPhotoToString() {
+        if(photoToString.isEmpty() || photoToString == null){
+            photoToString = Base64.getEncoder().encodeToString(photo);
+        }
+        return photoToString;
+    }
+
+    public void setPhotoToString() {
+        if(photo != null){
+            photoToString = Base64.getEncoder().encodeToString(photo);
+        }
     }
 }

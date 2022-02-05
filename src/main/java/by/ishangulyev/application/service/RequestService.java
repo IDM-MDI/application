@@ -17,45 +17,23 @@ public class RequestService {
         switch(commandName){
             case USER -> {
                 switch(commandValue){
-                    case ADD -> {
-                        result = new SignUpCommand();
-                    }
-                    case UPDATE -> {
-                        result = new UpdateUserCommand();
-                    }
-                    case EXIT -> {
-                        result = new SignOutCommand();
-                    }
-                    case DELETE -> {
-                        result = new DeleteUserCommand();
-                    }
-                    case ENTER -> {
-                        result = new SignInCommand();
-                    }
+                    case ADD -> result = new SignUpCommand();
+                    case UPDATE -> result = new UpdateUserCommand();
+                    case EXIT -> result = new SignOutCommand();
+                    case DELETE -> result = new DeleteUserCommand();
+                    case ENTER -> result = new SignInCommand();
                 }
             }
-            case COMMAND -> {
-
-            }
+            case COMMAND -> {}
             case GADGET -> {
                 switch(commandValue){
-                    case ADD -> {
-                        result = new AddGadgetCommand();
-                    }
-                    case UPDATE -> {
-                        result = new UpdateGadgetCommand();
-                    }
-                    case DELETE -> {
-                        result = new DeleteGadgetCommand();
-                    }
+                    case ADD -> result = new AddGadgetCommand();
+                    case UPDATE -> result = new UpdateGadgetCommand();
+                    case DELETE -> result = new DeleteGadgetCommand();
                 }
             }
-            case LANGUAGE -> {
-                result = new LanguageCommand();
-            }
-            case JSP_SWITCHER -> {
-                result = new JspSwitcherCommand();
-            }
+            case LANGUAGE -> result = new LanguageCommand();
+            case JSP_SWITCHER -> result = new JspSwitcherCommand();
         }
         return result;
     }

@@ -13,11 +13,10 @@ public class SessionService {
     private LanguageType type;
 
     public HttpSession sessionHandler(HttpServletRequest request, HttpServletResponse response){
-        request.getSession().invalidate();
-        HttpSession session = request.getSession();
-       if(session.isNew()){
+        HttpSession session = request.getSession(true);
+        LanguageType language = (LanguageType) session.getAttribute("language");
+       if(language == null){
            cookieService.cookieHandler(request,response);
-           Cookie[] cookies = request.getCookies();
            initSession(session);
        }
        return session;
@@ -25,11 +24,12 @@ public class SessionService {
 
     public void initSession(HttpSession session){
         session.setAttribute("user",cookieService.getUser());
-        session.setMaxInactiveInterval(60);
+        session.setMaxInactiveInterval(1000);
         this.type = cookieService.getLanguageType();
         session.setAttribute("language",type);
     }
     public void addUser(HttpServletRequest request,User user){
+        user.setPhotoToString();
         request.getSession().setAttribute("user",user);
     }
     public void removeUser(HttpServletRequest request){

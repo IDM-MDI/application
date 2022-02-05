@@ -57,7 +57,7 @@ public class DaoCategory extends DaoEntity<Long,Category> {
     }
 
     @Override
-    public Optional<Category> getEntityById(Long id) throws DataBaseException {
+    public Optional<Category> findEntityById(Long id) throws DataBaseException {
         Optional<Category> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(CategoryQuery.SELECT_BY_ID.getValue())) {

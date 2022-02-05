@@ -7,15 +7,16 @@ import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.dao.impl.DaoUser;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.User;
+import by.ishangulyev.application.service.CookieService;
 import by.ishangulyev.application.service.SessionService;
+import by.ishangulyev.application.util.HashPassGenerator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 public class SignInCommand implements ActionCommand {
-    private SessionService sessionServic = new SessionService();
-
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) {
         DaoUser dao = new DaoUser();
@@ -23,12 +24,16 @@ public class SignInCommand implements ActionCommand {
         Optional<User> userOptional;
         User user = null;
         try {
-            userOptional = dao.getEntityById((String) request.getAttribute("email"));
+            userOptional = dao.findEntityById((String) request.getParameter("email"));
             if(userOptional.isPresent()){
                 String password = userOptional.get().getPass();
-                if(password.equals(request.getParameter("password"))){
+                if(password.equals(HashPassGenerator.generate(request.getParameter("password")))){
+                    SessionService sessionServic = new SessionService();
+                    CookieService cookieService = new CookieService();
+
                     user = userOptional.get();
                     sessionServic.addUser(request,user);
+                    cookieService.addUser(request,response,user);
                 }
                 else{
                     router.setPagePath(JspPath.SIGN_IN);
@@ -37,7 +42,7 @@ public class SignInCommand implements ActionCommand {
             else{
                 router.setPagePath(JspPath.SIGN_IN);
             }
-        } catch (DataBaseException e) {
+        } catch (DataBaseException | NoSuchAlgorithmException e) {
             // TODO: 1/30/2022
         }
         return router;

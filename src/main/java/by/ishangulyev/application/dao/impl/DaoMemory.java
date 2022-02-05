@@ -56,7 +56,7 @@ public class DaoMemory extends DaoEntity<Long,Memory> {
     }
 
     @Override
-    public Optional<Memory> getEntityById(Long id) throws DataBaseException {
+    public Optional<Memory> findEntityById(Long id) throws DataBaseException {
         Optional<Memory> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(MemoryQuery.SELECT_BY_ID.getValue())) {

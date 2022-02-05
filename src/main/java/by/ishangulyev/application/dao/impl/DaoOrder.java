@@ -55,7 +55,7 @@ public class DaoOrder extends DaoEntity<Long,Order> {
     }
 
     @Override
-    public Optional<Order> getEntityById(Long id) throws DataBaseException {
+    public Optional<Order> findEntityById(Long id) throws DataBaseException {
         Optional<Order> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(OrderQuery.SELECT_BY_ID.getValue())) {

@@ -55,7 +55,7 @@ public class DaoCart extends DaoEntity<Long,Cart> {
     }
 
     @Override
-    public Optional<Cart> getEntityById(Long id) throws DataBaseException {
+    public Optional<Cart> findEntityById(Long id) throws DataBaseException {
         Optional<Cart> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(CartQuery.SELECT_BY_ID.getValue())) {

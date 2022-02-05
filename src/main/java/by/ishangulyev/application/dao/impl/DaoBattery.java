@@ -55,7 +55,7 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
     }
 
     @Override
-    public Optional<Battery> getEntityById(Long id) throws DataBaseException {
+    public Optional<Battery> findEntityById(Long id) throws DataBaseException {
         Optional<Battery> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(BatteryQuery.SELECT_BY_ID.getValue())) {

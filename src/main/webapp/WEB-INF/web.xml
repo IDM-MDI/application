@@ -5,7 +5,7 @@
          version="5.0">
     <session-config>
         <session-timeout>
-            1
+            10
         </session-timeout>
     </session-config>
 </web-app>

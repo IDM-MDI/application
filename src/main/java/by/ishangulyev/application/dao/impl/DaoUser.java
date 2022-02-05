@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.ByteArrayInputStream;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -45,12 +46,22 @@ public class DaoUser extends DaoEntity<String,User> {
     @Override
     public boolean update(User entity) {
         boolean result = true;
-        try (PreparedStatement statement = connection.prepareStatement(UserQuery.UPDATE.getValue())) {
-            fillStatement(statement, entity);
-            result = statement.executeUpdate() > 0;
+        try{
+            if(entity.getRole() != null){
+                updateRole(entity);
+            }
+            if(!entity.getName().isEmpty()){
+                updateUsername(entity);
+            }
+            if(entity.getPhoto() != null){
+                updatePhoto(entity);
+            }
+            if(entity.getPass() != null){
+                updatePassword(entity);
+            }
         } catch (SQLException e) {
-            logger.log(Level.WARN, "Error while updating dao", e);
             result = false;
+            logger.log(Level.WARN, "Error while updating dao", e);
         } finally {
             releaseConnection();
         }
@@ -58,7 +69,7 @@ public class DaoUser extends DaoEntity<String,User> {
     }
 
     @Override
-    public Optional<User> getEntityById(String email) throws DataBaseException {
+    public Optional<User> findEntityById(String email) throws DataBaseException {
         Optional<User> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(UserQuery.SELECT_BY_ID.getValue())) {
@@ -122,12 +133,42 @@ public class DaoUser extends DaoEntity<String,User> {
     @Override
     public User getValues(ResultSet set) throws SQLException {
         User result = new User();
-        result.setId(set.getLong(ColumnName.ID));
         result.setName(set.getString(ColumnName.USER_USERNAME));
         result.setDate(set.getDate(ColumnName.USER_TIME));
         result.setEmail(set.getString(ColumnName.USER_EMAIL));
         result.setPass(set.getString(ColumnName.USER_PASS));
         result.setRole(Role.valueOf(set.getString(ColumnName.USER_ROLE)));
+        result.setPhoto(set.getBytes(ColumnName.USER_PHOTO));
+        result.setPhotoToString();
         return result;
+    }
+
+    private boolean updatePhoto(User entity) throws SQLException {
+        try (PreparedStatement statement = connection.prepareStatement(UserQuery.UPDATE_PHOTO.getValue())) {
+            statement.setBlob(1,new ByteArrayInputStream(entity.getPhoto()));
+            statement.setString(2, entity.getEmail());
+            return statement.executeUpdate() > 0;
+        }
+    }
+    private boolean updateUsername(User entity) throws SQLException{
+        try (PreparedStatement statement = connection.prepareStatement(UserQuery.UPDATE_USERNAME.getValue())) {
+            statement.setString(1, entity.getName());
+            statement.setString(2, entity.getEmail());
+            return statement.executeUpdate() > 0;
+        }
+    }
+    private boolean updateRole(User entity) throws SQLException{
+        try (PreparedStatement statement = connection.prepareStatement(UserQuery.UPDATE_ROLE.getValue())) {
+            statement.setString(1, entity.getRole().name());
+            statement.setString(2, entity.getEmail());
+            return statement.executeUpdate() > 0;
+        }
+    }
+    private boolean updatePassword(User entity) throws SQLException{
+        try (PreparedStatement statement = connection.prepareStatement(UserQuery.UPDATE_ROLE.getValue())) {
+            statement.setString(1, entity.getPass());
+            statement.setString(2, entity.getEmail());
+            return statement.executeUpdate() > 0;
+        }
     }
 }

@@ -24,12 +24,18 @@ public class UserFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = sessionService.sessionHandler(request,response);
-        if(validator.isAdminPage(request) && !validator.isAdmin(session)){
-            return;
-        }
-        else if(validator.isUserPage(request) && !validator.isUser(session)){
-            return;
-        }
+//        if(validator.isAdminPage(request) && !validator.isAdmin(session)){
+//            return;
+//        }
+//        else if(validator.isUserPage(request) && !validator.isUser(session)){
+//            return;
+//        }
+//        if(!validator.isAdmin(session)){
+//            return;
+//        }
+//        else if(!validator.isUser(session)){
+//            return;
+//        }
         filterChain.doFilter(servletRequest,servletResponse);
     }
 

@@ -2,6 +2,7 @@ package by.ishangulyev.application.service;
 
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.command.LanguageType;
+import by.ishangulyev.application.model.entity.impl.Role;
 import by.ishangulyev.application.model.entity.impl.User;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -81,6 +82,7 @@ public class LanguageServiceHelper {
         request.setAttribute("signupTranslate",properties.getProperty("header.signup"));
         request.setAttribute("gadgetsTranslate",properties.getProperty("header.gadgets"));
         request.setAttribute("searchTranslate",properties.getProperty("header.search"));
+        request.setAttribute("languageTranslate",properties.getProperty("header.language"));
     }
     private void setUserHeader(HttpServletRequest request, Properties properties){
         request.setAttribute("gadgetsTranslate",properties.getProperty("headerUser.gadgets"));
@@ -88,14 +90,16 @@ public class LanguageServiceHelper {
         request.setAttribute("profileTranslate",properties.getProperty("headerUser.profile"));
         request.setAttribute("settingsTranslate",properties.getProperty("headerUser.settings"));
         request.setAttribute("signoutTranslate",properties.getProperty("headerUser.signout"));
+        request.setAttribute("languageTranslate",properties.getProperty("header.language"));
     }
     private void setHeader(HttpServletRequest request, Properties properties){
         User user = (User) request.getSession().getAttribute("user");
-        if(user.getRole() == null){
+        if(user == null || user.getRole() == null){
             setGuestHeader(request,properties);
         }
         else{
             setUserHeader(request,properties);
+            request.setAttribute("avatar",user.getPhotoToString());
         }
     }
     private Properties getProperty(Router router){

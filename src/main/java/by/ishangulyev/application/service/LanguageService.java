@@ -36,6 +36,10 @@ public class LanguageService {
             case ERROR4XX -> languageServiceHelper.setError400(request,router);
             case ERROR5XX -> languageServiceHelper.setError500(request,router);
             case ACCOUNT -> languageServiceHelper.setAccount(request,router);
+            case CART -> languageServiceHelper.setCart(request,router);
+            case ADDGADGET -> languageServiceHelper.setAddGadget(request,router);
+            case UPDATEUSER -> languageServiceHelper.setUpdateUser(request,router);
+            case UPDATEGADGET -> languageServiceHelper.setUpdateGadget(request,router);
         }
     }
 }

@@ -59,7 +59,7 @@ public class DaoAudio extends DaoEntity<Long,Audio> {
     }
 
     @Override
-    public Optional<Audio> getEntityById(Long id) throws DataBaseException {
+    public Optional<Audio> findEntityById(Long id) throws DataBaseException {
         Optional<Audio> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(AudioQuery.SELECT_BY_ID.getValue())) {

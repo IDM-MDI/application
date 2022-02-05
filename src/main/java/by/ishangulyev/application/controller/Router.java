@@ -38,6 +38,9 @@ public class Router {
     public void setLanguage(LanguageType language) {
         this.language = language;
     }
+    public void setLanguage(String language) {
+        this.language = LanguageType.valueOf(language.toUpperCase());
+    }
 
     public LanguageType getLanguage() {
         return language;

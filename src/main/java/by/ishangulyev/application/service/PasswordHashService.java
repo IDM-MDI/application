@@ -10,7 +10,7 @@ public class PasswordHashService {
 
     public Cookie createCookie(String pass) throws NoSuchAlgorithmException {
         Cookie cookie = new Cookie("pass", HashPassGenerator.generate(pass));
-        cookie.setMaxAge(60*60);
+        cookie.setMaxAge(60 * 60 * 24 * 365 * 10);
         return cookie;
     }
 }

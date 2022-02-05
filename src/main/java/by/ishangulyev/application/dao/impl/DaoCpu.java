@@ -55,7 +55,7 @@ public class DaoCpu extends DaoEntity<Long,Cpu> {
     }
 
     @Override
-    public Optional<Cpu> getEntityById(Long id) throws DataBaseException {
+    public Optional<Cpu> findEntityById(Long id) throws DataBaseException {
         Optional<Cpu> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(CpuQuery.SELECT_BY_ID.getValue())) {

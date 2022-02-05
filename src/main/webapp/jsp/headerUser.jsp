@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <header class="p-3 bg-dark text-white">
     <div class="container">
@@ -16,17 +17,44 @@
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" action="${pageContext.request.contextPath}/controller?controller=search">
                 <input type="search" name="search" class="form-control form-control-dark" placeholder="${searchTranslate}" aria-label="Search">
             </form>
+            <div class="btn-group">
+                <button type="button" class="btn btn-dark">
+                    <a href="${pageContext.request.contextPath}/controller?jsp_switcher=account" class="d-block link-dark text-decoration-none" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                        <c:if test="${sessionScope.user.photo[0] eq null}">
+                            <img src="${pageContext.request.contextPath}/img/noneAvatar.jpeg" alt="mdo" width="32" height="32" class="rounded-circle">
+                        </c:if>
+                        <c:if test="${sessionScope.user.photo[0] ne null}">
+                            <img src="data:image/jpg;base64,${avatar}" alt="mdo" width="32" height="32" class="rounded-circle">
+                        </c:if>
+                    </a>
+                </button>
+                <button type="button" class="btn btn-dark dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="sr-only"></span>
+                </button>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?jsp_switcher=account">${profileTranslate}</a>
+                    <c:if test="${sessionScope.user.role ne null}">
+                        <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?jsp_switcher=settings">${settingsTranslate}</a>
+                    </c:if>
 
-            <div class="dropdown text-end">
-                <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
-                </a>
-                <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1" style="">
-                    <li><a class="dropdown-item" href="#">${profileTranslate}</a></li>
-                    <li><a class="dropdown-item" href="#">${settingsTranslate}</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="${pageContext.request.contextPath}/controller?user=exit">Sign out</a></li>
-                </ul>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?user=exit">${signoutTranslate}</a>
+                </div>
+            </div>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle"
+                        type="button" id="dropdownMenu1" data-toggle="dropdown"
+                        aria-haspopup="true" aria-expanded="false">
+                    ${languageTranslate}
+                </button>
+                <div class="dropdown-menu w-75" aria-labelledby="dropdownMenu1">
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?language=ru">
+                        <img src="${pageContext.request.contextPath}/img/1200px-Flag_of_Russia.svg.png" alt="mdo" width="64" height="32">
+                    </a>
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?language=en">
+                        <img src="${pageContext.request.contextPath}/img/1235px-US_flag_51_stars.svg.png" alt="mdo" width="64" height="32">
+                    </a>
+                </div>
             </div>
         </div>
     </div>

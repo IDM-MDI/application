@@ -22,7 +22,7 @@ public abstract class DaoEntity<U,T> implements ResultSetExecutor<T> {
 
     public abstract boolean update(T entity);
 
-    public abstract Optional<T> getEntityById(U id) throws DataBaseException;
+    public abstract Optional<T> findEntityById(U id) throws DataBaseException;
 
     public abstract boolean delete(U id);
 

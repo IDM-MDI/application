@@ -27,21 +27,21 @@ public class CookieService {
 
     public void cookieHandler(HttpServletRequest request, HttpServletResponse response){
         Cookie[] cookies = request.getCookies();
-        if(validator.isCookieExist(cookies,"language")){
-            String language = getCookie(cookies,"language").getValue();
-            this.languageType = LanguageType.valueOf(language);
-        }
-        else{
+        if(cookies == null){
             response.addCookie(languageService.createCookie(LanguageType.RU));
-        }
-        
-        if(validator.isLoginValid(cookies)){
-            this.user = findUser(cookies);
-        }
-        else{
+            languageType = LanguageType.RU;
             this.user = new User();
             response.addCookie(new Cookie("email",null));
             response.addCookie(new Cookie("pass",null));
+        }
+        else {
+            if(validator.isCookieExist(cookies,"language")){
+                String language = getCookie(cookies,"language").getValue();
+                this.languageType = LanguageType.valueOf(language);
+            }
+            if(validator.isLoginValid(cookies)){
+                this.user = findUser(cookies);
+            }
         }
     }
     public Cookie getCookie(Cookie[] cookies,String name){
@@ -58,7 +58,7 @@ public class CookieService {
         Optional<User> userOptional;
         User result = null;
         try {
-            userOptional = dao.getEntityById(getCookie(cookies,"email").getValue());
+            userOptional = dao.findEntityById(getCookie(cookies,"email").getValue());
             if(userOptional.isPresent()){
                 String password = userOptional.get().getPass();
                 if(password.equals(getCookie(cookies,"pass").getValue())){
@@ -81,9 +81,27 @@ public class CookieService {
 
     public void addLanguage(HttpServletRequest request,HttpServletResponse response, String language) {
         Cookie cookie = getCookie(request.getCookies(),"language");
-        cookie.setMaxAge(60*60);
+        cookie.setMaxAge(60 * 60 * 24 * 365 * 10);
         cookie.setValue(language.toUpperCase());
         response.addCookie(cookie);
+    }
+    public void addUser(HttpServletRequest request,HttpServletResponse response,User user) {
+        Cookie email = getCookie(request.getCookies(),"email");
+        Cookie password = getCookie(request.getCookies(),"pass");
+        email.setMaxAge(60 * 60 * 24 * 365 * 10);
+        password.setMaxAge(60 * 60 * 24 * 365 * 10);
+        email.setValue(user.getEmail());
+        password.setValue(user.getPass());
+        response.addCookie(email);
+        response.addCookie(password);
+    }
+    public void removeUser(HttpServletRequest request,HttpServletResponse response){
+        Cookie email = getCookie(request.getCookies(),"email");
+        Cookie password = getCookie(request.getCookies(),"pass");
+        email.setValue(null);
+        password.setValue(null);
+        response.addCookie(email);
+        response.addCookie(password);
     }
 
 }

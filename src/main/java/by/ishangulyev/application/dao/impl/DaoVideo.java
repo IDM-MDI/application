@@ -56,7 +56,7 @@ public class DaoVideo extends DaoEntity<Long,Video> {
     }
 
     @Override
-    public Optional<Video> getEntityById(Long id) throws DataBaseException {
+    public Optional<Video> findEntityById(Long id) throws DataBaseException {
         Optional<Video> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(VideoQuery.SELECT_BY_ID.getValue())) {

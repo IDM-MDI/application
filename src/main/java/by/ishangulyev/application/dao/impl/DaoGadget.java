@@ -55,7 +55,7 @@ public class DaoGadget extends DaoEntity<Long,Gadget> {
     }
 
     @Override
-    public Optional<Gadget> getEntityById(Long id) throws DataBaseException {
+    public Optional<Gadget> findEntityById(Long id) throws DataBaseException {
         Optional<Gadget> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(GadgetQuery.SELECT_BY_ID.getValue())) {
