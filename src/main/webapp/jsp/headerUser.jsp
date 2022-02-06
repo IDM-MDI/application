@@ -33,10 +33,9 @@
                 </button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?jsp_switcher=account">${profileTranslate}</a>
-                    <c:if test="${sessionScope.user.role ne null}">
+                    <c:if test="${sessionScope.user.role == 'ADMIN'}">
                         <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?jsp_switcher=settings">${settingsTranslate}</a>
                     </c:if>
-
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?user=exit">${signoutTranslate}</a>
                 </div>

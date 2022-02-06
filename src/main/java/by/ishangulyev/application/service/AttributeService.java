@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class LanguageServiceHelper {
+public class AttributeService {
     private final String RU_PATH = "language/russian.properties";
     private final String EN_PATH = "language/english.properties";
 
@@ -59,6 +59,19 @@ public class LanguageServiceHelper {
         setHeader(request,properties);
         request.setAttribute("titleTranslate",properties.getProperty("cart.title"));
     }
+    public void setSettings(HttpServletRequest request, Router router) {
+        Properties properties = getProperty(router);
+        setHeader(request,properties);
+        request.setAttribute("titleTranslate",properties.getProperty("settings.title"));
+        request.setAttribute("audioTranslate",properties.getProperty("settings.audio"));
+        request.setAttribute("videoTranslate",properties.getProperty("settings.video"));
+        request.setAttribute("cpuTranslate",properties.getProperty("settings.cpu"));
+        request.setAttribute("categoryTranslate",properties.getProperty("settings.category"));
+        request.setAttribute("gadgetTranslate",properties.getProperty("settings.gadget"));
+        request.setAttribute("userTranslate",properties.getProperty("settings.user"));
+        request.setAttribute("memoryTranslate",properties.getProperty("settings.memory"));
+        request.setAttribute("batteryTranslate",properties.getProperty("settings.battery"));
+    }
 
     public void setAddGadget(HttpServletRequest request, Router router) {
         Properties properties = getProperty(router);
@@ -99,7 +112,9 @@ public class LanguageServiceHelper {
         }
         else{
             setUserHeader(request,properties);
-            request.setAttribute("avatar",user.getPhotoToString());
+        if(!(user.getPhotoToString() == null || user.getPhotoToString().isEmpty())){
+                request.setAttribute("avatar",user.getPhotoToString());
+            }
         }
     }
     private Properties getProperty(Router router){

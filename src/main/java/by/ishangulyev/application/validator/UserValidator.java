@@ -1,12 +1,13 @@
 package by.ishangulyev.application.validator;
 
 import by.ishangulyev.application.model.entity.impl.User;
+import jakarta.servlet.http.Part;
 
 public class UserValidator {
     private static final UserValidator instance = new UserValidator();
     private final String EMAIL_REGEX = "[a-z0-9]+@[a-z]+\\.[a-z]{2,3}";
     private final String PASS_REGEX = "[a-zA-Z0-9]{5,15}";
-
+    private final String PHOTO_REGEX = "image.+";
     private UserValidator(){}
 
     public static UserValidator getInstance()
@@ -32,5 +33,8 @@ public class UserValidator {
             result = true;
         }
         return result;
+    }
+    public boolean isPhotoValid(Part part){
+        return part.getContentType().matches(PHOTO_REGEX);
     }
 }

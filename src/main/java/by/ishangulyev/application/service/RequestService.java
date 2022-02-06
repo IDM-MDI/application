@@ -4,6 +4,10 @@ import by.ishangulyev.application.controller.command.ActionCommand;
 import by.ishangulyev.application.controller.command.RequestParameterName;
 import by.ishangulyev.application.controller.command.RequestParameterValue;
 import by.ishangulyev.application.controller.command.impl.*;
+import by.ishangulyev.application.controller.command.impl.add.*;
+import by.ishangulyev.application.controller.command.impl.delete.*;
+import by.ishangulyev.application.controller.command.impl.get.*;
+import by.ishangulyev.application.controller.command.impl.update.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 public class RequestService {
@@ -24,12 +28,60 @@ public class RequestService {
                     case ENTER -> result = new SignInCommand();
                 }
             }
-            case COMMAND -> {}
             case GADGET -> {
                 switch(commandValue){
                     case ADD -> result = new AddGadgetCommand();
                     case UPDATE -> result = new UpdateGadgetCommand();
                     case DELETE -> result = new DeleteGadgetCommand();
+                    case GET -> result = new GetGadgetCommand();
+                }
+            }
+            case AUDIO -> {
+                switch(commandValue){
+                    case ADD -> result = new AddAudioCommand();
+                    case UPDATE -> result = new UpdateAudioCommand();
+                    case DELETE -> result = new DeleteAudioCommand();
+                    case GET -> result = new GetAudioCommand();
+                }
+            }
+            case VIDEO -> {
+                switch(commandValue){
+                    case ADD -> result = new AddVideoCommand();
+                    case UPDATE -> result = new UpdateVideoCommand();
+                    case DELETE -> result = new DeleteVideoCommand();
+                    case GET -> result = new GetVideoCommand();
+                }
+            }
+            case CATEGORY -> {
+                switch(commandValue){
+                    case ADD -> result = new AddCategoryCommand();
+                    case UPDATE -> result = new UpdateCategoryCommand();
+                    case DELETE -> result = new DeleteCategoryCommand();
+                    case GET -> result = new GetCategoryCommand();
+                }
+            }
+            case BATTERY -> {
+                switch(commandValue){
+                    case ADD -> result = new AddBatteryCommand();
+                    case UPDATE -> result = new UpdateBatteryCommand();
+                    case DELETE -> result = new DeleteBatteryCommand();
+                    case GET -> result = new GetBatteryCommand();
+                }
+            }
+            case MEMORY -> {
+                switch(commandValue){
+                    case ADD -> result = new AddMemoryCommand();
+                    case UPDATE -> result = new UpdateMemoryCommand();
+                    case DELETE -> result = new DeleteMemoryCommand();
+                    case GET -> result = new GetMemoryCommand();
+                }
+            }
+            case CPU -> {
+                switch(commandValue){
+                    case ADD -> result = new AddCpuCommand();
+                    case UPDATE -> result = new UpdateCpyCommand();
+                    case DELETE -> result = new DeleteCpuCommand();
+                    case GET -> result = new GetCpuCommand();
                 }
             }
             case LANGUAGE -> result = new LanguageCommand();

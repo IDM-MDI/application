@@ -22,6 +22,7 @@ public class JspSwitcherCommand implements ActionCommand {
             case "addGadget" -> path = JspPath.ADDGADGET;
             case "updateGadget" -> path = JspPath.UPDATEGADGET;
             case "updateUser" -> path = JspPath.UPDATEUSER;
+            case "settings" -> path = JspPath.SETTINGS;
             default -> path = JspPath.ERROR4XX;
         }
         return new Router(path, RouterType.FORWARD);

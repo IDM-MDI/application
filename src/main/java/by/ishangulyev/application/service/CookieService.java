@@ -86,14 +86,17 @@ public class CookieService {
         response.addCookie(cookie);
     }
     public void addUser(HttpServletRequest request,HttpServletResponse response,User user) {
-        Cookie email = getCookie(request.getCookies(),"email");
-        Cookie password = getCookie(request.getCookies(),"pass");
-        email.setMaxAge(60 * 60 * 24 * 365 * 10);
-        password.setMaxAge(60 * 60 * 24 * 365 * 10);
-        email.setValue(user.getEmail());
-        password.setValue(user.getPass());
-        response.addCookie(email);
-        response.addCookie(password);
+        if((user.getEmail() == null && user.getEmail().isEmpty()
+        && user.getPass() == null && user.getPass().isEmpty())) {
+            Cookie email = getCookie(request.getCookies(),"email");
+            Cookie password = getCookie(request.getCookies(),"pass");
+            email.setMaxAge(60 * 60 * 24 * 365 * 10);
+            password.setMaxAge(60 * 60 * 24 * 365 * 10);
+            email.setValue(user.getEmail());
+            password.setValue(user.getPass());
+            response.addCookie(email);
+            response.addCookie(password);
+        }
     }
     public void removeUser(HttpServletRequest request,HttpServletResponse response){
         Cookie email = getCookie(request.getCookies(),"email");

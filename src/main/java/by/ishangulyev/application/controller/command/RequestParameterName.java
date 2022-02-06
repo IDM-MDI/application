@@ -1,9 +1,14 @@
 package by.ishangulyev.application.controller.command;
 
 public enum RequestParameterName {
-    COMMAND(),
-    JSP_SWITCHER(),
+    JSP_SWITCHER,
     USER,
     GADGET,
-    LANGUAGE();
+    LANGUAGE,
+    AUDIO,
+    VIDEO,
+    CATEGORY,
+    CPU,
+    MEMORY,
+    BATTERY;
 }

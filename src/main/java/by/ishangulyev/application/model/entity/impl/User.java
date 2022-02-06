@@ -63,9 +63,6 @@ public class User extends Entity {
     }
 
     public String getPhotoToString() {
-        if(photoToString.isEmpty() || photoToString == null){
-            photoToString = Base64.getEncoder().encodeToString(photo);
-        }
         return photoToString;
     }
 

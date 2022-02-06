@@ -10,6 +10,7 @@ public enum JspPath {
     ERROR4XX("jsp/error4xx.jsp"),
     ERROR5XX("jsp/error5xx.jsp"),
     ACCOUNT("jsp/account.jsp"),
+    SETTINGS("jsp/settings.jsp"),
     ADDGADGET("jsp/addGadget.jsp"),
     UPDATEGADGET("jsp/updateGadget.jsp"),
     UPDATEUSER("jsp/updateUser.jsp");

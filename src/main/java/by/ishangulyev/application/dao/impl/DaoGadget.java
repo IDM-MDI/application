@@ -39,6 +39,22 @@ public class DaoGadget extends DaoEntity<Long,Gadget> {
         return result;
     }
 
+    public List<Gadget> findByCount(int count) throws DataBaseException {
+        List<Gadget> result = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(GadgetQuery.SELECT_COUNT.getValue())) {
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                result.add(getValues(set));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Error executing query get all category", e);
+            throw new DataBaseException("Error executing query get all category", e);
+        } finally {
+            releaseConnection();
+        }
+        return result;
+    }
+
     @Override
     public boolean update(Gadget entity) {
         boolean result = true;

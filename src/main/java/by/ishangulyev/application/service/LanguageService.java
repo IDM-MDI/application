@@ -1,18 +1,12 @@
 package by.ishangulyev.application.service;
 
 import by.ishangulyev.application.controller.Router;
-import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.controller.command.LanguageType;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
-
 public class LanguageService {
-    private final LanguageServiceHelper languageServiceHelper = new LanguageServiceHelper();
+    private final AttributeService languageServiceHelper = new AttributeService();
 
     public Cookie createCookie(LanguageType type){
         Cookie language = null;
@@ -40,6 +34,7 @@ public class LanguageService {
             case ADDGADGET -> languageServiceHelper.setAddGadget(request,router);
             case UPDATEUSER -> languageServiceHelper.setUpdateUser(request,router);
             case UPDATEGADGET -> languageServiceHelper.setUpdateGadget(request,router);
+            case SETTINGS -> languageServiceHelper.setSettings(request,router);
         }
     }
 }

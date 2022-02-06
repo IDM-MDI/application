@@ -1,4 +1,4 @@
-package by.ishangulyev.application.controller.command.impl;
+package by.ishangulyev.application.controller.command.impl.update;
 
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
@@ -7,7 +7,10 @@ import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.dao.impl.DaoUser;
 import by.ishangulyev.application.model.entity.impl.Role;
 import by.ishangulyev.application.model.entity.impl.User;
+import by.ishangulyev.application.service.CookieService;
+import by.ishangulyev.application.service.SessionService;
 import by.ishangulyev.application.util.HashPassGenerator;
+import by.ishangulyev.application.validator.UserValidator;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -46,6 +49,7 @@ public class UpdateUserCommand implements ActionCommand {
     }
 
     private Router userUpdateAccount(HttpServletRequest request, HttpServletResponse response){
+        UserValidator validator = UserValidator.getInstance();
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String username = request.getParameter("username");
@@ -54,8 +58,10 @@ public class UpdateUserCommand implements ActionCommand {
         try {
             Part part = request.getPart("userPhoto");
             if(part != null){
-                try(InputStream inputStream = part.getInputStream()){
-                    update.setPhoto(inputStream.readAllBytes());
+                if(validator.isPhotoValid(part)){
+                    try(InputStream inputStream = part.getInputStream()){
+                        update.setPhoto(inputStream.readAllBytes());
+                    }
                 }
             }
         } catch (IOException | ServletException e) {
@@ -72,6 +78,13 @@ public class UpdateUserCommand implements ActionCommand {
 
         DaoUser daoUser = new DaoUser();
         daoUser.update(update);
+
+        SessionService sessionService = new SessionService();
+        sessionService.updateUser(request,update);
+
+        CookieService cookieService = new CookieService();
+        cookieService.addUser(request,response,update);
+
         return new Router(JspPath.ACCOUNT,RouterType.FORWARD);
     }
 }

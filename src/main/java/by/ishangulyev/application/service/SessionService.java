@@ -29,7 +29,6 @@ public class SessionService {
         session.setAttribute("language",type);
     }
     public void addUser(HttpServletRequest request,User user){
-        user.setPhotoToString();
         request.getSession().setAttribute("user",user);
     }
     public void removeUser(HttpServletRequest request){
@@ -42,5 +41,20 @@ public class SessionService {
 
     public LanguageType getType() {
         return type;
+    }
+
+    public void updateUser(HttpServletRequest request, User update) {
+        User user = (User) request.getSession().getAttribute("user");
+        if(!(update.getName() == null || update.getName().isEmpty())){
+            user.setName(update.getName());
+        }
+        if(!(update.getPass() == null || update.getPass().isEmpty())){
+            user.setPass(update.getPass());
+        }
+        if(!(update.getPhoto() == null)){
+            user.setPhoto(update.getPhoto());
+            user.setPhotoToString();
+        }
+        request.getSession().setAttribute("user",user);
     }
 }
