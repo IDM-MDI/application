@@ -4,6 +4,7 @@ import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
 import by.ishangulyev.application.dao.query.BatteryQuery;
 import by.ishangulyev.application.dao.query.GadgetQuery;
+import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.Audio;
 import by.ishangulyev.application.model.entity.impl.AudioType;
@@ -24,7 +25,7 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
-    public List<Battery> findAll() throws DataBaseException {
+    public List<Battery> findAll() throws DaoException {
         List<Battery> result = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(BatteryQuery.SELECT_ALL.getValue())) {
@@ -34,7 +35,7 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DataBaseException("Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
         } finally {
             releaseConnection();
         }
@@ -42,7 +43,7 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
     }
 
     @Override
-    public List<Battery> findByCount(int count) throws DataBaseException {
+    public List<Battery> findByCount(int count) throws DaoException {
         count*=9;
         List<Battery> result = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(BatteryQuery.SELECT_BY_COUNT.getValue())) {
@@ -53,7 +54,7 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DataBaseException("Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
         } finally {
             releaseConnection();
         }
@@ -67,7 +68,7 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
             fillStatement(statement, entity);
             statement.setLong(3,entity.getId());
             result = statement.executeUpdate() > 0;
-        } catch (SQLException e) {
+        } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "Error while updating dao", e);
             result = false;
         } finally {
@@ -77,7 +78,7 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
     }
 
     @Override
-    public Optional<Battery> findEntityById(Long id) throws DataBaseException {
+    public Optional<Battery> findEntityById(Long id) throws DaoException {
         Optional<Battery> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(BatteryQuery.SELECT_BY_ID.getValue())) {
@@ -89,7 +90,7 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
             }
         } catch (SQLException e) {
             logger.error("query has failed", e);
-            throw new DataBaseException("query has failed");
+            throw new DaoException("query has failed");
         } finally {
             releaseConnection();
         }
@@ -117,7 +118,7 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
         try (PreparedStatement statement = connection.prepareStatement(BatteryQuery.INSERT.getValue())) {
             fillStatement(statement, entity);
             result = statement.executeUpdate() > 0;
-        } catch (SQLException e) {
+        } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "", e);
             result = false;
         } finally {
@@ -127,17 +128,28 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
     }
 
     @Override
-    public void fillStatement(PreparedStatement statement, Battery entity) throws SQLException {
-        statement.setString(1, entity.getName());
-        statement.setInt(2, entity.getMah());
+    public void fillStatement(PreparedStatement statement, Battery entity) throws DaoException {
+        try {
+            statement.setString(1, entity.getName());
+            statement.setInt(2, entity.getMah());
+        } catch (SQLException e) {
+            logger.error("query has failed", e); // TODO: 2/8/2022
+            throw new DaoException("query has failed");
+        }
     }
 
     @Override
-    public Battery getValues(ResultSet set) throws SQLException {
+    public Battery getValues(ResultSet set) throws DaoException {
         Battery result = new Battery();
-        result.setId(set.getLong(ColumnName.ID));
-        result.setName(set.getString(ColumnName.NAME));
-        result.setMah(set.getInt(ColumnName.BATTERY_MAH));
+        try {
+            result.setId(set.getLong(ColumnName.ID));
+            result.setName(set.getString(ColumnName.NAME));
+            result.setMah(set.getInt(ColumnName.BATTERY_MAH));
+        } catch (SQLException e) {
+            logger.error("query has failed", e); // TODO: 2/8/2022
+            throw new DaoException("query has failed");
+        }
+
         return result;
     }
 }

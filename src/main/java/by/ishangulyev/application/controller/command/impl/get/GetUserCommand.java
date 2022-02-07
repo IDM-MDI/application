@@ -6,6 +6,7 @@ import by.ishangulyev.application.controller.command.ActionCommand;
 import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.dao.impl.DaoBattery;
 import by.ishangulyev.application.dao.impl.DaoUser;
+import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.Battery;
 import by.ishangulyev.application.model.entity.impl.User;
@@ -35,7 +36,7 @@ public class GetUserCommand implements ActionCommand {
                 userList.remove(userList.size()-1);
             }
 
-        } catch (DataBaseException e) {
+        } catch (DaoException e) {
             e.printStackTrace();
         }
 

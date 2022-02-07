@@ -9,8 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class JspSwitcherCommand implements ActionCommand {
-    private JspPath path;
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
+        JspPath path;
         switch (request.getParameter(RequestParameterName.JSP_SWITCHER.name().toLowerCase())){
             case "index" -> path = JspPath.INDEX;
             case "gadgets" -> path = JspPath.GADGETS;

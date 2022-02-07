@@ -3,8 +3,6 @@ package by.ishangulyev.application.controller;
 import by.ishangulyev.application.controller.command.ActionCommand;
 import by.ishangulyev.application.controller.command.LanguageType;
 import by.ishangulyev.application.service.LanguageService;
-import by.ishangulyev.application.service.RequestService;
-import by.ishangulyev.application.service.SessionService;
 import by.ishangulyev.application.validator.ParameterValidator;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.MultipartConfig;
@@ -26,10 +24,9 @@ import java.io.IOException;
                  maxRequestSize = 1024 * 1024)
 public class IndexServlet extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
-    private final ParameterValidator validator = new ParameterValidator();
-    private final RequestService requestService = new RequestService();
-    private final LanguageService languageService = new LanguageService();
-    private HttpSession session;
+    private final ParameterValidator validator = ParameterValidator.getInstance();
+    private final CommandFactory commandFactory = new CommandFactory();
+    private final LanguageService languageService = LanguageService.getInstance();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -45,7 +42,7 @@ public class IndexServlet extends HttpServlet {
 
     private void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if(validator.isParameterValid(req)){
-            ActionCommand command = requestService.getCommand(req);
+            ActionCommand command = commandFactory.getCommand(req);
             Router router = command.execute(req,resp);
             router.setLanguage((LanguageType) req.getSession().getAttribute("language"));
             languageService.setLanguageAtPage(req,router);

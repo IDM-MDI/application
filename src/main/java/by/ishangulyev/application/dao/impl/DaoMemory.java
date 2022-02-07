@@ -3,6 +3,7 @@ package by.ishangulyev.application.dao.impl;
 import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
 import by.ishangulyev.application.dao.query.MemoryQuery;
+import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.Audio;
 import by.ishangulyev.application.model.entity.impl.AudioType;
@@ -23,7 +24,7 @@ public class DaoMemory extends DaoEntity<Long,Memory> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
-    public List<Memory> findAll() throws DataBaseException {
+    public List<Memory> findAll() throws DaoException {
         List<Memory> result = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(MemoryQuery.SELECT_ALL.getValue())) {
@@ -33,7 +34,7 @@ public class DaoMemory extends DaoEntity<Long,Memory> {
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DataBaseException("Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
         } finally {
             releaseConnection();
         }
@@ -46,7 +47,7 @@ public class DaoMemory extends DaoEntity<Long,Memory> {
         try (PreparedStatement statement = connection.prepareStatement(MemoryQuery.UPDATE.getValue())) {
             fillStatement(statement, entity);
             result = statement.executeUpdate() > 0;
-        } catch (SQLException e) {
+        } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "Error while updating dao", e);
             result = false;
         } finally {
@@ -56,7 +57,7 @@ public class DaoMemory extends DaoEntity<Long,Memory> {
     }
 
     @Override
-    public Optional<Memory> findEntityById(Long id) throws DataBaseException {
+    public Optional<Memory> findEntityById(Long id) throws DaoException {
         Optional<Memory> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(MemoryQuery.SELECT_BY_ID.getValue())) {
@@ -68,14 +69,14 @@ public class DaoMemory extends DaoEntity<Long,Memory> {
             }
         } catch (SQLException e) {
             logger.error("query has failed", e);
-            throw new DataBaseException("query has failed");
+            throw new DaoException("query has failed");
         } finally {
             releaseConnection();
         }
         return entity;
     }
 
-    @Override public List<Memory> findByCount(int count) throws DataBaseException {
+    @Override public List<Memory> findByCount(int count) throws DaoException {
         return null;
     }
 
@@ -100,7 +101,7 @@ public class DaoMemory extends DaoEntity<Long,Memory> {
         try (PreparedStatement statement = connection.prepareStatement(MemoryQuery.INSERT.getValue())) {
             fillStatement(statement, entity);
             result = statement.executeUpdate() > 0;
-        } catch (SQLException e) {
+        } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "", e);
             result = false;
         } finally {
@@ -110,17 +111,22 @@ public class DaoMemory extends DaoEntity<Long,Memory> {
     }
 
     @Override
-    public void fillStatement(PreparedStatement statement, Memory entity) throws SQLException {
+    public void fillStatement(PreparedStatement statement, Memory entity) throws DaoException {
 
     }
 
     @Override
-    public Memory getValues(ResultSet set) throws SQLException {
+    public Memory getValues(ResultSet set) throws DaoException {
         Memory result = new Memory();
-        result.setId(set.getLong(ColumnName.ID));
-        result.setName(set.getString(ColumnName.NAME));
-        result.setType(MemoryType.valueOf(set.getString(ColumnName.MEMORY_TYPE)));
-        result.setSize(set.getString(ColumnName.MEMORY_SIZE));
+        try {
+            result.setId(set.getLong(ColumnName.ID));
+            result.setName(set.getString(ColumnName.NAME));
+            result.setType(MemoryType.valueOf(set.getString(ColumnName.MEMORY_TYPE)));
+            result.setSize(set.getString(ColumnName.MEMORY_SIZE));
+        } catch (SQLException e) {
+            logger.error("query has failed", e);
+            throw new DaoException("query has failed");
+        }
         return result;
     }
 }

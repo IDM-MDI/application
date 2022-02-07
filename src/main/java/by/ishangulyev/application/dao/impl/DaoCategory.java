@@ -1,5 +1,6 @@
 package by.ishangulyev.application.dao.impl;
 
+import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.model.entity.impl.Category;
 import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
@@ -24,7 +25,7 @@ public class DaoCategory extends DaoEntity<Long,Category> {
     }
 
     @Override
-    public List<Category> findAll() throws DataBaseException {
+    public List<Category> findAll() throws DaoException {
         List<Category> result = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(CategoryQuery.SELECT_ALL.getValue())) {
@@ -34,7 +35,7 @@ public class DaoCategory extends DaoEntity<Long,Category> {
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DataBaseException("Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
         } finally {
             releaseConnection();
         }
@@ -47,7 +48,7 @@ public class DaoCategory extends DaoEntity<Long,Category> {
         try (PreparedStatement statement = connection.prepareStatement(CategoryQuery.UPDATE.getValue())) {
             fillStatement(statement, entity);
             result = statement.executeUpdate() > 0;
-        } catch (SQLException e) {
+        } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "Error while updating dao", e);
             result = false;
         } finally {
@@ -57,7 +58,7 @@ public class DaoCategory extends DaoEntity<Long,Category> {
     }
 
     @Override
-    public Optional<Category> findEntityById(Long id) throws DataBaseException {
+    public Optional<Category> findEntityById(Long id) throws DaoException {
         Optional<Category> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(CategoryQuery.SELECT_BY_ID.getValue())) {
@@ -69,14 +70,14 @@ public class DaoCategory extends DaoEntity<Long,Category> {
             }
         } catch (SQLException e) {
             logger.error("query has failed", e);
-            throw new DataBaseException("query has failed");
+            throw new DaoException("query has failed");
         } finally {
             releaseConnection();
         }
         return entity;
     }
 
-    @Override public List<Category> findByCount(int count) throws DataBaseException {
+    @Override public List<Category> findByCount(int count) throws DaoException {
         return null;
     }
 
@@ -101,7 +102,7 @@ public class DaoCategory extends DaoEntity<Long,Category> {
         try (PreparedStatement statement = connection.prepareStatement(CategoryQuery.INSERT.getValue())) {
             fillStatement(statement, entity);
             result = statement.executeUpdate() > 0;
-        } catch (SQLException e) {
+        } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "", e);
             result = false;
         } finally {
@@ -111,16 +112,26 @@ public class DaoCategory extends DaoEntity<Long,Category> {
     }
 
     @Override
-    public Category getValues(ResultSet set) throws SQLException {
+    public Category getValues(ResultSet set) throws DaoException {
         Category result = new Category();
-        result.setId(set.getLong(ColumnName.ID));
-        result.setName(set.getString(ColumnName.NAME));
+        try {
+            result.setId(set.getLong(ColumnName.ID));
+            result.setName(set.getString(ColumnName.NAME));
+        } catch (SQLException e) {
+            logger.error("query has failed", e);
+            throw new DaoException("query has failed");
+        }
         return result;
     }
 
     @Override
-    public void fillStatement(PreparedStatement statement, Category entity) throws SQLException {
-        statement.setLong(1, entity.getId());
-        statement.setString(2, entity.getName());
+    public void fillStatement(PreparedStatement statement, Category entity) throws DaoException {
+        try {
+            statement.setLong(1, entity.getId());
+            statement.setString(2, entity.getName());
+        } catch (SQLException e) {
+            logger.error("query has failed", e);
+            throw new DaoException("query has failed");
+        }
     }
 }

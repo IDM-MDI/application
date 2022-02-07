@@ -11,14 +11,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class LanguageCommand implements ActionCommand {
-    private SessionService sessionService = new SessionService();
-    private CookieService cookieService = new CookieService();
-    private LanguageType type;
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) {
-        this.type = LanguageType.valueOf(request.getParameter("language").toUpperCase());
-        cookieService.addLanguage(request,response,request.getParameter("language"));
+        String language = request.getParameter("language");
+        SessionService sessionService = SessionService.getInstance();
+        CookieService cookieService = CookieService.getInstance();
+        LanguageType type = LanguageType.valueOf(language.toUpperCase());
+        cookieService.addLanguage(request,response,language);
         sessionService.addLanguage(request,type);
         return new Router(JspPath.INDEX, RouterType.FORWARD,type);
     }

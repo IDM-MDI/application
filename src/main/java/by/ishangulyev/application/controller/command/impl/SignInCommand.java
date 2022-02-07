@@ -9,6 +9,7 @@ import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.User;
 import by.ishangulyev.application.service.CookieService;
 import by.ishangulyev.application.service.SessionService;
+import by.ishangulyev.application.service.UserService;
 import by.ishangulyev.application.util.HashPassGenerator;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -17,33 +18,24 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Optional;
 
 public class SignInCommand implements ActionCommand {
+    private UserService service = UserService.getInstance();
+
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) {
-        DaoUser dao = new DaoUser();
-        Router router = new Router(JspPath.INDEX, RouterType.FORWARD);
-        Optional<User> userOptional;
-        User user = null;
-        try {
-            userOptional = dao.findEntityById((String) request.getParameter("email"));
-            if(userOptional.isPresent()){
-                String password = userOptional.get().getPass();
-                if(password.equals(HashPassGenerator.generate(request.getParameter("password")))){
-                    SessionService sessionServic = new SessionService();
-                    CookieService cookieService = new CookieService();
+        Router router;
+        SessionService sessionService = SessionService.getInstance();
+        CookieService cookieService = CookieService.getInstance();
+        String email = request.getParameter("email");
+        String pass = request.getParameter("password");
+        User user = service.login(email,pass);
 
-                    user = userOptional.get();
-                    sessionServic.addUser(request,user);
-                    cookieService.addUser(request,response,user);
-                }
-                else{
-                    router.setPagePath(JspPath.SIGN_IN);
-                }
-            }
-            else{
-                router.setPagePath(JspPath.SIGN_IN);
-            }
-        } catch (DataBaseException | NoSuchAlgorithmException e) {
-            // TODO: 1/30/2022
+        if(user == null){
+            router = new Router(JspPath.SIGN_IN,RouterType.FORWARD);
+        }
+        else{
+            router = new Router(JspPath.INDEX, RouterType.FORWARD);
+            sessionService.addUser(request,user);
+            cookieService.addUser(request,response,user);
         }
         return router;
     }

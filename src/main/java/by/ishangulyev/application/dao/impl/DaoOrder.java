@@ -3,6 +3,7 @@ package by.ishangulyev.application.dao.impl;
 import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
 import by.ishangulyev.application.dao.query.OrderQuery;
+import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.Audio;
 import by.ishangulyev.application.model.entity.impl.AudioType;
@@ -22,7 +23,7 @@ public class DaoOrder extends DaoEntity<Long,Order> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
-    public List<Order> findAll() throws DataBaseException {
+    public List<Order> findAll() throws DaoException {
         List<Order> result = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(OrderQuery.SELECT_ALL.getValue())) {
@@ -32,7 +33,7 @@ public class DaoOrder extends DaoEntity<Long,Order> {
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DataBaseException("Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
         } finally {
             releaseConnection();
         }
@@ -45,7 +46,7 @@ public class DaoOrder extends DaoEntity<Long,Order> {
         try (PreparedStatement statement = connection.prepareStatement(OrderQuery.UPDATE.getValue())) {
             fillStatement(statement, entity);
             result = statement.executeUpdate() > 0;
-        } catch (SQLException e) {
+        } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "Error while updating dao", e);
             result = false;
         } finally {
@@ -55,7 +56,7 @@ public class DaoOrder extends DaoEntity<Long,Order> {
     }
 
     @Override
-    public Optional<Order> findEntityById(Long id) throws DataBaseException {
+    public Optional<Order> findEntityById(Long id) throws DaoException {
         Optional<Order> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(OrderQuery.SELECT_BY_ID.getValue())) {
@@ -67,14 +68,14 @@ public class DaoOrder extends DaoEntity<Long,Order> {
             }
         } catch (SQLException e) {
             logger.error("query has failed", e);
-            throw new DataBaseException("query has failed");
+            throw new DaoException("query has failed");
         } finally {
             releaseConnection();
         }
         return entity;
     }
 
-    @Override public List<Order> findByCount(int count) throws DataBaseException {
+    @Override public List<Order> findByCount(int count) throws DaoException {
         return null;
     }
 
@@ -99,7 +100,7 @@ public class DaoOrder extends DaoEntity<Long,Order> {
         try (PreparedStatement statement = connection.prepareStatement(OrderQuery.INSERT.getValue())) {
             fillStatement(statement, entity);
             result = statement.executeUpdate() > 0;
-        } catch (SQLException e) {
+        } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "", e);
             result = false;
         } finally {
@@ -109,16 +110,21 @@ public class DaoOrder extends DaoEntity<Long,Order> {
     }
 
     @Override
-    public void fillStatement(PreparedStatement statement, Order entity) throws SQLException {
+    public void fillStatement(PreparedStatement statement, Order entity) throws DaoException {
 
     }
 
     @Override
-    public Order getValues(ResultSet set) throws SQLException {
+    public Order getValues(ResultSet set) throws DaoException {
         Order result = new Order();
-        result.setId(set.getLong(ColumnName.ID));
-        result.setCartID(set.getLong(ColumnName.ORDER_CART_ID));
-        result.setGadgetID(set.getLong(ColumnName.ORDER_GADGET_ID));
+        try {
+            result.setId(set.getLong(ColumnName.ID));
+            result.setCartID(set.getLong(ColumnName.ORDER_CART_ID));
+            result.setGadgetID(set.getLong(ColumnName.ORDER_GADGET_ID));
+        } catch (SQLException e) {
+            logger.error("query has failed", e);
+            throw new DaoException("query has failed");
+        }
         return result;
     }
 }

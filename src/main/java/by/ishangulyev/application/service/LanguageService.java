@@ -6,19 +6,13 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 public class LanguageService {
+    private static LanguageService instance = new LanguageService();
     private final AttributeService languageServiceHelper = new AttributeService();
 
-    public Cookie createCookie(LanguageType type){
-        Cookie language = null;
-        switch (type){
-            case RU -> {
-                language = new Cookie("language","RU");
-            }
-            case EN -> {
-                language = new Cookie("language","EN");
-            }
-        }
-        return language;
+    private LanguageService(){}
+
+    public static LanguageService getInstance() {
+        return instance;
     }
     public void setLanguageAtPage(HttpServletRequest request, Router router){
         switch (router.getPagePath()){

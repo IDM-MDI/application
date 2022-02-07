@@ -1,4 +1,4 @@
-package by.ishangulyev.application.service;
+package by.ishangulyev.application.controller;
 
 import by.ishangulyev.application.controller.command.ActionCommand;
 import by.ishangulyev.application.controller.command.RequestParameterName;
@@ -10,7 +10,7 @@ import by.ishangulyev.application.controller.command.impl.get.*;
 import by.ishangulyev.application.controller.command.impl.update.*;
 import jakarta.servlet.http.HttpServletRequest;
 
-public class RequestService {
+public class CommandFactory {
     public ActionCommand getCommand(HttpServletRequest req){
         ActionCommand result = null;
         RequestParameterName commandName = RequestParameterName.valueOf(req.getParameterNames().nextElement().toUpperCase());

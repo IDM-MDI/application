@@ -3,6 +3,7 @@ package by.ishangulyev.application.dao.impl;
 import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
 import by.ishangulyev.application.dao.query.VideoQuery;
+import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.Audio;
 import by.ishangulyev.application.model.entity.impl.AudioType;
@@ -23,7 +24,7 @@ public class DaoVideo extends DaoEntity<Long,Video> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
-    public List<Video> findAll() throws DataBaseException {
+    public List<Video> findAll() throws DaoException {
         List<Video> result = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(VideoQuery.SELECT_ALL.getValue())) {
@@ -33,7 +34,7 @@ public class DaoVideo extends DaoEntity<Long,Video> {
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DataBaseException("Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
         } finally {
             releaseConnection();
         }
@@ -46,7 +47,7 @@ public class DaoVideo extends DaoEntity<Long,Video> {
         try (PreparedStatement statement = connection.prepareStatement(VideoQuery.UPDATE.getValue())) {
             fillStatement(statement, entity);
             result = statement.executeUpdate() > 0;
-        } catch (SQLException e) {
+        } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "Error while updating dao", e);
             result = false;
         } finally {
@@ -56,7 +57,7 @@ public class DaoVideo extends DaoEntity<Long,Video> {
     }
 
     @Override
-    public Optional<Video> findEntityById(Long id) throws DataBaseException {
+    public Optional<Video> findEntityById(Long id) throws DaoException {
         Optional<Video> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(VideoQuery.SELECT_BY_ID.getValue())) {
@@ -68,14 +69,14 @@ public class DaoVideo extends DaoEntity<Long,Video> {
             }
         } catch (SQLException e) {
             logger.error("query has failed", e);
-            throw new DataBaseException("query has failed");
+            throw new DaoException("query has failed");
         } finally {
             releaseConnection();
         }
         return entity;
     }
 
-    @Override public List<Video> findByCount(int count) throws DataBaseException {
+    @Override public List<Video> findByCount(int count) throws DaoException {
         return null;
     }
 
@@ -100,7 +101,7 @@ public class DaoVideo extends DaoEntity<Long,Video> {
         try (PreparedStatement statement = connection.prepareStatement(VideoQuery.INSERT.getValue())) {
             fillStatement(statement, entity);
             result = statement.executeUpdate() > 0;
-        } catch (SQLException e) {
+        } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "", e);
             result = false;
         } finally {
@@ -110,19 +111,24 @@ public class DaoVideo extends DaoEntity<Long,Video> {
     }
 
     @Override
-    public void fillStatement(PreparedStatement statement, Video entity) throws SQLException {
+    public void fillStatement(PreparedStatement statement, Video entity) throws DaoException {
 
     }
 
     @Override
-    public Video getValues(ResultSet set) throws SQLException {
+    public Video getValues(ResultSet set) throws DaoException {
         Video result = new Video();
-        result.setId(set.getLong(ColumnName.ID));
-        result.setName(set.getString(ColumnName.NAME));
-        result.setType(VideoType.valueOf(set.getString(ColumnName.VIDEO_TYPE)));
-        result.setResolution(set.getString(ColumnName.VIDEO_RESOLUTION));
-        result.setRatio(set.getString(ColumnName.VIDEO_RATIO));
-        result.setBrightness(set.getInt(ColumnName.VIDEO_BRIGHTNESS));
+        try {
+            result.setId(set.getLong(ColumnName.ID));
+            result.setName(set.getString(ColumnName.NAME));
+            result.setType(VideoType.valueOf(set.getString(ColumnName.VIDEO_TYPE)));
+            result.setResolution(set.getString(ColumnName.VIDEO_RESOLUTION));
+            result.setRatio(set.getString(ColumnName.VIDEO_RATIO));
+            result.setBrightness(set.getInt(ColumnName.VIDEO_BRIGHTNESS));
+        } catch (SQLException e) {
+            logger.error("query has failed", e);
+            throw new DaoException("query has failed");
+        }
         return result;
     }
 }

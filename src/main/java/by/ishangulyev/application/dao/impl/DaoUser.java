@@ -4,6 +4,7 @@ import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
 import by.ishangulyev.application.dao.query.GadgetQuery;
 import by.ishangulyev.application.dao.query.UserQuery;
+import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.*;
 import org.apache.logging.log4j.Level;
@@ -24,7 +25,7 @@ public class DaoUser extends DaoEntity<String,User> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
-    public List<User> findAll() throws DataBaseException {
+    public List<User> findAll() throws DaoException {
         List<User> result = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(UserQuery.SELECT_ALL.getValue())) {
@@ -34,7 +35,7 @@ public class DaoUser extends DaoEntity<String,User> {
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DataBaseException("Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
         } finally {
             releaseConnection();
         }
@@ -67,7 +68,7 @@ public class DaoUser extends DaoEntity<String,User> {
     }
 
     @Override
-    public Optional<User> findEntityById(String email) throws DataBaseException {
+    public Optional<User> findEntityById(String email) throws DaoException {
         Optional<User> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(UserQuery.SELECT_BY_ID.getValue())) {
@@ -79,14 +80,14 @@ public class DaoUser extends DaoEntity<String,User> {
             }
         } catch (SQLException e) {
             logger.error("query has failed", e);
-            throw new DataBaseException("query has failed");
+            throw new DaoException("query has failed");
         } finally {
             releaseConnection();
         }
         return entity;
     }
 
-    @Override public List<User> findByCount(int count) throws DataBaseException {
+    @Override public List<User> findByCount(int count) throws DaoException {
         count*=9;
         List<User> result = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(UserQuery.SELECT_BY_COUNT.getValue())) {
@@ -97,7 +98,7 @@ public class DaoUser extends DaoEntity<String,User> {
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DataBaseException("Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
         } finally {
             releaseConnection();
         }
@@ -129,7 +130,7 @@ public class DaoUser extends DaoEntity<String,User> {
             }
             fillStatement(statement, entity);
             result = statement.executeUpdate() > 0;
-        } catch (SQLException e) {
+        } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "", e);
             result = false;
         } finally {
@@ -139,23 +140,33 @@ public class DaoUser extends DaoEntity<String,User> {
     }
 
     @Override
-    public void fillStatement(PreparedStatement statement, User entity) throws SQLException {
-        statement.setString(1, entity.getEmail());
-        statement.setString(2, entity.getPass());
-        statement.setDate(3, entity.getDate());
-        statement.setString(4,entity.getRole().name());
+    public void fillStatement(PreparedStatement statement, User entity) throws DaoException {
+        try {
+            statement.setString(1, entity.getEmail());
+            statement.setString(2, entity.getPass());
+            statement.setDate(3, entity.getDate());
+            statement.setString(4,entity.getRole().name());
+        } catch (SQLException e) {
+            logger.error("query has failed", e);
+            throw new DaoException("query has failed");
+        }
     }
 
     @Override
-    public User getValues(ResultSet set) throws SQLException {
+    public User getValues(ResultSet set) throws DaoException {
         User result = new User();
-        result.setName(set.getString(ColumnName.USER_USERNAME));
-        result.setDate(set.getDate(ColumnName.USER_TIME));
-        result.setEmail(set.getString(ColumnName.USER_EMAIL));
-        result.setPass(set.getString(ColumnName.USER_PASS));
-        result.setRole(Role.valueOf(set.getString(ColumnName.USER_ROLE)));
-        result.setPhoto(set.getBytes(ColumnName.USER_PHOTO));
-        result.setPhotoToString();
+        try {
+            result.setName(set.getString(ColumnName.USER_USERNAME));
+            result.setDate(set.getDate(ColumnName.USER_TIME));
+            result.setEmail(set.getString(ColumnName.USER_EMAIL));
+            result.setPass(set.getString(ColumnName.USER_PASS));
+            result.setRole(Role.valueOf(set.getString(ColumnName.USER_ROLE)));
+            result.setPhoto(set.getBytes(ColumnName.USER_PHOTO));
+            result.setPhotoToString();
+        } catch (SQLException e) {
+            logger.error("query has failed", e);
+            throw new DaoException("query has failed");
+        }
         return result;
     }
 

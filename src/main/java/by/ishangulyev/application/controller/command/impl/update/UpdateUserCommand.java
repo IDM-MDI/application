@@ -59,10 +59,10 @@ public class UpdateUserCommand implements ActionCommand {
         DaoUser daoUser = new DaoUser();
         daoUser.update(update);
 
-        SessionService sessionService = new SessionService();
+        SessionService sessionService = SessionService.getInstance();
         sessionService.updateUser(request,update);
 
-        CookieService cookieService = new CookieService();
+        CookieService cookieService = CookieService.getInstance();
         cookieService.addUser(request,response,update);
 
         return new Router(JspPath.ACCOUNT,RouterType.FORWARD);
@@ -89,11 +89,7 @@ public class UpdateUserCommand implements ActionCommand {
         }
         result.setName(username);
         if(!password.isEmpty()) {
-            try {
-                result.setPass(HashPassGenerator.generate(password));
-            } catch (NoSuchAlgorithmException e) {
-                result.setPass(null);
-            }
+            result.setPass(HashPassGenerator.generate(password));
         }
         return result;
     }

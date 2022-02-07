@@ -3,6 +3,7 @@ package by.ishangulyev.application.dao.impl;
 import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
 import by.ishangulyev.application.dao.query.CartQuery;
+import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.Audio;
 import by.ishangulyev.application.model.entity.impl.AudioType;
@@ -22,7 +23,7 @@ public class DaoCart extends DaoEntity<Long,Cart> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
-    public List<Cart> findAll() throws DataBaseException {
+    public List<Cart> findAll() throws DaoException {
         List<Cart> result = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(CartQuery.SELECT_ALL.getValue())) {
@@ -32,7 +33,7 @@ public class DaoCart extends DaoEntity<Long,Cart> {
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DataBaseException("Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
         } finally {
             releaseConnection();
         }
@@ -45,7 +46,7 @@ public class DaoCart extends DaoEntity<Long,Cart> {
         try (PreparedStatement statement = connection.prepareStatement(CartQuery.UPDATE.getValue())) {
             fillStatement(statement, entity);
             result = statement.executeUpdate() > 0;
-        } catch (SQLException e) {
+        } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "Error while updating dao", e);
             result = false;
         } finally {
@@ -55,7 +56,7 @@ public class DaoCart extends DaoEntity<Long,Cart> {
     }
 
     @Override
-    public Optional<Cart> findEntityById(Long id) throws DataBaseException {
+    public Optional<Cart> findEntityById(Long id) throws DaoException {
         Optional<Cart> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(CartQuery.SELECT_BY_ID.getValue())) {
@@ -66,15 +67,15 @@ public class DaoCart extends DaoEntity<Long,Cart> {
                 entity = Optional.of(getValues(set));
             }
         } catch (SQLException e) {
-            logger.error("query has failed", e);
-            throw new DataBaseException("query has failed");
+            logger.log(Level.ERROR, "Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
         } finally {
             releaseConnection();
         }
         return entity;
     }
 
-    @Override public List<Cart> findByCount(int count) throws DataBaseException {
+    @Override public List<Cart> findByCount(int count) throws DaoException {
         return null;
     }
 
@@ -97,7 +98,7 @@ public class DaoCart extends DaoEntity<Long,Cart> {
     public boolean create(Cart entity) {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(CartQuery.INSERT.getValue())) {
-            fillStatement(statement, entity);
+            statement.setString(1, entity.getUserID());
             result = statement.executeUpdate() > 0;
         } catch (SQLException e) {
             logger.log(Level.WARN, "", e);
@@ -109,15 +110,25 @@ public class DaoCart extends DaoEntity<Long,Cart> {
     }
 
     @Override
-    public void fillStatement(PreparedStatement statement, Cart entity) throws SQLException {
-        statement.setString(1, entity.getUserID());
+    public void fillStatement(PreparedStatement statement, Cart entity) throws DaoException {
+        try {
+            statement.setString(1, entity.getUserID());
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
+        }
     }
 
     @Override
-    public Cart getValues(ResultSet set) throws SQLException {
+    public Cart getValues(ResultSet set) throws DaoException {
         Cart result = new Cart();
-        result.setId(set.getLong(ColumnName.ID));
-        result.setUserID(set.getString(ColumnName.CART_USERID));
+        try {
+            result.setId(set.getLong(ColumnName.ID));
+            result.setUserID(set.getString(ColumnName.CART_USERID));
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
+        }
         return result;
     }
 }

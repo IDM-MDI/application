@@ -10,6 +10,13 @@ import java.util.Enumeration;
 import java.util.Locale;
 
 public class ParameterValidator {
+    private static ParameterValidator instance = new ParameterValidator();
+
+    private ParameterValidator(){}
+
+    public static ParameterValidator getInstance() {
+        return instance;
+    }
 
     public boolean isParameterValid(HttpServletRequest request){
         String parameterName = request.getParameterNames().nextElement();

@@ -9,6 +9,13 @@ import jakarta.servlet.http.HttpSession;
 import java.util.Locale;
 
 public class SessionValidator {
+    private static SessionValidator instance = new SessionValidator();
+
+    private SessionValidator(){}
+
+    public static SessionValidator getInstance(){
+        return instance;
+    }
 
     public boolean isAdmin(HttpSession session){
         User user = (User)session.getAttribute("user");

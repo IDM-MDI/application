@@ -3,6 +3,7 @@ package by.ishangulyev.application.dao.impl;
 import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
 import by.ishangulyev.application.dao.query.CpuQuery;
+import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.Audio;
 import by.ishangulyev.application.model.entity.impl.AudioType;
@@ -22,7 +23,7 @@ public class DaoCpu extends DaoEntity<Long,Cpu> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
-    public List<Cpu> findAll() throws DataBaseException {
+    public List<Cpu> findAll() throws DaoException {
         List<Cpu> result = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(CpuQuery.SELECT_ALL.getValue())) {
@@ -32,7 +33,7 @@ public class DaoCpu extends DaoEntity<Long,Cpu> {
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DataBaseException("Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
         } finally {
             releaseConnection();
         }
@@ -45,7 +46,7 @@ public class DaoCpu extends DaoEntity<Long,Cpu> {
         try (PreparedStatement statement = connection.prepareStatement(CpuQuery.UPDATE.getValue())) {
             fillStatement(statement, entity);
             result = statement.executeUpdate() > 0;
-        } catch (SQLException e) {
+        } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "Error while updating dao", e);
             result = false;
         } finally {
@@ -55,7 +56,7 @@ public class DaoCpu extends DaoEntity<Long,Cpu> {
     }
 
     @Override
-    public Optional<Cpu> findEntityById(Long id) throws DataBaseException {
+    public Optional<Cpu> findEntityById(Long id) throws DaoException {
         Optional<Cpu> entity = Optional.empty();
 
         try (PreparedStatement statement = connection.prepareStatement(CpuQuery.SELECT_BY_ID.getValue())) {
@@ -67,14 +68,14 @@ public class DaoCpu extends DaoEntity<Long,Cpu> {
             }
         } catch (SQLException e) {
             logger.error("query has failed", e);
-            throw new DataBaseException("query has failed");
+            throw new DaoException("query has failed");
         } finally {
             releaseConnection();
         }
         return entity;
     }
 
-    @Override public List<Cpu> findByCount(int count) throws DataBaseException {
+    @Override public List<Cpu> findByCount(int count) throws DaoException {
         return null;
     }
 
@@ -99,7 +100,7 @@ public class DaoCpu extends DaoEntity<Long,Cpu> {
         try (PreparedStatement statement = connection.prepareStatement(CpuQuery.INSERT.getValue())) {
             fillStatement(statement, entity);
             result = statement.executeUpdate() > 0;
-        } catch (SQLException e) {
+        } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "", e);
             result = false;
         } finally {
@@ -109,18 +110,23 @@ public class DaoCpu extends DaoEntity<Long,Cpu> {
     }
 
     @Override
-    public void fillStatement(PreparedStatement statement, Cpu entity) throws SQLException {
+    public void fillStatement(PreparedStatement statement, Cpu entity) throws DaoException {
 
     }
 
     @Override
-    public Cpu getValues(ResultSet set) throws SQLException {
+    public Cpu getValues(ResultSet set) throws DaoException {
         Cpu result = new Cpu();
-        result.setId(set.getLong(ColumnName.ID));
-        result.setName(set.getString(ColumnName.NAME));
-        result.setCore(set.getString(ColumnName.CPU_CORE));
-        result.setFrequency(set.getString(ColumnName.CPU_FREQUENCY));
-        result.setBit(set.getString(ColumnName.CPU_BIT));
+        try {
+            result.setId(set.getLong(ColumnName.ID));
+            result.setName(set.getString(ColumnName.NAME));
+            result.setCore(set.getString(ColumnName.CPU_CORE));
+            result.setFrequency(set.getString(ColumnName.CPU_FREQUENCY));
+            result.setBit(set.getString(ColumnName.CPU_BIT));
+        } catch (SQLException e) {
+            logger.error("query has failed", e);
+            throw new DaoException("query has failed");
+        }
         return result;
     }
 }

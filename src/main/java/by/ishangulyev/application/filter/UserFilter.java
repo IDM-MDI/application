@@ -12,8 +12,8 @@ import java.io.IOException;
 
 @WebFilter(urlPatterns = {"/controller"},servletNames = {"IndexServlet"})
 public class UserFilter implements Filter {
-    private final SessionService sessionService = new SessionService();
-    private final SessionValidator validator = new SessionValidator();
+    private final SessionService sessionService = SessionService.getInstance();
+    private final SessionValidator validator = SessionValidator.getInstance();
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         Filter.super.init(filterConfig);

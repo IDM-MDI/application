@@ -1,6 +1,7 @@
 package by.ishangulyev.application.dao;
 
 import by.ishangulyev.application.connection.ConnectionPool;
+import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.Gadget;
 
@@ -19,12 +20,12 @@ public abstract class DaoEntity<U,T> implements ResultSetExecutor<T> {
         connection = connectionPool.getConnection();
     }
 
-    public abstract List<T> findAll() throws DataBaseException;
+    public abstract List<T> findAll() throws DaoException;
 
     public abstract boolean update(T entity);
 
-    public abstract Optional<T> findEntityById(U id) throws DataBaseException;
-    public abstract List<T> findByCount(int count) throws DataBaseException;
+    public abstract Optional<T> findEntityById(U id) throws DaoException;
+    public abstract List<T> findByCount(int count) throws DaoException;
 
     public abstract boolean delete(U id);
 
@@ -34,6 +35,6 @@ public abstract class DaoEntity<U,T> implements ResultSetExecutor<T> {
         connectionPool.releaseConnection(connection);
     }
 
-    public abstract void fillStatement(PreparedStatement statement, T entity) throws SQLException;
+    public abstract void fillStatement(PreparedStatement statement, T entity) throws DaoException;
 
 }

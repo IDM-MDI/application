@@ -3,6 +3,7 @@ package by.ishangulyev.application.service;
 import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.controller.command.LanguageType;
 import by.ishangulyev.application.dao.impl.DaoUser;
+import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.User;
 import by.ishangulyev.application.validator.CookieValidator;
@@ -13,22 +14,21 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.util.Optional;
 
 public class CookieService {
-    private LanguageService languageService;
-    private PasswordHashService passwordHashService;
-    private CookieValidator validator;
+    private static CookieService instance = new CookieService();
+    private CookieValidator validator = CookieValidator.getInstance();
     private LanguageType languageType;
     private User user;
 
-    public CookieService(){
-        languageService = new LanguageService();
-        passwordHashService = new PasswordHashService();
-        validator = new CookieValidator();
+    private CookieService(){}
+
+    public static CookieService getInstance() {
+        return instance;
     }
 
     public void cookieHandler(HttpServletRequest request, HttpServletResponse response){
         Cookie[] cookies = request.getCookies();
         if(cookies == null){
-            response.addCookie(languageService.createCookie(LanguageType.RU));
+            response.addCookie(createCookie(LanguageType.RU));
             languageType = LanguageType.RU;
             this.user = new User();
             response.addCookie(new Cookie("email",null));
@@ -65,7 +65,7 @@ public class CookieService {
                     result = userOptional.get();
                 }
             }
-        } catch (DataBaseException e) {
+        } catch (DaoException e) {
             // TODO: 1/30/2022  
         }
         return result;
@@ -107,4 +107,16 @@ public class CookieService {
         response.addCookie(password);
     }
 
+    public Cookie createCookie(LanguageType type){
+        Cookie language = null;
+        switch (type){
+            case RU -> {
+                language = new Cookie("language","RU");
+            }
+            case EN -> {
+                language = new Cookie("language","EN");
+            }
+        }
+        return language;
+    }
 }

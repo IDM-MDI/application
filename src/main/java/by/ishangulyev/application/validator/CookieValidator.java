@@ -3,7 +3,15 @@ package by.ishangulyev.application.validator;
 import jakarta.servlet.http.Cookie;
 
 public class CookieValidator {
-    public boolean isCookieExist(Cookie[] cookies,String name){
+    private static CookieValidator instance = new CookieValidator();
+
+    private CookieValidator(){}
+
+    public static CookieValidator getInstance() {
+        return instance;
+    }
+
+    public boolean isCookieExist(Cookie[] cookies, String name){
         boolean result = false;
         for (Cookie i:cookies) {
             if(i.getName().equals(name)){
