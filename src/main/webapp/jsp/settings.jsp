@@ -9,12 +9,12 @@
 <jsp:include page="header.jsp" />
 <ul class="list-group">
     <a href="${pageContext.request.contextPath}/controller?jsp_switcher=audiosettings" class="list-group-item list-group-item-action list-group-item-secondary">Audio settings</a>
-    <a href="${pageContext.request.contextPath}/controller?jsp_switcher=batterysettings" class="list-group-item list-group-item-action list-group-item-secondary">Battery settings</a>
+    <a href="${pageContext.request.contextPath}/controller?battery=get" class="list-group-item list-group-item-action list-group-item-secondary">Battery settings</a>
     <a href="${pageContext.request.contextPath}/controller?jsp_switcher=categorysettings" class="list-group-item list-group-item-action list-group-item-secondary">Category settings</a>
     <a href="${pageContext.request.contextPath}/controller?jsp_switcher=cpusettings" class="list-group-item list-group-item-action list-group-item-secondary">CPU settings</a>
     <a href="${pageContext.request.contextPath}/controller?jsp_switcher=addgadget" class="list-group-item list-group-item-action list-group-item-secondary">Gadget settings</a>
     <a href="${pageContext.request.contextPath}/controller?jsp_switcher=memorysettings" class="list-group-item list-group-item-action list-group-item-secondary">Memory settings</a>
-    <a href="${pageContext.request.contextPath}/controller?jsp_switcher=usersettings" class="list-group-item list-group-item-action list-group-item-secondary">User settings</a>
+    <a href="${pageContext.request.contextPath}/controller?user=get" class="list-group-item list-group-item-action list-group-item-secondary">User settings</a>
     <a href="${pageContext.request.contextPath}/controller?jsp_switcher=videosettings" class="list-group-item list-group-item-action list-group-item-secondary">Video settings</a>
 </ul>
 <jsp:include page="footer.jsp" />

@@ -20,9 +20,9 @@ public class JspSwitcherCommand implements ActionCommand {
             case "account" -> path = JspPath.ACCOUNT;
             case "cart" -> path = JspPath.CART;
             case "addGadget" -> path = JspPath.ADDGADGET;
-            case "updateGadget" -> path = JspPath.UPDATEGADGET;
-            case "updateUser" -> path = JspPath.UPDATEUSER;
             case "settings" -> path = JspPath.SETTINGS;
+            case "batterysettings" -> path = JspPath.BATTERYSETTINGS;
+            case "usersettings" -> path = JspPath.USERSETTINGS;
             default -> path = JspPath.ERROR4XX;
         }
         return new Router(path, RouterType.FORWARD);

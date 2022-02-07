@@ -38,10 +38,12 @@ public class DaoGadget extends DaoEntity<Long,Gadget> {
         }
         return result;
     }
-
+    @Override
     public List<Gadget> findByCount(int count) throws DataBaseException {
+        count*=9;
         List<Gadget> result = new ArrayList<>();
-        try (PreparedStatement statement = connection.prepareStatement(GadgetQuery.SELECT_COUNT.getValue())) {
+        try (PreparedStatement statement = connection.prepareStatement(GadgetQuery.SELECT_BY_COUNT.getValue())) {
+            statement.setInt(1, count);
             ResultSet set = statement.executeQuery();
             while (set.next()) {
                 result.add(getValues(set));

@@ -32,7 +32,7 @@ public class UpdateUserCommand implements ActionCommand {
             router = userUpdateAccount(request,response);
         }
         else if(request.getParameter("role") != null){
-            router = adminUpdateAccount(request,response);
+            router = adminUpdateAccount(request);
         }
         else{
             router = new Router(JspPath.ERROR4XX,RouterType.FORWARD);
@@ -40,41 +40,21 @@ public class UpdateUserCommand implements ActionCommand {
         return router;
     }
 
-    private Router adminUpdateAccount(HttpServletRequest request, HttpServletResponse response) {
-        User update = new User();
-        update.setRole(Role.ADMIN);
+    private Router adminUpdateAccount(HttpServletRequest request) {
+        User update = fillEntityInfo(request);
+        String role = request.getParameter("role").toUpperCase();
+
+        if(role != null){
+            update.setRole(Role.valueOf(role));
+        }
         DaoUser daoUser = new DaoUser();
         daoUser.update(update);
-        return new Router(JspPath.USERS,RouterType.FORWARD);
+
+        return new Router(JspPath.USERSETTINGS,RouterType.FORWARD);
     }
 
     private Router userUpdateAccount(HttpServletRequest request, HttpServletResponse response){
-        UserValidator validator = UserValidator.getInstance();
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String username = request.getParameter("username");
-        User update = new User();
-        update.setEmail(email);
-        try {
-            Part part = request.getPart("userPhoto");
-            if(part != null){
-                if(validator.isPhotoValid(part)){
-                    try(InputStream inputStream = part.getInputStream()){
-                        update.setPhoto(inputStream.readAllBytes());
-                    }
-                }
-            }
-        } catch (IOException | ServletException e) {
-            e.printStackTrace();
-        }
-        update.setName(username);
-        if(!password.isEmpty()) {
-            try {
-                update.setPass(HashPassGenerator.generate(password));
-            } catch (NoSuchAlgorithmException e) {
-                update.setPass(null);
-            }
-        }
+        User update = fillEntityInfo(request);
 
         DaoUser daoUser = new DaoUser();
         daoUser.update(update);
@@ -86,5 +66,35 @@ public class UpdateUserCommand implements ActionCommand {
         cookieService.addUser(request,response,update);
 
         return new Router(JspPath.ACCOUNT,RouterType.FORWARD);
+    }
+
+    private User fillEntityInfo(HttpServletRequest request){
+        UserValidator validator = UserValidator.getInstance();
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String username = request.getParameter("username");
+        User result = new User();
+        result.setEmail(email);
+        try {
+            Part part = request.getPart("userPhoto");
+            if(part != null){
+                if(validator.isPhotoValid(part)){
+                    try(InputStream inputStream = part.getInputStream()){
+                        result.setPhoto(inputStream.readAllBytes());
+                    }
+                }
+            }
+        } catch (IOException | ServletException e) {
+            e.printStackTrace();
+        }
+        result.setName(username);
+        if(!password.isEmpty()) {
+            try {
+                result.setPass(HashPassGenerator.generate(password));
+            } catch (NoSuchAlgorithmException e) {
+                result.setPass(null);
+            }
+        }
+        return result;
     }
 }

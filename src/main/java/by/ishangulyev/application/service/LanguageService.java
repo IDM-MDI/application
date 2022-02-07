@@ -32,9 +32,9 @@ public class LanguageService {
             case ACCOUNT -> languageServiceHelper.setAccount(request,router);
             case CART -> languageServiceHelper.setCart(request,router);
             case ADDGADGET -> languageServiceHelper.setAddGadget(request,router);
-            case UPDATEUSER -> languageServiceHelper.setUpdateUser(request,router);
-            case UPDATEGADGET -> languageServiceHelper.setUpdateGadget(request,router);
             case SETTINGS -> languageServiceHelper.setSettings(request,router);
+            case BATTERYSETTINGS -> languageServiceHelper.setBatterySettings(request,router);
+            case USERSETTINGS -> languageServiceHelper.setUserSettings(request,router);
         }
     }
 }

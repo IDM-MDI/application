@@ -11,9 +11,9 @@ public enum JspPath {
     ERROR5XX("jsp/error5xx.jsp"),
     ACCOUNT("jsp/account.jsp"),
     SETTINGS("jsp/settings.jsp"),
-    ADDGADGET("jsp/addGadget.jsp"),
-    UPDATEGADGET("jsp/updateGadget.jsp"),
-    UPDATEUSER("jsp/updateUser.jsp");
+    BATTERYSETTINGS("jsp/batterySettings.jsp"),
+    USERSETTINGS("jsp/userSettings.jsp"),
+    ADDGADGET("jsp/addGadget.jsp");
 
     private String value;
 

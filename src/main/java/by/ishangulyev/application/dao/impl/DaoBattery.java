@@ -3,10 +3,12 @@ package by.ishangulyev.application.dao.impl;
 import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
 import by.ishangulyev.application.dao.query.BatteryQuery;
+import by.ishangulyev.application.dao.query.GadgetQuery;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.Audio;
 import by.ishangulyev.application.model.entity.impl.AudioType;
 import by.ishangulyev.application.model.entity.impl.Battery;
+import by.ishangulyev.application.model.entity.impl.Gadget;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,10 +42,30 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
     }
 
     @Override
+    public List<Battery> findByCount(int count) throws DataBaseException {
+        count*=9;
+        List<Battery> result = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(BatteryQuery.SELECT_BY_COUNT.getValue())) {
+            statement.setInt(1, count);
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                result.add(getValues(set));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Error executing query get all category", e);
+            throw new DataBaseException("Error executing query get all category", e);
+        } finally {
+            releaseConnection();
+        }
+        return result;
+    }
+
+    @Override
     public boolean update(Battery entity) {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(BatteryQuery.UPDATE.getValue())) {
             fillStatement(statement, entity);
+            statement.setLong(3,entity.getId());
             result = statement.executeUpdate() > 0;
         } catch (SQLException e) {
             logger.log(Level.WARN, "Error while updating dao", e);

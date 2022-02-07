@@ -75,6 +75,10 @@ public class DaoVideo extends DaoEntity<Long,Video> {
         return entity;
     }
 
+    @Override public List<Video> findByCount(int count) throws DataBaseException {
+        return null;
+    }
+
     @Override
     public boolean delete(Long id) {
         boolean result = true;

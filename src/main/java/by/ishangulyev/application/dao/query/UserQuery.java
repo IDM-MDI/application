@@ -3,6 +3,7 @@ package by.ishangulyev.application.dao.query;
 public enum UserQuery {
     SELECT_ALL("SELECT * FROM users;"),
     SELECT_BY_ID("SELECT * FROM users WHERE email = ?"),
+    SELECT_BY_COUNT("SELECT * FROM users LIMIT 10 OFFSET ?"),
     DELETE("DELETE FROM users WHERE email = ?"),
     UPDATE_ROLE("UPDATE users SET role = ? WHERE email = ?"),
     UPDATE_PHOTO("UPDATE users SET photo = ? WHERE email = ?"),

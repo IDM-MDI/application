@@ -33,8 +33,10 @@
         <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
     </div>
     <div class="form-group">
-        <label for="exampleFormControlFile1">Avatar</label>
-        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="userPhoto" accept="image/*">
+        <div class="custom-file">
+            <input type="file" name="userPhoto" accept="image/*" class="custom-file-input" id="customFile">
+            <label class="custom-file-label" for="customFile">Choose file</label>
+        </div>
     </div>
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Submit</button>

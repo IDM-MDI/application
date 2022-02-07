@@ -74,6 +74,10 @@ public class DaoCpu extends DaoEntity<Long,Cpu> {
         return entity;
     }
 
+    @Override public List<Cpu> findByCount(int count) throws DataBaseException {
+        return null;
+    }
+
     @Override
     public boolean delete(Long id) {
         boolean result = true;

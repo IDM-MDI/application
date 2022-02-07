@@ -2,6 +2,7 @@ package by.ishangulyev.application.dao;
 
 import by.ishangulyev.application.connection.ConnectionPool;
 import by.ishangulyev.application.exception.DataBaseException;
+import by.ishangulyev.application.model.entity.impl.Gadget;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,6 +24,7 @@ public abstract class DaoEntity<U,T> implements ResultSetExecutor<T> {
     public abstract boolean update(T entity);
 
     public abstract Optional<T> findEntityById(U id) throws DataBaseException;
+    public abstract List<T> findByCount(int count) throws DataBaseException;
 
     public abstract boolean delete(U id);
 

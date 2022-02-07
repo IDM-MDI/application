@@ -78,6 +78,10 @@ public class DaoAudio extends DaoEntity<Long,Audio> {
         return entity;
     }
 
+    @Override public List<Audio> findByCount(int count) throws DataBaseException {
+        return null;
+    }
+
     @Override
     public boolean delete(Long id) {
         boolean result = true;

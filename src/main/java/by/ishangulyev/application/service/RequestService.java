@@ -26,6 +26,7 @@ public class RequestService {
                     case EXIT -> result = new SignOutCommand();
                     case DELETE -> result = new DeleteUserCommand();
                     case ENTER -> result = new SignInCommand();
+                    case GET -> result = new GetUserCommand();
                 }
             }
             case GADGET -> {

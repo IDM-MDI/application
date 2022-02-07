@@ -75,6 +75,10 @@ public class DaoMemory extends DaoEntity<Long,Memory> {
         return entity;
     }
 
+    @Override public List<Memory> findByCount(int count) throws DataBaseException {
+        return null;
+    }
+
     @Override
     public boolean delete(Long id) {
         boolean result = true;

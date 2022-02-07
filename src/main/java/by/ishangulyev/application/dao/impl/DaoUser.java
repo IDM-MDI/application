@@ -2,12 +2,10 @@ package by.ishangulyev.application.dao.impl;
 
 import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
+import by.ishangulyev.application.dao.query.GadgetQuery;
 import by.ishangulyev.application.dao.query.UserQuery;
 import by.ishangulyev.application.exception.DataBaseException;
-import by.ishangulyev.application.model.entity.impl.Audio;
-import by.ishangulyev.application.model.entity.impl.AudioType;
-import by.ishangulyev.application.model.entity.impl.Role;
-import by.ishangulyev.application.model.entity.impl.User;
+import by.ishangulyev.application.model.entity.impl.*;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -88,6 +86,24 @@ public class DaoUser extends DaoEntity<String,User> {
         return entity;
     }
 
+    @Override public List<User> findByCount(int count) throws DataBaseException {
+        count*=9;
+        List<User> result = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(UserQuery.SELECT_BY_COUNT.getValue())) {
+            statement.setInt(1, count);
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                result.add(getValues(set));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Error executing query get all category", e);
+            throw new DataBaseException("Error executing query get all category", e);
+        } finally {
+            releaseConnection();
+        }
+        return result;
+    }
+
     @Override
     public boolean delete(String email) {
         boolean result = true;
@@ -165,7 +181,7 @@ public class DaoUser extends DaoEntity<String,User> {
         }
     }
     private boolean updatePassword(User entity) throws SQLException{
-        try (PreparedStatement statement = connection.prepareStatement(UserQuery.UPDATE_ROLE.getValue())) {
+        try (PreparedStatement statement = connection.prepareStatement(UserQuery.UPDATE_PASSWORD.getValue())) {
             statement.setString(1, entity.getPass());
             statement.setString(2, entity.getEmail());
             return statement.executeUpdate() > 0;

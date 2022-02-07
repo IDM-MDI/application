@@ -59,6 +59,11 @@ public class AttributeService {
         setHeader(request,properties);
         request.setAttribute("titleTranslate",properties.getProperty("cart.title"));
     }
+    public void setBatterySettings(HttpServletRequest request, Router router){
+        Properties properties = getProperty(router);
+        setHeader(request,properties);
+        request.setAttribute("titleTranslate",properties.getProperty("settings.battery"));
+    }
     public void setSettings(HttpServletRequest request, Router router) {
         Properties properties = getProperty(router);
         setHeader(request,properties);
@@ -79,15 +84,10 @@ public class AttributeService {
         request.setAttribute("titleTranslate",properties.getProperty("addGadget.title"));
     }
 
-    public void setUpdateGadget(HttpServletRequest request, Router router) {
+    public void setUserSettings(HttpServletRequest request, Router router) {
         Properties properties = getProperty(router);
         setHeader(request,properties);
-        request.setAttribute("titleTranslate",properties.getProperty("updateGadget.title"));
-    }
-    public void setUpdateUser(HttpServletRequest request, Router router) {
-        Properties properties = getProperty(router);
-        setHeader(request,properties);
-        request.setAttribute("titleTranslate",properties.getProperty("updateUser.title"));
+        request.setAttribute("titleTranslate",properties.getProperty("settings.user"));
     }
 
     private void setGuestHeader(HttpServletRequest request, Properties properties) {
@@ -131,5 +131,4 @@ public class AttributeService {
         }
         return prop;
     }
-
 }
