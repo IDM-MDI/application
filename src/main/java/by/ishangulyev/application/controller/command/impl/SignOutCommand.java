@@ -16,7 +16,7 @@ public class SignOutCommand implements ActionCommand {
         Router router = new Router(JspPath.SIGN_IN, RouterType.FORWARD);
         SessionService sessionServic = SessionService.getInstance();
         CookieService cookieService = CookieService.getInstance();
-        sessionServic.removeUser(request);
+        sessionServic.removeUser(request.getSession());
         cookieService.removeUser(request,response);
         return router;
     }

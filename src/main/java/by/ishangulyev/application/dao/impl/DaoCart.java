@@ -93,7 +93,19 @@ public class DaoCart extends DaoEntity<Long,Cart> {
         }
         return result;
     }
-
+    public boolean deleteByEmail(String email) {
+        boolean result = true;
+        try (PreparedStatement statement = connection.prepareStatement(CartQuery.DELETE_BY_EMAIL.getValue())) {
+            statement.setString(1, email);
+            result = statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            logger.log(Level.WARN, "", e);
+            result = false;
+        } finally {
+            releaseConnection();
+        }
+        return result;
+    }
     @Override
     public boolean create(Cart entity) {
         boolean result = true;

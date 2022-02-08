@@ -1,5 +1,7 @@
 package by.ishangulyev.application.service;
 
+import by.ishangulyev.application.controller.Router;
+import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.dao.impl.DaoCart;
 import by.ishangulyev.application.dao.impl.DaoUser;
@@ -17,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
+import java.util.List;
 import java.util.Optional;
 
 public class UserService {
@@ -40,7 +43,7 @@ public class UserService {
             userOptional = dao.findEntityById(email);
             if(userOptional.isPresent()){
                 String password = userOptional.get().getPass();
-                if(password.equals(HashPassGenerator.generate(pass))){
+                if(password.equals(HashPassGenerator.generate(pass)) || password.equals(pass)){
                     result = userOptional.get();
                 }
 
@@ -73,6 +76,31 @@ public class UserService {
         return result;
     }
 
+    public void updateAccount(User updateUser){
+        DaoUser daoUser = new DaoUser();
+        daoUser.update(updateUser);
+    }
+
+    public List<User> getAccounts(String page){
+        int pageNumber = Integer.parseInt(page);
+        List<User> userList = null;
+        DaoUser daoUser = new DaoUser();
+        try {
+            pageNumber--;
+            userList = daoUser.findByCount(pageNumber);
+        } catch (DaoException e) {
+            // TODO: 2/8/2022
+        }
+        return userList;
+    }
+
+    public void deleteAccount(String email) {
+        DaoUser daoUser = new DaoUser();
+        DaoCart daoCart = new DaoCart();
+        daoCart.deleteByEmail(email);
+        daoUser.delete(email);
+    }
+
     private User fillEntityInfo(String email,String pass){
         User result = new User();
         result.setEmail(email);
@@ -81,4 +109,6 @@ public class UserService {
         result.setDate(new Date(System.currentTimeMillis()));
         return result;
     }
+
+
 }

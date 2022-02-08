@@ -34,7 +34,7 @@ public class SignInCommand implements ActionCommand {
         }
         else{
             router = new Router(JspPath.INDEX, RouterType.FORWARD);
-            sessionService.addUser(request,user);
+            sessionService.addUser(request.getSession(),user);
             cookieService.addUser(request,response,user);
         }
         return router;

@@ -5,6 +5,7 @@ import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
 import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.dao.impl.DaoGadget;
+import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.Gadget;
 import jakarta.servlet.http.HttpServletRequest;
@@ -31,7 +32,7 @@ public class GetGadgetCommand implements ActionCommand {
                 gadgetList.remove(gadgetList.size()-1);
             }
 
-        } catch (DataBaseException e) {
+        } catch (DaoException e) {
             e.printStackTrace();
         }
 

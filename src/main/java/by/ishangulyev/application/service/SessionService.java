@@ -23,29 +23,29 @@ public class SessionService {
         LanguageType language = (LanguageType) session.getAttribute("language");
        if(language == null){
            cookieService.cookieHandler(request,response);
-           initSession(session);
+           initSession(session,request.getCookies());
        }
        return session;
     }
 
-    public void initSession(HttpSession session){
-        session.setAttribute("user",cookieService.getUser());
+    public void initSession(HttpSession session,Cookie[] cookies){
+        session.setAttribute("user",cookieService.findUser(cookies));
         session.setMaxInactiveInterval(1000);
-        LanguageType type = cookieService.getLanguageType();
+        LanguageType type = cookieService.findLanguage(cookies);
         session.setAttribute("language",type);
     }
-    public void addUser(HttpServletRequest request,User user){
-        request.getSession().setAttribute("user",user);
+    public void addUser(HttpSession session,User user){
+        session.setAttribute("user",user);
     }
-    public void removeUser(HttpServletRequest request){
-        request.getSession().removeAttribute("user");
+    public void addLanguage(HttpSession session, LanguageType type){
+        session.setAttribute("language",type);
     }
-    public void addLanguage(HttpServletRequest request, LanguageType type){
-        request.getSession().setAttribute("language",type);
+    public void removeUser(HttpSession session){
+        session.removeAttribute("user");
     }
 
-    public void updateUser(HttpServletRequest request, User update) {
-        User user = (User) request.getSession().getAttribute("user");
+    public void updateUser(HttpSession session, User update) {
+        User user = (User) session.getAttribute("user");
         if(!(update.getName() == null || update.getName().isEmpty())){
             user.setName(update.getName());
         }
@@ -56,6 +56,6 @@ public class SessionService {
             user.setPhoto(update.getPhoto());
             user.setPhotoToString();
         }
-        request.getSession().setAttribute("user",user);
+        session.setAttribute("user",user);
     }
 }

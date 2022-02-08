@@ -5,28 +5,23 @@ import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
 import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.dao.impl.DaoBattery;
-import by.ishangulyev.application.dao.impl.DaoCart;
-import by.ishangulyev.application.dao.impl.DaoUser;
 import by.ishangulyev.application.model.entity.impl.Battery;
-import by.ishangulyev.application.model.entity.impl.Cart;
-import by.ishangulyev.application.model.entity.impl.User;
-import by.ishangulyev.application.util.HashPassGenerator;
-import by.ishangulyev.application.validator.UserValidator;
+import by.ishangulyev.application.service.BatteryService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
-import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 public class AddBatteryCommand implements ActionCommand {
+    private BatteryService service = BatteryService.getInstance();
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
         Router router;
-        DaoBattery daoBattery = new DaoBattery();
         try {
             Battery battery = fillEntityInfo(request);
-            daoBattery.create(battery);
-            router = new Router(JspPath.SETTINGS,RouterType.FORWARD);
+            service.add(battery);
+            router = service.get(request);;
         } catch (Exception e) {
-            router = new Router(JspPath.ERROR4XX,RouterType.FORWARD);
+            router = new Router(JspPath.ERROR400,RouterType.FORWARD);
         }
         return router;
     }

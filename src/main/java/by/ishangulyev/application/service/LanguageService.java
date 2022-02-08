@@ -1,8 +1,6 @@
 package by.ishangulyev.application.service;
 
 import by.ishangulyev.application.controller.Router;
-import by.ishangulyev.application.controller.command.LanguageType;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 
 public class LanguageService {
@@ -21,14 +19,19 @@ public class LanguageService {
             case SIGN_UP -> languageServiceHelper.setSignUp(request,router);
             case GADGETS -> languageServiceHelper.setGadgets(request,router);
             case USERS -> languageServiceHelper.setUsers(request,router);
-            case ERROR4XX -> languageServiceHelper.setError400(request,router);
-            case ERROR5XX -> languageServiceHelper.setError500(request,router);
+            case ERROR400 -> languageServiceHelper.setError400(request,router);
+            case ERROR00 -> languageServiceHelper.setError500(request,router);
             case ACCOUNT -> languageServiceHelper.setAccount(request,router);
             case CART -> languageServiceHelper.setCart(request,router);
-            case ADDGADGET -> languageServiceHelper.setAddGadget(request,router);
             case SETTINGS -> languageServiceHelper.setSettings(request,router);
-            case BATTERYSETTINGS -> languageServiceHelper.setBatterySettings(request,router);
-            case USERSETTINGS -> languageServiceHelper.setUserSettings(request,router);
+            case BATTERY_SETTINGS -> languageServiceHelper.setBatterySettings(request,router);
+            case USER_SETTINGS -> languageServiceHelper.setUserSettings(request,router);
+            case AUDIO_SETTINGS -> languageServiceHelper.setAudioSettings(request,router);
+            case CPU_SETTINGS -> languageServiceHelper.setCpuSettings(request,router);
+            case VIDEO_SETTINGS -> languageServiceHelper.setVideoSettings(request,router);
+            case GADGET_SETTINGS -> languageServiceHelper.setGadgetSettings(request,router);
+            case MEMORY_SETTINGS -> languageServiceHelper.setMemorySettings(request,router);
+            case CATEGORY_SETTINGS -> languageServiceHelper.setCategorySettings(request,router);
         }
     }
 }

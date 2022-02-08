@@ -64,6 +64,41 @@ public class AttributeService {
         setHeader(request,properties);
         request.setAttribute("titleTranslate",properties.getProperty("settings.battery"));
     }
+    public void setUserSettings(HttpServletRequest request, Router router) {
+        Properties properties = getProperty(router);
+        setHeader(request,properties);
+        request.setAttribute("titleTranslate",properties.getProperty("settings.user"));
+    }
+    public void setAudioSettings(HttpServletRequest request, Router router){
+        Properties properties = getProperty(router);
+        setHeader(request,properties);
+        request.setAttribute("titleTranslate",properties.getProperty("settings.audio"));
+    }
+    public void setVideoSettings(HttpServletRequest request, Router router){
+        Properties properties = getProperty(router);
+        setHeader(request,properties);
+        request.setAttribute("titleTranslate",properties.getProperty("settings.video"));
+    }
+    public void setGadgetSettings(HttpServletRequest request, Router router){
+        Properties properties = getProperty(router);
+        setHeader(request,properties);
+        request.setAttribute("titleTranslate",properties.getProperty("settings.gadget"));
+    }
+    public void setCpuSettings(HttpServletRequest request, Router router){
+        Properties properties = getProperty(router);
+        setHeader(request,properties);
+        request.setAttribute("titleTranslate",properties.getProperty("settings.cpu"));
+    }
+    public void setMemorySettings(HttpServletRequest request, Router router){
+        Properties properties = getProperty(router);
+        setHeader(request,properties);
+        request.setAttribute("titleTranslate",properties.getProperty("settings.memory"));
+    }
+    public void setCategorySettings(HttpServletRequest request, Router router){
+        Properties properties = getProperty(router);
+        setHeader(request,properties);
+        request.setAttribute("titleTranslate",properties.getProperty("settings.category"));
+    }
     public void setSettings(HttpServletRequest request, Router router) {
         Properties properties = getProperty(router);
         setHeader(request,properties);
@@ -84,11 +119,6 @@ public class AttributeService {
         request.setAttribute("titleTranslate",properties.getProperty("addGadget.title"));
     }
 
-    public void setUserSettings(HttpServletRequest request, Router router) {
-        Properties properties = getProperty(router);
-        setHeader(request,properties);
-        request.setAttribute("titleTranslate",properties.getProperty("settings.user"));
-    }
 
     private void setGuestHeader(HttpServletRequest request, Properties properties) {
         request.setAttribute("signinTranslate",properties.getProperty("header.signin"));

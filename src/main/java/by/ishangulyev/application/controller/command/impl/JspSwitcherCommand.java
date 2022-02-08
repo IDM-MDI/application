@@ -19,12 +19,13 @@ public class JspSwitcherCommand implements ActionCommand {
             case "signup" -> path = JspPath.SIGN_UP;
             case "account" -> path = JspPath.ACCOUNT;
             case "cart" -> path = JspPath.CART;
-            case "addGadget" -> path = JspPath.ADDGADGET;
+            case "addGadget" -> path = JspPath.ADD_GADGET;
             case "settings" -> path = JspPath.SETTINGS;
-            case "batterysettings" -> path = JspPath.BATTERYSETTINGS;
-            case "usersettings" -> path = JspPath.USERSETTINGS;
-            default -> path = JspPath.ERROR4XX;
+            case "batterysettings" -> path = JspPath.BATTERY_SETTINGS;
+            case "usersettings" -> path = JspPath.USER_SETTINGS;
+            default -> path = JspPath.ERROR400;
         }
+        request.getSession().setAttribute("page",path);
         return new Router(path, RouterType.FORWARD);
     }
 }

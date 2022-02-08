@@ -6,22 +6,21 @@ import by.ishangulyev.application.controller.command.ActionCommand;
 import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.dao.impl.DaoBattery;
 import by.ishangulyev.application.model.entity.impl.Battery;
+import by.ishangulyev.application.service.BatteryService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public class UpdateBatteryCommand implements ActionCommand {
-
+    private BatteryService service = BatteryService.getInstance();
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
         Router router;
-        Battery battery = null;
-        DaoBattery daoBattery = new DaoBattery();
         try {
-            battery = fillEntityInfo(request);
-            router = new Router(JspPath.SETTINGS, RouterType.FORWARD);
+            Battery battery = fillEntityInfo(request);
+            service.update(battery);
+            router = service.get(request);
         } catch (Exception e) {
-            router = new Router(JspPath.ERROR4XX,RouterType.FORWARD);
+            router = new Router(JspPath.ERROR400,RouterType.FORWARD);
         }
-        daoBattery.update(battery);
         return router;
     }
 

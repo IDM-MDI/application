@@ -16,9 +16,7 @@ import java.util.Optional;
 public class CookieService {
     private static CookieService instance = new CookieService();
     private CookieValidator validator = CookieValidator.getInstance();
-    private LanguageType languageType;
-    private User user;
-
+    private UserService userService;
     private CookieService(){}
 
     public static CookieService getInstance() {
@@ -29,19 +27,8 @@ public class CookieService {
         Cookie[] cookies = request.getCookies();
         if(cookies == null){
             response.addCookie(createCookie(LanguageType.RU));
-            languageType = LanguageType.RU;
-            this.user = new User();
             response.addCookie(new Cookie("email",null));
             response.addCookie(new Cookie("pass",null));
-        }
-        else {
-            if(validator.isCookieExist(cookies,"language")){
-                String language = getCookie(cookies,"language").getValue();
-                this.languageType = LanguageType.valueOf(language);
-            }
-            if(validator.isLoginValid(cookies)){
-                this.user = findUser(cookies);
-            }
         }
     }
     public Cookie getCookie(Cookie[] cookies,String name){
@@ -53,31 +40,38 @@ public class CookieService {
         }
         return result;
     }
-    private User findUser(Cookie[] cookies){
-        DaoUser dao = new DaoUser();
-        Optional<User> userOptional;
-        User result = null;
-        try {
-            userOptional = dao.findEntityById(getCookie(cookies,"email").getValue());
-            if(userOptional.isPresent()){
-                String password = userOptional.get().getPass();
-                if(password.equals(getCookie(cookies,"pass").getValue())){
-                    result = userOptional.get();
+    public User findUser(Cookie[] cookies){
+        User result;
+        if(cookies != null){
+            if(validator.isLoginValid(cookies)){
+                userService = UserService.getInstance();
+                String email = getCookie(cookies,"email").getValue();
+                String pass = getCookie(cookies,"pass").getValue();
+                result = userService.login(email,pass);
+                if(result == null){
+                    result = new User();
                 }
             }
-        } catch (DaoException e) {
-            // TODO: 1/30/2022  
+            else{
+                result= new User();
+            }
+        }
+        else{
+            result= new User();
         }
         return result;
     }
-
-    public User getUser() {
-        return user;
+    public LanguageType findLanguage(Cookie[] cookies){
+        LanguageType type = LanguageType.RU;
+        if(cookies != null){
+            if(validator.isCookieExist(cookies,"language")){
+                String language = getCookie(cookies,"language").getValue();
+                type = LanguageType.valueOf(language);
+            }
+        }
+        return type;
     }
 
-    public LanguageType getLanguageType() {
-        return languageType;
-    }
 
     public void addLanguage(HttpServletRequest request,HttpServletResponse response, String language) {
         Cookie cookie = getCookie(request.getCookies(),"language");
@@ -86,14 +80,20 @@ public class CookieService {
         response.addCookie(cookie);
     }
     public void addUser(HttpServletRequest request,HttpServletResponse response,User user) {
-        if((user.getEmail() == null && user.getEmail().isEmpty()
+        if(!(user.getEmail() == null && user.getEmail().isEmpty()
         && user.getPass() == null && user.getPass().isEmpty())) {
             Cookie email = getCookie(request.getCookies(),"email");
             Cookie password = getCookie(request.getCookies(),"pass");
+            if(email == null && password == null){
+                email = new Cookie("email",user.getEmail());
+                password = new Cookie("pass",user.getPass());
+            }
+            else{
+                email.setValue(user.getEmail());
+                password.setValue(user.getPass());
+            }
             email.setMaxAge(60 * 60 * 24 * 365 * 10);
             password.setMaxAge(60 * 60 * 24 * 365 * 10);
-            email.setValue(user.getEmail());
-            password.setValue(user.getPass());
             response.addCookie(email);
             response.addCookie(password);
         }
