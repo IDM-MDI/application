@@ -1,5 +1,6 @@
 package by.ishangulyev.application.service;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.JspPath;
@@ -10,10 +11,14 @@ import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.model.entity.impl.Battery;
 import by.ishangulyev.application.model.entity.impl.Cpu;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class CpuService {
+    private static final Logger logger = LogManager.getLogger();
     private static CpuService instance = new CpuService();
     private CpuService(){}
 
@@ -47,7 +52,7 @@ public class CpuService {
         return daoCpu.delete(realId);
     }
     public Router get(HttpServletRequest request){
-        String page = request.getParameter("page");
+        String page = request.getParameter(AttributeName.PAGE);
 
         if(page == null || page.isEmpty()){
             page = "1";
@@ -64,7 +69,7 @@ public class CpuService {
                 cpuList.remove(cpuList.size()-1);
             }
         } catch (DaoException e) {
-            // TODO: 2/8/2022
+            logger.log(Level.ERROR,"Error getting all Cpus");
         }
         request.setAttribute("cpuList",cpuList);
         request.setAttribute("currentPage",++pageNumber);

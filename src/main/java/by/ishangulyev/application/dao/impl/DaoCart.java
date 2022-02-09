@@ -34,8 +34,8 @@ public class DaoCart extends DaoEntity<Long,Cart> {
                 result.add(getValues(set));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DaoException("Error executing query get all category", e);
+            logger.log(Level.ERROR, "Error executing query get all Cart", e);
+            throw new DaoException("Error executing query get all Cart", e);
         } finally {
             releaseConnection();
         }

@@ -34,8 +34,8 @@ public class DaoCpu extends DaoEntity<Long,Cpu> {
                 result.add(getValues(set));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DaoException("Error executing query get all category", e);
+            logger.log(Level.ERROR, "Error executing query get all Cpu", e);
+            throw new DaoException("Error executing query get all Cpu", e);
         } finally {
             releaseConnection();
         }
@@ -133,7 +133,7 @@ public class DaoCpu extends DaoEntity<Long,Cpu> {
             statement.setString(3, entity.getFrequency());
             statement.setString(4, entity.getBit());
         } catch (SQLException e) {
-            logger.log(Level.ERROR,"");     // TODO: 2/8/2022
+            logger.log(Level.ERROR,"");
             throw new DaoException("",e);
         }
     }

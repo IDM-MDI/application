@@ -31,8 +31,8 @@ public class DaoVideo extends DaoEntity<Long,Video> {
                 result.add(getValues(set));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DaoException("Error executing query get all category", e);
+            logger.log(Level.ERROR, "Error executing query get all video", e);
+            throw new DaoException("Error executing query get all video", e);
         } finally {
             releaseConnection();
         }
@@ -131,7 +131,7 @@ public class DaoVideo extends DaoEntity<Long,Video> {
             statement.setInt(4, entity.getBrightness());
             statement.setString(5, entity.getType().name());
         } catch (SQLException e) {
-            logger.error("query has failed", e); // TODO: 2/8/2022
+            logger.error("query has failed", e);
             throw new DaoException("query has failed");
         }
     }

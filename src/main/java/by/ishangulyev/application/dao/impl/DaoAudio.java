@@ -37,8 +37,8 @@ public class DaoAudio extends DaoEntity<Long,Audio> {
                 result.add(getValues(set));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Error executing query get all category", e); // TODO: 2/8/2022  
-            throw new DaoException("Error executing query get all category", e);
+            logger.log(Level.ERROR, "Error executing query get all Audio", e);
+            throw new DaoException("Error executing query get all Audio", e);
         } finally {
             releaseConnection();
         }
@@ -53,7 +53,7 @@ public class DaoAudio extends DaoEntity<Long,Audio> {
             statement.setLong(4, entity.getId());
             result = statement.executeUpdate() > 0;
         } catch (SQLException | DaoException e) {
-            logger.log(Level.WARN, "Error while updating dao", e); // TODO: 2/8/2022  
+            logger.log(Level.WARN, "Error executing query update Audio", e);
             result = false;
         } finally {
             releaseConnection();
@@ -73,8 +73,8 @@ public class DaoAudio extends DaoEntity<Long,Audio> {
                 entity = Optional.of(getValues(set));
             }
         } catch (SQLException e) {
-            logger.error("query has failed", e); // TODO: 2/8/2022  
-            throw new DaoException("query has failed");
+            logger.error("Error executing query findEntityByID Audio", e);
+            throw new DaoException("Error executing query findEntityByID Audio");
         } finally {
             releaseConnection();
         }
@@ -90,8 +90,8 @@ public class DaoAudio extends DaoEntity<Long,Audio> {
                 result.add(getValues(set));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DaoException("Error executing query get all category", e);
+            logger.log(Level.ERROR, "Error executing query findEntityByCount Audio", e);
+            throw new DaoException("Error executing query findEntityByCount Audio", e);
         } finally {
             releaseConnection();
         }
@@ -105,7 +105,7 @@ public class DaoAudio extends DaoEntity<Long,Audio> {
             statement.setLong(1, id);
             result = statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            logger.log(Level.WARN, "", e); // TODO: 2/8/2022  
+            logger.log(Level.WARN, "Error executing query delete Audio", e);
             result = false;
         } finally {
             releaseConnection();
@@ -120,7 +120,7 @@ public class DaoAudio extends DaoEntity<Long,Audio> {
             fillStatement(statement, entity);
             result = statement.executeUpdate() > 0;
         } catch (DaoException | SQLException e) {
-            logger.log(Level.WARN, "", e); // TODO: 2/8/2022  
+            logger.log(Level.WARN, "Error executing query create Audio", e);
             result = false;
         } finally {
             releaseConnection();
@@ -135,7 +135,7 @@ public class DaoAudio extends DaoEntity<Long,Audio> {
             statement.setString(2, entity.getType().name());
             statement.setInt(3, entity.getFrequency());
         } catch (SQLException e) {
-            logger.log(Level.ERROR,"");     // TODO: 2/8/2022  
+            logger.log(Level.ERROR,"Error executing query fill Statement Audio");
             throw new DaoException("",e);
         }
     }
@@ -151,8 +151,8 @@ public class DaoAudio extends DaoEntity<Long,Audio> {
             result.setType(type);
             result.setFrequency(set.getInt(ColumnName.AUDIO_FREQUENCY));
         } catch (SQLException e) {
-            logger.log(Level.ERROR,"");     // TODO: 2/8/2022  
-            throw new DaoException("",e);
+            logger.log(Level.ERROR,"Error executing query get Values from Result set Audio");
+            throw new DaoException("Error executing query get Values from Result set Audio",e);
         }
         return result;
     }

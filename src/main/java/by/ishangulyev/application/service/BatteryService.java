@@ -1,5 +1,6 @@
 package by.ishangulyev.application.service;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.JspPath;
@@ -10,10 +11,14 @@ import by.ishangulyev.application.model.entity.impl.Audio;
 import by.ishangulyev.application.model.entity.impl.AudioType;
 import by.ishangulyev.application.model.entity.impl.Battery;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class BatteryService {
+    private static final Logger logger = LogManager.getLogger();
     private static BatteryService instance = new BatteryService();
     private BatteryService(){}
 
@@ -60,7 +65,7 @@ public class BatteryService {
         return result;
     }
     public Router get(HttpServletRequest request){
-        String page = request.getParameter("page");
+        String page = request.getParameter(AttributeName.PAGE);
         if(page == null || page.isEmpty()){
             page = "1";
         }
@@ -76,7 +81,7 @@ public class BatteryService {
                 batteryList.remove(batteryList.size()-1);
             }
         } catch (DaoException e) {
-            // TODO: 2/8/2022
+            logger.log(Level.ERROR,"Error getting all Battery");
         }
         request.setAttribute("batteryList",batteryList);
         request.setAttribute("currentPage",++pageNumber);

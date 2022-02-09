@@ -1,5 +1,6 @@
 package by.ishangulyev.application.service;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.JspPath;
@@ -9,10 +10,14 @@ import by.ishangulyev.application.dao.impl.DaoVideo;
 import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.model.entity.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class VideoService {
+    private static final Logger logger = LogManager.getLogger();
     private static VideoService instance = new VideoService();
     private VideoService(){}
 
@@ -48,7 +53,7 @@ public class VideoService {
         return daoVideo.delete(realId);
     }
     public Router get(HttpServletRequest request){
-        String page = request.getParameter("page");
+        String page = request.getParameter(AttributeName.PAGE);
         if(page == null || page.isEmpty()){
             page = "1";
         }
@@ -64,7 +69,7 @@ public class VideoService {
                 videoList.remove(videoList.size()-1);
             }
         } catch (DaoException e) {
-            // TODO: 2/8/2022
+            logger.log(Level.ERROR,"Error getting all Video");
         }
         request.setAttribute("videoList",videoList);
         request.setAttribute("currentPage",++pageNumber);

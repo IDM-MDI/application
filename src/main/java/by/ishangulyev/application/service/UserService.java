@@ -1,5 +1,6 @@
 package by.ishangulyev.application.service;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.JspPath;
@@ -109,7 +110,7 @@ public class UserService {
     }
 
     public Router getAccounts(HttpServletRequest request){
-        String page = request.getParameter("page");
+        String page = request.getParameter(AttributeName.PAGE);
         if(page == null || page.isEmpty()){
             page = "1";
         }
@@ -125,7 +126,7 @@ public class UserService {
                 userList.remove(userList.size()-1);
             }
         } catch (DaoException e) {
-            // TODO: 2/8/2022
+            logger.log(Level.ERROR,"Error getting all Users");
         }
         request.setAttribute("userList",userList);
         request.setAttribute("currentPage",++pageNumber);

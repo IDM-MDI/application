@@ -31,8 +31,8 @@ public class DaoGadget extends DaoEntity<Long,Gadget> {
                 result.add(getValues(set));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DaoException("Error executing query get all category", e);
+            logger.log(Level.ERROR, "Error executing query get all gadget", e);
+            throw new DaoException("Error executing query get all gadget", e);
         } finally {
             releaseConnection();
         }
@@ -225,7 +225,7 @@ public class DaoGadget extends DaoEntity<Long,Gadget> {
             statement.setLong(10, entity.getAudioID());
             statement.setLong(11, entity.getCategoryID());
         } catch (SQLException e) {
-            logger.error("query has failed", e); // TODO: 2/8/2022
+            logger.error("query has failed", e);
             throw new DaoException("query has failed");
         }
     }

@@ -1,11 +1,12 @@
 package by.ishangulyev.application.service;
 
 import by.ishangulyev.application.controller.Router;
+import by.ishangulyev.application.util.AttributeUtil;
 import jakarta.servlet.http.HttpServletRequest;
 
 public class LanguageService {
     private static LanguageService instance = new LanguageService();
-    private final AttributeService languageServiceHelper = new AttributeService();
+    private final AttributeUtil languageServiceHelper = new AttributeUtil();
 
     private LanguageService(){}
 

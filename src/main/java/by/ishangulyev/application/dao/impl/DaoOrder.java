@@ -29,8 +29,8 @@ public class DaoOrder extends DaoEntity<Long,Order> {
                 result.add(getValues(set));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DaoException("Error executing query get all category", e);
+            logger.log(Level.ERROR, "Error executing query get all order", e);
+            throw new DaoException("Error executing query get all order", e);
         } finally {
             releaseConnection();
         }
@@ -46,8 +46,8 @@ public class DaoOrder extends DaoEntity<Long,Order> {
                 result.add(getValues(set));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DaoException("Error executing query get all category", e);
+            logger.log(Level.ERROR, "Error executing query get all by cart order", e);
+            throw new DaoException("Error executing query get all all by cart order", e);
         } finally {
             releaseConnection();
         }
@@ -61,7 +61,7 @@ public class DaoOrder extends DaoEntity<Long,Order> {
             statement.setLong(3,entity.getId());
             result = statement.executeUpdate() > 0;
         } catch (SQLException | DaoException e) {
-            logger.log(Level.WARN, "Error while updating dao", e);
+            logger.log(Level.WARN, "Error while updating order", e);
             result = false;
         } finally {
             releaseConnection();
@@ -155,7 +155,7 @@ public class DaoOrder extends DaoEntity<Long,Order> {
             statement.setLong(1,entity.getCartID());
             statement.setLong(2,entity.getGadgetID());
         } catch (SQLException e) {
-            logger.error("query has failed", e); // TODO: 2/8/2022
+            logger.error("query has failed", e);
             throw new DaoException("query has failed");
         }
     }

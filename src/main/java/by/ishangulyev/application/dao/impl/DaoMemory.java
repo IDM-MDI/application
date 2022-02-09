@@ -31,8 +31,8 @@ public class DaoMemory extends DaoEntity<Long,Memory> {
                 result.add(getValues(set));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DaoException("Error executing query get all category", e);
+            logger.log(Level.ERROR, "Error executing query get all memory", e);
+            throw new DaoException("Error executing query get all memory", e);
         } finally {
             releaseConnection();
         }
@@ -129,7 +129,7 @@ public class DaoMemory extends DaoEntity<Long,Memory> {
             statement.setString(2, entity.getSize());
             statement.setString(3, entity.getType().name());
         } catch (SQLException e) {
-            logger.error("query has failed", e); // TODO: 2/8/2022
+            logger.error("query has failed", e);
             throw new DaoException("query has failed");
         }
     }

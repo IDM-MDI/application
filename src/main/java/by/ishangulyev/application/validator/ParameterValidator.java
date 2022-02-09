@@ -1,6 +1,5 @@
 package by.ishangulyev.application.validator;
 
-import by.ishangulyev.application.controller.command.CommandType;
 import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.controller.command.RequestParameterName;
 import by.ishangulyev.application.controller.command.RequestParameterValue;

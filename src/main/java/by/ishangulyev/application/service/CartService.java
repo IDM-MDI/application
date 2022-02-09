@@ -1,5 +1,6 @@
 package by.ishangulyev.application.service;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.JspPath;
@@ -18,10 +19,13 @@ import com.oracle.wls.shaded.org.apache.xpath.operations.Or;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class CartService {
+    private static final Logger logger = LogManager.getLogger();
     private static CartService instance = new CartService();
     private CartService(){}
 
@@ -85,7 +89,7 @@ public class CartService {
         try {
             DaoGadget daoGadget = new DaoGadget();
             HttpSession session = request.getSession();
-            Cart cart = (Cart) session.getAttribute("cart");
+            Cart cart = (Cart) session.getAttribute(AttributeName.CART);
             List<Order> orders = findOrder(cart.getId());
             List<Gadget> gadgetList = daoGadget.findAllByOrder(orders);
             router = new Router(JspPath.CART,RouterType.FORWARD);

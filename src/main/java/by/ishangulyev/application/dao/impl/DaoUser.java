@@ -31,8 +31,8 @@ public class DaoUser extends DaoEntity<String,User> {
                 result.add(getValues(set));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DaoException("Error executing query get all category", e);
+            logger.log(Level.ERROR, "Error executing query get all user", e);
+            throw new DaoException("Error executing query get all user", e);
         } finally {
             releaseConnection();
         }

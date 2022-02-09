@@ -1,4 +1,4 @@
-package by.ishangulyev.application.service;
+package by.ishangulyev.application.util;
 
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.model.entity.impl.User;
@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-public class AttributeService {
+public class AttributeUtil {
     private final String RU_PATH = "language/russian.properties";
     private final String EN_PATH = "language/english.properties";
 

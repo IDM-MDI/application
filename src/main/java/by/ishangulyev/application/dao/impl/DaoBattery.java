@@ -34,8 +34,8 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
                 result.add(getValues(set));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DaoException("Error executing query get all category", e);
+            logger.log(Level.ERROR, "Error executing query get all Battery", e);
+            throw new DaoException("Error executing query get all Battery", e);
         } finally {
             releaseConnection();
         }
@@ -52,8 +52,8 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
                 result.add(getValues(set));
             }
         } catch (SQLException e) {
-            logger.log(Level.ERROR, "Error executing query get all category", e);
-            throw new DaoException("Error executing query get all category", e);
+            logger.log(Level.ERROR, "Error executing query findEntityByCount Battery", e);
+            throw new DaoException("Error executing query findEntityByCount Battery", e);
         } finally {
             releaseConnection();
         }
@@ -68,7 +68,7 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
             statement.setLong(3,entity.getId());
             result = statement.executeUpdate() > 0;
         } catch (SQLException | DaoException e) {
-            logger.log(Level.WARN, "Error while updating dao", e);
+            logger.log(Level.WARN, "Error executing query update Battery", e);
             result = false;
         } finally {
             releaseConnection();
@@ -88,8 +88,8 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
                 entity = Optional.of(getValues(set));
             }
         } catch (SQLException e) {
-            logger.error("query has failed", e);
-            throw new DaoException("query has failed");
+            logger.error("Error executing query findEntityById Battery", e);
+            throw new DaoException("Error executing query findEntityById Battery");
         } finally {
             releaseConnection();
         }
@@ -103,7 +103,7 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
             statement.setLong(1, id);
             result = statement.executeUpdate() > 0;
         } catch (SQLException e) {
-            logger.log(Level.WARN, "", e);
+            logger.log(Level.WARN, "Error executing query delete Battery", e);
             result = false;
         } finally {
             releaseConnection();
@@ -118,7 +118,7 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
             fillStatement(statement, entity);
             result = statement.executeUpdate() > 0;
         } catch (SQLException | DaoException e) {
-            logger.log(Level.WARN, "", e);
+            logger.log(Level.WARN, "Error executing query create Battery", e);
             result = false;
         } finally {
             releaseConnection();
@@ -132,8 +132,8 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
             statement.setString(1, entity.getName());
             statement.setInt(2, entity.getMah());
         } catch (SQLException e) {
-            logger.error("query has failed", e); // TODO: 2/8/2022
-            throw new DaoException("query has failed");
+            logger.error("Error executing query fill Statement Battery", e);
+            throw new DaoException("Error executing query fill Statement Battery");
         }
     }
 
@@ -145,8 +145,8 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
             result.setName(set.getString(ColumnName.NAME));
             result.setMah(set.getInt(ColumnName.BATTERY_MAH));
         } catch (SQLException e) {
-            logger.error("query has failed", e); // TODO: 2/8/2022
-            throw new DaoException("query has failed");
+            logger.error("Error executing query get Values from Result set Battery", e);
+            throw new DaoException("Error executing query get Values from Result set Battery");
         }
 
         return result;

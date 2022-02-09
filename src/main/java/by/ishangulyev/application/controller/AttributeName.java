@@ -6,6 +6,7 @@ public class AttributeName {
     public static final String LANGUAGE = "language";
     public static final String USER = "user";
     public static final String PAGE = "page";
+    public static final String PASS = "pass";
 
     public static final String USER_EMAIL = "email";
     public static final String USER_PASSWORD = "password";
@@ -23,7 +24,7 @@ public class AttributeName {
     public static final String BATTERY_MAH = "batteryMah";
 
     public static final String CATEGORY_ID = "categoryId";
-    public static final String CATEGORY_NAME = "audioName";
+    public static final String CATEGORY_NAME = "categoryName";
 
     public static final String CPU_ID = "cpuId";
     public static final String CPU_NAME = "cpuName";
