@@ -7,6 +7,7 @@ import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.dao.impl.DaoAudio;
 import by.ishangulyev.application.dao.impl.DaoBattery;
 import by.ishangulyev.application.dao.impl.DaoGadget;
+import by.ishangulyev.application.dao.impl.DaoOrder;
 import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.model.entity.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,6 +37,7 @@ public class GadgetService {
     }
     public boolean delete(String id){
         DaoGadget daoGadget = new DaoGadget();
+        DaoOrder daoOrder = new DaoOrder();
         long realId;
         try{
             realId = Long.parseLong(id);
@@ -43,6 +45,7 @@ public class GadgetService {
         catch (NumberFormatException e){
             realId = -1;
         }
+        daoOrder.deleteByGadget(realId);
         return daoGadget.delete(realId);
     }
     public Router get(HttpServletRequest request){
@@ -69,7 +72,7 @@ public class GadgetService {
             gadgetList = daoGadget.findByCount(pageNumber);
             foreign.findAllForeign(audioList,batteryList,categoryList,cpuList,memoryList,videoList);
             if(gadgetList.size() > 9){
-                next = pageNumber+1;
+                next = pageNumber+2;
                 gadgetList.remove(gadgetList.size()-1);
             }
         } catch (DaoException e) {

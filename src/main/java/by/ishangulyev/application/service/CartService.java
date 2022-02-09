@@ -73,6 +73,22 @@ public class CartService {
         }
         return cart;
     }
+    public Cart findUserCart(String email) {
+        Cart cart = null;
+        if(!(email == null || email.isEmpty())){
+            DaoCart daoCart = new DaoCart();
+            try {
+                cart = daoCart.findEntityByEmail(email);
+            } catch (DaoException e) {
+                e.printStackTrace();
+            }
+        }
+        else{
+            cart = new Cart();
+        }
+        return cart;
+    }
+
     public List<Order> findOrder(long id){
         DaoOrder daoOrder = new DaoOrder();
         List<Order> orders;

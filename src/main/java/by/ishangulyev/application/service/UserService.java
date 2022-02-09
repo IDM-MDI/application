@@ -5,6 +5,7 @@ import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.dao.impl.DaoCart;
+import by.ishangulyev.application.dao.impl.DaoOrder;
 import by.ishangulyev.application.dao.impl.DaoUser;
 import by.ishangulyev.application.dao.impl.DaoVideo;
 import by.ishangulyev.application.exception.DaoException;
@@ -137,8 +138,13 @@ public class UserService {
     }
 
     public boolean deleteAccount(String email) {
+        CartService cartService = CartService.getInstance();
         DaoUser daoUser = new DaoUser();
         DaoCart daoCart = new DaoCart();
+        DaoOrder daoOrder = new DaoOrder();
+
+        Cart userCart = cartService.findUserCart(email);
+        daoOrder.deleteByUserCart(userCart.getId());
         daoCart.deleteByEmail(email);
         return daoUser.delete(email);
     }

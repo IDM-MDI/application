@@ -65,7 +65,7 @@ public class VideoService {
             pageNumber--;
             videoList = daoVideo.findByCount(pageNumber);
             if(videoList.size() > 9){
-                next = pageNumber+1;
+                next = pageNumber+2;
                 videoList.remove(videoList.size()-1);
             }
         } catch (DaoException e) {

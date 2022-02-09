@@ -64,7 +64,7 @@ public class MemoryService {
             pageNumber--;
             memoryList = daoMemory.findByCount(pageNumber);
             if(memoryList.size() > 9){
-                next = pageNumber+1;
+                next = pageNumber+2;
                 memoryList.remove(memoryList.size()-1);
             }
         } catch (DaoException e) {

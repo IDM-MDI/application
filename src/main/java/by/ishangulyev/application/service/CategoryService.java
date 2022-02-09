@@ -75,7 +75,7 @@ public class CategoryService {
             pageNumber--;
             categoryList = daoCategory.findByCount(pageNumber);
             if(categoryList.size() > 9){
-                next = pageNumber+1;
+                next = pageNumber+2;
                 categoryList.remove(categoryList.size()-1);
             }
         } catch (DaoException e) {

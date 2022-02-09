@@ -134,6 +134,34 @@ public class DaoOrder extends DaoEntity<Long,Order> {
         }
         return result;
     }
+
+    public boolean deleteByGadget(long gadgetId) {
+        boolean result = true;
+        try (PreparedStatement statement = connection.prepareStatement(OrderQuery.DELETE_BY_GADGET_ID.getValue())) {
+            statement.setLong(1, gadgetId);
+            result = statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            logger.log(Level.WARN, "", e);
+            result = false;
+        } finally {
+            releaseConnection();
+        }
+        return result;
+    }
+    public boolean deleteByUserCart(long cartId) {
+        boolean result = true;
+        try (PreparedStatement statement = connection.prepareStatement(OrderQuery.DELETE_BY_USER_CART.getValue())) {
+            statement.setLong(1, cartId);
+            result = statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            logger.log(Level.WARN, "", e);
+            result = false;
+        } finally {
+            releaseConnection();
+        }
+        return result;
+    }
+
     @Override
     public boolean create(Order entity) {
         boolean result = true;

@@ -88,13 +88,13 @@ public class CookieService {
         && user.getPass() == null && user.getPass().isEmpty())) {
             Cookie email = getCookie(request.getCookies(),AttributeName.USER_EMAIL);
             Cookie password = getCookie(request.getCookies(),AttributeName.PASS);
-            if(email == null && password == null){
-                email = new Cookie(AttributeName.USER_EMAIL,user.getEmail());
-                password = new Cookie(AttributeName.PASS,user.getPass());
-            }
-            else{
+            if(email != null && password != null){
                 email.setValue(user.getEmail());
                 password.setValue(user.getPass());
+            }
+            else{
+                email = new Cookie(AttributeName.USER_EMAIL,user.getEmail());
+                password = new Cookie(AttributeName.PASS,user.getPass());
             }
             email.setMaxAge(60 * 60 * 24 * 365 * 10);
             password.setMaxAge(60 * 60 * 24 * 365 * 10);

@@ -77,7 +77,7 @@ public class BatteryService {
             pageNumber--;
             batteryList = daoBattery.findByCount(pageNumber);
             if(batteryList.size() > 9){
-                next = pageNumber+1;
+                next = pageNumber+2;
                 batteryList.remove(batteryList.size()-1);
             }
         } catch (DaoException e) {

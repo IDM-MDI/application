@@ -65,7 +65,7 @@ public class CpuService {
             pageNumber--;
             cpuList = daoCpu.findByCount(pageNumber);
             if(cpuList.size() > 9){
-                next = pageNumber+1;
+                next = pageNumber+2;
                 cpuList.remove(cpuList.size()-1);
             }
         } catch (DaoException e) {

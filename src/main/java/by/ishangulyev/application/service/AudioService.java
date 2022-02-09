@@ -79,7 +79,7 @@ public class AudioService {
             pageNumber--;
             audioList = daoAudio.findByCount(pageNumber);
             if(audioList.size() > 9){
-                next = pageNumber+1;
+                next = pageNumber+2;
                 audioList.remove(audioList.size()-1);
             }
         } catch (DaoException e) {

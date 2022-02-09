@@ -7,6 +7,8 @@ public enum OrderQuery {
     SELECT_BY_COUNT("SELECT * FROM orders LIMIT 10 OFFSET ?;"),
     DELETE("DELETE FROM orders WHERE id = ?"),
     DELETE_BY_GADGET("DELETE FROM orders WHERE cartID = ? AND gadgetID = ?"),
+    DELETE_BY_GADGET_ID("DELETE FROM orders WHERE gadgetID = ?"),
+    DELETE_BY_USER_CART("DELETE FROM orders WHERE cartID = ?"),
     UPDATE("UPDATE orders SET cartID = ?,gadgetID = ? WHERE id = ?"),
     INSERT("INSERT INTO orders(cartID,gadgetID) VALUES(?,?)");
 
