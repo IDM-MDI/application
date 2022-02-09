@@ -1,5 +1,6 @@
 package by.ishangulyev.application.controller.command.impl.update;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
@@ -14,9 +15,9 @@ public class UpdateBatteryCommand implements ActionCommand {
     private BatteryService service = BatteryService.getInstance();
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
         Router router;
-        String id = request.getParameter("batteryId");
-        String name = request.getParameter("batteryName");
-        String mah = request.getParameter("batteryMah");
+        String id = request.getParameter(AttributeName.BATTERY_ID);
+        String name = request.getParameter(AttributeName.BATTERY_NAME);
+        String mah = request.getParameter(AttributeName.BATTERY_MAH);
         if(service.update(id,name,mah)){
             router = service.get(request);
         }

@@ -3,6 +3,7 @@ package by.ishangulyev.application.controller.command;
 public enum JspPath {
     INDEX("jsp/main.jsp"),
     CART("jsp/cart.jsp"),
+    ABOUT("jsp/about.jsp"),
     SIGN_IN("jsp/signin.jsp"),
     SIGN_UP("jsp/signup.jsp"),
     GADGETS("jsp/gadgets.jsp"),

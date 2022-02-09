@@ -1,5 +1,6 @@
 package by.ishangulyev.application.controller.command.impl.delete;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
@@ -13,7 +14,7 @@ public class DeleteMemoryCommand implements ActionCommand {
     private MemoryService service = MemoryService.getInstance();
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
         Router router;
-        String id = request.getParameter("memoryId");
+        String id = request.getParameter(AttributeName.MEMORY_ID);
         if(service.delete(id)){
             router = service.get(request);
         }

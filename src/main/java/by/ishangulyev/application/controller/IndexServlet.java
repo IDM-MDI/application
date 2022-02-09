@@ -10,7 +10,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -44,7 +43,7 @@ public class IndexServlet extends HttpServlet {
         if(validator.isParameterValid(req)){
             ActionCommand command = commandFactory.getCommand(req);
             Router router = command.execute(req,resp);
-            router.setLanguage((LanguageType) req.getSession().getAttribute("language"));
+            router.setLanguage((LanguageType) req.getSession().getAttribute(AttributeName.LANGUAGE));
             languageService.setLanguageAtPage(req,router);
             switch (router.getRouterType()) {
                 case FORWARD: {

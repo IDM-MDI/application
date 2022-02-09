@@ -16,6 +16,8 @@ public class AttributeService {
         Properties properties = getProperty(router);
         setHeader(request,properties);
         request.setAttribute("titleTranslate",properties.getProperty("index.title"));
+        request.setAttribute("indexOne",properties.getProperty("index.first"));
+        request.setAttribute("indexTwo",properties.getProperty("index.second"));
     }
     public void setSignUp(HttpServletRequest request, Router router){
         Properties properties = getProperty(router);
@@ -59,7 +61,15 @@ public class AttributeService {
         setSettingsProperties(request,properties);
         setGadgetProperties(request,properties);
     }
-
+    public void setAbout(HttpServletRequest request, Router router) {
+        Properties properties = getProperty(router);
+        setHeader(request,properties);
+        request.setAttribute("titleTranslate",properties.getProperty("about.title"));
+        request.setAttribute("aboutOne",properties.getProperty("about.one"));
+        request.setAttribute("aboutTwo",properties.getProperty("about.two"));
+        request.setAttribute("aboutThree",properties.getProperty("about.three"));
+        request.setAttribute("aboutFour",properties.getProperty("about.four"));
+    }
 
 
     public void setBatterySettings(HttpServletRequest request, Router router){
@@ -217,4 +227,6 @@ public class AttributeService {
         request.setAttribute("catTranslate",properties.getProperty("cat"));
         request.setAttribute("atcTranslate",properties.getProperty("atc"));
     }
+
+
 }

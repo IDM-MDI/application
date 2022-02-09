@@ -1,5 +1,6 @@
 package by.ishangulyev.application.controller.command.impl.update;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
@@ -13,10 +14,10 @@ public class UpdateAudioCommand implements ActionCommand {
     private AudioService service = AudioService.getInstance();
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
         Router router;
-        String id = request.getParameter("audioId");
-        String name = request.getParameter("audioName");
-        String type = request.getParameter("audioType");
-        String frequency = request.getParameter("audioFrequency");
+        String id = request.getParameter(AttributeName.AUDIO_ID);
+        String name = request.getParameter(AttributeName.AUDIO_NAME);
+        String type = request.getParameter(AttributeName.AUDIO_TYPE);
+        String frequency = request.getParameter(AttributeName.AUDIO_FREQUENCY);
         if(service.update(id,name,type,frequency)){
             router = service.get(request);
         }

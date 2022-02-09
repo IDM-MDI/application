@@ -31,6 +31,7 @@ public class LanguageService {
             case GADGET_SETTINGS -> languageServiceHelper.setGadgetSettings(request,router);
             case MEMORY_SETTINGS -> languageServiceHelper.setMemorySettings(request,router);
             case CATEGORY_SETTINGS -> languageServiceHelper.setCategorySettings(request,router);
+            case ABOUT -> languageServiceHelper.setAbout(request,router);
         }
     }
 }

@@ -5,7 +5,7 @@
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a href="${pageContext.request.contextPath}/controller?jsp_switcher=index" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-                    <img src="${pageContext.request.contextPath}/img/m-letter.jpg" alt="">
+                    <img src="${pageContext.request.contextPath}/img/mletter.jpg" alt="">
                 </svg>
             </a>
 

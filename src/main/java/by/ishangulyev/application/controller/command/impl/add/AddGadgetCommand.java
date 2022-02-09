@@ -1,5 +1,6 @@
 package by.ishangulyev.application.controller.command.impl.add;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
@@ -31,22 +32,22 @@ public class AddGadgetCommand implements ActionCommand {
 
     private Gadget fillEntityInfo(HttpServletRequest request){
         Gadget gadget = new Gadget();
-        String name = request.getParameter("gadgetName");
-        String bDes = request.getParameter("gadgetBigDescription");
-        String sDes = request.getParameter("gadgetSmallDescription");
-        String price = request.getParameter("gadgetPrice");
-        String audio = request.getParameter("gadgetAudio");
-        String video = request.getParameter("gadgetVideo");
-        String category = request.getParameter("gadgetCategory");
-        String battery = request.getParameter("gadgetBattery");
-        String cpu = request.getParameter("gadgetCpu");
-        String memory = request.getParameter("gadgetMemory");
+        String name = request.getParameter(AttributeName.GADGET_NAME);
+        String bDes = request.getParameter(AttributeName.GADGET_BD);
+        String sDes = request.getParameter(AttributeName.GADGET_SD);
+        String price = request.getParameter(AttributeName.GADGET_PRICE);
+        String audio = request.getParameter(AttributeName.GADGET_AUDIO);
+        String video = request.getParameter(AttributeName.GADGET_VIDEO);
+        String category = request.getParameter(AttributeName.GADGET_CATEGORY);
+        String battery = request.getParameter(AttributeName.GADGET_BATTERY);
+        String cpu = request.getParameter(AttributeName.GADGET_CPU);
+        String memory = request.getParameter(AttributeName.GADGET_MEMORY);
         try{
             gadget.setName(name);
             gadget.setBigDescription(bDes);
             gadget.setSmallDescription(sDes);
             gadget.setPrice(BigDecimal.valueOf(Long.parseLong(price)));
-            Part part = request.getPart("gadgetPhoto");
+            Part part = request.getPart(AttributeName.GADGET_PHOTO);
             gadget.setMainPhoto(part.getInputStream().readAllBytes());
             gadget.setAudioID(Long.parseLong(audio));
             gadget.setVideoID(Long.parseLong(video));

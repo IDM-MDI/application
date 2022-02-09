@@ -1,5 +1,6 @@
 package by.ishangulyev.application.controller.command.impl.add;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
@@ -13,7 +14,7 @@ public class AddCategoryCommand implements ActionCommand {
     private CategoryService service = CategoryService.getInstance();
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
         Router router;
-        String name = request.getParameter("categoryName");
+        String name = request.getParameter(AttributeName.CATEGORY_NAME);
         if(service.add(name)){
             router = service.get(request);
         }

@@ -1,5 +1,6 @@
 package by.ishangulyev.application.controller.command.impl.delete;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
@@ -14,7 +15,7 @@ import java.util.List;
 public class DeleteUserCommand implements ActionCommand {
     private UserService service = UserService.getInstance();
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
-        String delete = request.getParameter("email");
+        String delete = request.getParameter(AttributeName.USER_EMAIL);
         service.deleteAccount(delete);
         return service.getAccounts(request);
     }

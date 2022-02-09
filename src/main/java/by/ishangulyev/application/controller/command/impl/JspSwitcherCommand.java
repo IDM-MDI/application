@@ -14,6 +14,7 @@ public class JspSwitcherCommand implements ActionCommand {
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
         JspPath path;
         switch (request.getParameter(RequestParameterName.JSP_SWITCHER.name().toLowerCase())){
+            case "about" -> path = JspPath.ABOUT;
             case "index" -> path = JspPath.INDEX;
             case "gadgets" ->{
                 path = JspPath.GADGETS;

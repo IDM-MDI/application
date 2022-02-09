@@ -1,5 +1,6 @@
 package by.ishangulyev.application.controller.command.impl.add;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
@@ -15,8 +16,8 @@ public class AddCartCommand implements ActionCommand {
     private CartService service = CartService.getInstance();
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-        Cart cart = (Cart) session.getAttribute("cart");
-        String id = request.getParameter("id");
+        Cart cart = (Cart) session.getAttribute(AttributeName.CART);
+        String id = request.getParameter(AttributeName.ID);
         service.add(cart.getId(),id);
         GadgetService gadgetService = GadgetService.getInstance();
         gadgetService.get(request);
