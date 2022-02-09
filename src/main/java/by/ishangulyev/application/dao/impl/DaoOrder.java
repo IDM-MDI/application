@@ -4,9 +4,6 @@ import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
 import by.ishangulyev.application.dao.query.OrderQuery;
 import by.ishangulyev.application.exception.DaoException;
-import by.ishangulyev.application.exception.DataBaseException;
-import by.ishangulyev.application.model.entity.impl.Audio;
-import by.ishangulyev.application.model.entity.impl.AudioType;
 import by.ishangulyev.application.model.entity.impl.Order;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -39,12 +36,29 @@ public class DaoOrder extends DaoEntity<Long,Order> {
         }
         return result;
     }
+    public List<Order> findAllByCart(long id) throws DaoException {
+        List<Order> result = new ArrayList<>();
 
+        try (PreparedStatement statement = connection.prepareStatement(OrderQuery.SELECT_BY_CART.getValue())) {
+            statement.setLong(1,id);
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                result.add(getValues(set));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
+        } finally {
+            releaseConnection();
+        }
+        return result;
+    }
     @Override
     public boolean update(Order entity) {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(OrderQuery.UPDATE.getValue())) {
             fillStatement(statement, entity);
+            statement.setLong(3,entity.getId());
             result = statement.executeUpdate() > 0;
         } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "Error while updating dao", e);
@@ -76,7 +90,20 @@ public class DaoOrder extends DaoEntity<Long,Order> {
     }
 
     @Override public List<Order> findByCount(int count) throws DaoException {
-        return null;
+        List<Order> result = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(OrderQuery.SELECT_BY_COUNT.getValue())) {
+            statement.setInt(1, count*9);
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                result.add(getValues(set));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
+        } finally {
+            releaseConnection();
+        }
+        return result;
     }
 
     @Override
@@ -93,7 +120,20 @@ public class DaoOrder extends DaoEntity<Long,Order> {
         }
         return result;
     }
-
+    public boolean deleteByGadget(long gadgetId,long userCart) {
+        boolean result = true;
+        try (PreparedStatement statement = connection.prepareStatement(OrderQuery.DELETE_BY_GADGET.getValue())) {
+            statement.setLong(1, userCart);
+            statement.setLong(2, gadgetId);
+            result = statement.executeUpdate() > 0;
+        } catch (SQLException e) {
+            logger.log(Level.WARN, "", e);
+            result = false;
+        } finally {
+            releaseConnection();
+        }
+        return result;
+    }
     @Override
     public boolean create(Order entity) {
         boolean result = true;
@@ -111,7 +151,13 @@ public class DaoOrder extends DaoEntity<Long,Order> {
 
     @Override
     public void fillStatement(PreparedStatement statement, Order entity) throws DaoException {
-
+        try {
+            statement.setLong(1,entity.getCartID());
+            statement.setLong(2,entity.getGadgetID());
+        } catch (SQLException e) {
+            logger.error("query has failed", e); // TODO: 2/8/2022
+            throw new DaoException("query has failed");
+        }
     }
 
     @Override

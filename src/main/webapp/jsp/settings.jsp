@@ -8,14 +8,14 @@
 <body>
 <jsp:include page="header.jsp" />
 <ul class="list-group">
-    <a href="${pageContext.request.contextPath}/controller?jsp_switcher=audiosettings" class="list-group-item list-group-item-action list-group-item-secondary">Audio settings</a>
-    <a href="${pageContext.request.contextPath}/controller?battery=get" class="list-group-item list-group-item-action list-group-item-secondary">Battery settings</a>
-    <a href="${pageContext.request.contextPath}/controller?jsp_switcher=categorysettings" class="list-group-item list-group-item-action list-group-item-secondary">Category settings</a>
-    <a href="${pageContext.request.contextPath}/controller?jsp_switcher=cpusettings" class="list-group-item list-group-item-action list-group-item-secondary">CPU settings</a>
-    <a href="${pageContext.request.contextPath}/controller?jsp_switcher=addgadget" class="list-group-item list-group-item-action list-group-item-secondary">Gadget settings</a>
-    <a href="${pageContext.request.contextPath}/controller?jsp_switcher=memorysettings" class="list-group-item list-group-item-action list-group-item-secondary">Memory settings</a>
-    <a href="${pageContext.request.contextPath}/controller?user=get" class="list-group-item list-group-item-action list-group-item-secondary">User settings</a>
-    <a href="${pageContext.request.contextPath}/controller?jsp_switcher=videosettings" class="list-group-item list-group-item-action list-group-item-secondary">Video settings</a>
+    <a href="${pageContext.request.contextPath}/controller?audio=get" class="list-group-item list-group-item-action list-group-item-secondary">${audioTranslate}</a>
+    <a href="${pageContext.request.contextPath}/controller?battery=get" class="list-group-item list-group-item-action list-group-item-secondary">${batteryTranslate}</a>
+    <a href="${pageContext.request.contextPath}/controller?category=get" class="list-group-item list-group-item-action list-group-item-secondary">${categoryTranslate}</a>
+    <a href="${pageContext.request.contextPath}/controller?cpu=get" class="list-group-item list-group-item-action list-group-item-secondary">${cpuTranslate}</a>
+    <a href="${pageContext.request.contextPath}/controller?gadget=get" class="list-group-item list-group-item-action list-group-item-secondary">${gadgetTranslate}</a>
+    <a href="${pageContext.request.contextPath}/controller?memory=get" class="list-group-item list-group-item-action list-group-item-secondary">${memoryTranslate}</a>
+    <a href="${pageContext.request.contextPath}/controller?user=get" class="list-group-item list-group-item-action list-group-item-secondary">${userTranslate}</a>
+    <a href="${pageContext.request.contextPath}/controller?video=get" class="list-group-item list-group-item-action list-group-item-secondary">${videoTranslate}</a>
 </ul>
 <jsp:include page="footer.jsp" />
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous" type="text/javascript"></script>

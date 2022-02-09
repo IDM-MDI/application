@@ -2,10 +2,8 @@ package by.ishangulyev.application.dao.impl;
 
 import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
-import by.ishangulyev.application.dao.query.GadgetQuery;
 import by.ishangulyev.application.dao.query.UserQuery;
 import by.ishangulyev.application.exception.DaoException;
-import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.*;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -17,7 +15,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,7 +52,7 @@ public class DaoUser extends DaoEntity<String,User> {
             if(entity.getPhoto() != null){
                 updatePhoto(entity);
             }
-            if(entity.getPass() != null){
+            if(entity.getPass().isEmpty()){
                 updatePassword(entity);
             }
         } catch (SQLException e) {
@@ -88,10 +85,9 @@ public class DaoUser extends DaoEntity<String,User> {
     }
 
     @Override public List<User> findByCount(int count) throws DaoException {
-        count*=9;
         List<User> result = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(UserQuery.SELECT_BY_COUNT.getValue())) {
-            statement.setInt(1, count);
+            statement.setInt(1, count*9);
             ResultSet set = statement.executeQuery();
             while (set.next()) {
                 result.add(getValues(set));
@@ -170,25 +166,25 @@ public class DaoUser extends DaoEntity<String,User> {
         return result;
     }
 
-    private boolean updatePhoto(User entity) throws SQLException {
+    private void updatePhoto(User entity) throws SQLException {
         try (PreparedStatement statement = connection.prepareStatement(UserQuery.UPDATE_PHOTO.getValue())) {
             statement.setBlob(1,new ByteArrayInputStream(entity.getPhoto()));
             statement.setString(2, entity.getEmail());
-            return statement.executeUpdate() > 0;
+            statement.executeUpdate();
         }
     }
-    private boolean updateUsername(User entity) throws SQLException{
+    private void updateUsername(User entity) throws SQLException{
         try (PreparedStatement statement = connection.prepareStatement(UserQuery.UPDATE_USERNAME.getValue())) {
             statement.setString(1, entity.getName());
             statement.setString(2, entity.getEmail());
-            return statement.executeUpdate() > 0;
+            statement.executeUpdate();
         }
     }
-    private boolean updateRole(User entity) throws SQLException{
+    private void updateRole(User entity) throws SQLException{
         try (PreparedStatement statement = connection.prepareStatement(UserQuery.UPDATE_ROLE.getValue())) {
             statement.setString(1, entity.getRole().name());
             statement.setString(2, entity.getEmail());
-            return statement.executeUpdate() > 0;
+            statement.executeUpdate();
         }
     }
     private boolean updatePassword(User entity) throws SQLException{

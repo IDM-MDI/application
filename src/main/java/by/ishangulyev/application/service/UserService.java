@@ -5,18 +5,22 @@ import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.dao.impl.DaoCart;
 import by.ishangulyev.application.dao.impl.DaoUser;
+import by.ishangulyev.application.dao.impl.DaoVideo;
 import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.Cart;
 import by.ishangulyev.application.model.entity.impl.Role;
 import by.ishangulyev.application.model.entity.impl.User;
+import by.ishangulyev.application.model.entity.impl.Video;
 import by.ishangulyev.application.util.HashPassGenerator;
 import by.ishangulyev.application.validator.UserValidator;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Part;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Date;
 import java.util.List;
@@ -25,6 +29,7 @@ import java.util.Optional;
 public class UserService {
     private static final Logger logger = LogManager.getLogger();
     private static UserService instance = new UserService();
+    private UserValidator validator = UserValidator.getInstance();
     private DaoUser registration;
     private DaoCart cart;
 
@@ -76,29 +81,65 @@ public class UserService {
         return result;
     }
 
-    public void updateAccount(User updateUser){
+    public User updateAccount(String email, String password,String username, String role, Part photo){
         DaoUser daoUser = new DaoUser();
-        daoUser.update(updateUser);
+        User user = new User();
+        if(email != null){
+            user.setEmail(email);
+        }
+        if(password != null || !password.isBlank()){
+            user.setPass(HashPassGenerator.generate(password));
+        }
+        if(username != null|| !password.isBlank()){
+            user.setName(username);
+        }
+        if(role != null){
+            user.setRole(Role.valueOf(role.toUpperCase()));
+        }
+        if(photo != null){
+            try {
+                if(validator.isPhotoValid(photo))
+                user.setPhoto(photo.getInputStream().readAllBytes());
+            } catch (IOException e) {
+                user.setPhoto(null);
+            }
+        }
+        daoUser.update(user);
+        return user;
     }
 
-    public List<User> getAccounts(String page){
+    public Router getAccounts(HttpServletRequest request){
+        String page = request.getParameter("page");
+        if(page == null || page.isEmpty()){
+            page = "1";
+        }
         int pageNumber = Integer.parseInt(page);
+        int next = 0,prev = pageNumber-1;
         List<User> userList = null;
         DaoUser daoUser = new DaoUser();
         try {
             pageNumber--;
             userList = daoUser.findByCount(pageNumber);
+            if(userList.size() > 9){
+                next = pageNumber+1;
+                userList.remove(userList.size()-1);
+            }
         } catch (DaoException e) {
             // TODO: 2/8/2022
         }
-        return userList;
+        request.setAttribute("userList",userList);
+        request.setAttribute("currentPage",++pageNumber);
+        request.setAttribute("nextPage",next);
+        request.setAttribute("prevPage",prev);
+
+        return new Router(JspPath.USER_SETTINGS, RouterType.FORWARD);
     }
 
-    public void deleteAccount(String email) {
+    public boolean deleteAccount(String email) {
         DaoUser daoUser = new DaoUser();
         DaoCart daoCart = new DaoCart();
         daoCart.deleteByEmail(email);
-        daoUser.delete(email);
+        return daoUser.delete(email);
     }
 
     private User fillEntityInfo(String email,String pass){

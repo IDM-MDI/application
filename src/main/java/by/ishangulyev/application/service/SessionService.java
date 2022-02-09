@@ -11,6 +11,7 @@ import jakarta.servlet.http.HttpSession;
 public class SessionService {
     private static SessionService instance = new SessionService();
     private CookieService cookieService = CookieService.getInstance();
+    private CartService cartService = CartService.getInstance();
 
     private SessionService(){}
 
@@ -29,7 +30,9 @@ public class SessionService {
     }
 
     public void initSession(HttpSession session,Cookie[] cookies){
-        session.setAttribute("user",cookieService.findUser(cookies));
+        User user = cookieService.findUser(cookies);
+        session.setAttribute("user",user);
+        session.setAttribute("cart",cartService.findUserCart(user));
         session.setMaxInactiveInterval(1000);
         LanguageType type = cookieService.findLanguage(cookies);
         session.setAttribute("language",type);

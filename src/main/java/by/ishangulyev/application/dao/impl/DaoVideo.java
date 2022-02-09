@@ -2,13 +2,11 @@ package by.ishangulyev.application.dao.impl;
 
 import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
+import by.ishangulyev.application.dao.query.UserQuery;
 import by.ishangulyev.application.dao.query.VideoQuery;
 import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
-import by.ishangulyev.application.model.entity.impl.Audio;
-import by.ishangulyev.application.model.entity.impl.AudioType;
-import by.ishangulyev.application.model.entity.impl.Video;
-import by.ishangulyev.application.model.entity.impl.VideoType;
+import by.ishangulyev.application.model.entity.impl.*;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,6 +44,7 @@ public class DaoVideo extends DaoEntity<Long,Video> {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(VideoQuery.UPDATE.getValue())) {
             fillStatement(statement, entity);
+            statement.setLong(6,entity.getId());
             result = statement.executeUpdate() > 0;
         } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "Error while updating dao", e);
@@ -77,7 +76,20 @@ public class DaoVideo extends DaoEntity<Long,Video> {
     }
 
     @Override public List<Video> findByCount(int count) throws DaoException {
-        return null;
+        List<Video> result = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(VideoQuery.SELECT_BY_COUNT.getValue())) {
+            statement.setInt(1, count*9);
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                result.add(getValues(set));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
+        } finally {
+            releaseConnection();
+        }
+        return result;
     }
 
     @Override
@@ -112,7 +124,16 @@ public class DaoVideo extends DaoEntity<Long,Video> {
 
     @Override
     public void fillStatement(PreparedStatement statement, Video entity) throws DaoException {
-
+        try {
+            statement.setString(1, entity.getName());
+            statement.setString(2, entity.getResolution());
+            statement.setString(3, entity.getRatio());
+            statement.setInt(4, entity.getBrightness());
+            statement.setString(5, entity.getType().name());
+        } catch (SQLException e) {
+            logger.error("query has failed", e); // TODO: 2/8/2022
+            throw new DaoException("query has failed");
+        }
     }
 
     @Override

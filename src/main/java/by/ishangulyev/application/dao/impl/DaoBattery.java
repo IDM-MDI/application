@@ -44,10 +44,9 @@ public class DaoBattery extends DaoEntity<Long,Battery> {
 
     @Override
     public List<Battery> findByCount(int count) throws DaoException {
-        count*=9;
         List<Battery> result = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement(BatteryQuery.SELECT_BY_COUNT.getValue())) {
-            statement.setInt(1, count);
+            statement.setInt(1, count*9);
             ResultSet set = statement.executeQuery();
             while (set.next()) {
                 result.add(getValues(set));

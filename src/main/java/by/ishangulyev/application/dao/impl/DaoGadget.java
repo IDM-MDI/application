@@ -2,16 +2,15 @@ package by.ishangulyev.application.dao.impl;
 
 import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
-import by.ishangulyev.application.dao.query.GadgetQuery;
+import by.ishangulyev.application.dao.query.*;
 import by.ishangulyev.application.exception.DaoException;
-import by.ishangulyev.application.model.entity.impl.Audio;
-import by.ishangulyev.application.model.entity.impl.AudioType;
-import by.ishangulyev.application.model.entity.impl.Gadget;
+import by.ishangulyev.application.model.entity.impl.*;
 import by.ishangulyev.application.exception.DataBaseException;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.ByteArrayInputStream;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -63,6 +62,7 @@ public class DaoGadget extends DaoEntity<Long,Gadget> {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(GadgetQuery.UPDATE.getValue())) {
             fillStatement(statement, entity);
+            statement.setLong(12,entity.getId());
             result = statement.executeUpdate() > 0;
         } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "Error while updating dao", e);
@@ -93,6 +93,28 @@ public class DaoGadget extends DaoEntity<Long,Gadget> {
         return entity;
     }
 
+    public List<Gadget> findAllByOrder(List<Order> orders) throws DaoException {
+        List<Gadget> result = new ArrayList<>();
+        try {
+            for (int i = 0; i < orders.size(); i++) {
+                try (PreparedStatement statement = connection.prepareStatement(GadgetQuery.SELECT_BY_ID.getValue())) {
+                    statement.setLong(1,orders.get(i).getGadgetID());
+                    ResultSet set = statement.executeQuery();
+                    if (set.next()) {
+                        result.add(getValues(set));
+                    }
+                }
+            }
+        }
+         catch (SQLException e) {
+            logger.log(Level.ERROR, "Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
+        } finally {
+            releaseConnection();
+        }
+        return result;
+    }
+
     @Override
     public boolean delete(Long id) {
         boolean result = true;
@@ -106,6 +128,71 @@ public class DaoGadget extends DaoEntity<Long,Gadget> {
             releaseConnection();
         }
         return result;
+    }
+
+
+    public void findAllForeign(List<Audio> audioList, List<Battery> batteryList, List<Category> categoryList, List<Cpu> cpus, List<Memory> memoryList, List<Video> videoList) throws DaoException {
+        try{
+            try (PreparedStatement statement = connection.prepareStatement(AudioQuery.SELECT_ID_NAME.getValue())) {
+            ResultSet set = statement.executeQuery();
+                while (set.next()) {
+                Audio audio = new Audio();
+                audio.setId(set.getLong(ColumnName.ID));
+                audio.setName(set.getString(ColumnName.NAME));
+                audioList.add(audio);
+            }
+        }
+            try (PreparedStatement statement = connection.prepareStatement(BatteryQuery.SELECT_ID_NAME.getValue())) {
+                ResultSet set = statement.executeQuery();
+                while (set.next()) {
+                    Battery battery = new Battery();
+                    battery.setId(set.getLong(ColumnName.ID));
+                    battery.setName(set.getString(ColumnName.NAME));
+                    batteryList.add(battery);
+                }
+            }
+            try (PreparedStatement statement = connection.prepareStatement(CategoryQuery.SELECT_ID_NAME.getValue())) {
+                ResultSet set = statement.executeQuery();
+                while (set.next()) {
+                    Category category = new Category();
+                    category.setId(set.getLong(ColumnName.ID));
+                    category.setName(set.getString(ColumnName.NAME));
+                    categoryList.add(category);
+                }
+            }
+            try (PreparedStatement statement = connection.prepareStatement(CpuQuery.SELECT_ID_NAME.getValue())) {
+                ResultSet set = statement.executeQuery();
+                while (set.next()) {
+                    Cpu cpu = new Cpu();
+                    cpu.setId(set.getLong(ColumnName.ID));
+                    cpu.setName(set.getString(ColumnName.NAME));
+                    cpus.add(cpu);
+                }
+            }
+            try (PreparedStatement statement = connection.prepareStatement(MemoryQuery.SELECT_ID_NAME.getValue())) {
+                ResultSet set = statement.executeQuery();
+                while (set.next()) {
+                    Memory memory = new Memory();
+                    memory.setId(set.getLong(ColumnName.ID));
+                    memory.setName(set.getString(ColumnName.NAME));
+                    memoryList.add(memory);
+                }
+            }
+            try (PreparedStatement statement = connection.prepareStatement(VideoQuery.SELECT_ID_NAME.getValue())) {
+                ResultSet set = statement.executeQuery();
+                while (set.next()) {
+                    Video video = new Video();
+                    video.setId(set.getLong(ColumnName.ID));
+                    video.setName(set.getString(ColumnName.NAME));
+                    videoList.add(video);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error("query has failed", e);
+            throw new DaoException("query has failed");
+        } finally {
+            releaseConnection();
+        }
     }
 
     @Override
@@ -125,7 +212,22 @@ public class DaoGadget extends DaoEntity<Long,Gadget> {
 
     @Override
     public void fillStatement(PreparedStatement statement, Gadget entity) throws DaoException {
-
+        try {
+            statement.setString(1, entity.getName());
+            statement.setString(2, entity.getSmallDescription());
+            statement.setString(3, entity.getBigDescription());
+            statement.setBlob(4, new ByteArrayInputStream(entity.getMainPhoto()));
+            statement.setLong(5, entity.getCpyID());
+            statement.setLong(6, entity.getMemoryID());
+            statement.setBigDecimal(7, entity.getPrice());
+            statement.setLong(8, entity.getBatteryID());
+            statement.setLong(9, entity.getVideoID());
+            statement.setLong(10, entity.getAudioID());
+            statement.setLong(11, entity.getCategoryID());
+        } catch (SQLException e) {
+            logger.error("query has failed", e); // TODO: 2/8/2022
+            throw new DaoException("query has failed");
+        }
     }
 
     @Override
@@ -138,16 +240,18 @@ public class DaoGadget extends DaoEntity<Long,Gadget> {
             result.setBigDescription(set.getString(ColumnName.GADGET_BIG_DESCRIPTION));
             result.setMainPhoto(set.getBytes(ColumnName.GADGET_PHOTO));
             result.setPrice(set.getBigDecimal(ColumnName.GADGET_PRICE));
-            result.setAudioID(set.getLong(ColumnName.GADGET_AUDIO_ID));
-            result.setVideoID(set.getLong(ColumnName.GADGET_VIDEO_ID));
-            result.setMemoryID(set.getLong(ColumnName.GADGET_MEMORY_ID));
-            result.setBatteryID(set.getLong(ColumnName.GADGET_BATTERY_ID));
-            result.setCpyID(set.getLong(ColumnName.GADGET_CPU_ID));
-            result.setCategoryID(set.getLong(ColumnName.GADGET_CATEGORY_ID));
+            result.setCpuName(set.getString(7));
+            result.setVideoName(set.getString(10));
+            result.setMemoryName(set.getString(8));
+            result.setBatteryName(set.getString(9));
+            result.setAudioName(set.getString(11));
+            result.setCategoryName(set.getString(12));
+            result.setPhotoToString();
         } catch (SQLException e) {
             logger.log(Level.ERROR, "Error executing query get all category", e);
             throw new DaoException("Error executing query get all category", e);
         }
         return result;
     }
+
 }

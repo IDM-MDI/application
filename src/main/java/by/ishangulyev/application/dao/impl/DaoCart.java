@@ -3,11 +3,13 @@ package by.ishangulyev.application.dao.impl;
 import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
 import by.ishangulyev.application.dao.query.CartQuery;
+import by.ishangulyev.application.dao.query.UserQuery;
 import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.Audio;
 import by.ishangulyev.application.model.entity.impl.AudioType;
 import by.ishangulyev.application.model.entity.impl.Cart;
+import by.ishangulyev.application.model.entity.impl.User;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -74,9 +76,37 @@ public class DaoCart extends DaoEntity<Long,Cart> {
         }
         return entity;
     }
-
+    public Cart findEntityByEmail(String email) throws DaoException {
+        Cart entity = null;
+        try (PreparedStatement statement = connection.prepareStatement(CartQuery.SELECT_BY_EMAIL.getValue())) {
+            statement.setString(1, email);
+            ResultSet set = statement.executeQuery();
+            if (set.next()) {
+                entity = getValues(set);
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
+        } finally {
+            releaseConnection();
+        }
+        return entity;
+    }
     @Override public List<Cart> findByCount(int count) throws DaoException {
-        return null;
+        List<Cart> result = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(CartQuery.SELECT_BY_COUNT.getValue())) {
+            statement.setInt(1, count*9);
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                result.add(getValues(set));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
+        } finally {
+            releaseConnection();
+        }
+        return result;
     }
 
     @Override

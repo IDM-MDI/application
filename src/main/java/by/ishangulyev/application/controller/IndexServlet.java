@@ -19,9 +19,9 @@ import java.io.IOException;
 
 
 @WebServlet(name = "IndexServlet", urlPatterns = {"/controller"})
-@MultipartConfig(fileSizeThreshold = 1024 * 1024,
+@MultipartConfig(fileSizeThreshold = 1024 * 1024 * 15,
                  maxFileSize = 1024 * 1024 * 15,
-                 maxRequestSize = 1024 * 1024)
+                 maxRequestSize = 1024 * 1024 * 15)
 public class IndexServlet extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
     private final ParameterValidator validator = ParameterValidator.getInstance();

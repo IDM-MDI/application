@@ -14,7 +14,7 @@ public class SignUpCommand implements ActionCommand {
     public Router execute(HttpServletRequest request, HttpServletResponse response) {
         Router router;
         String email =  request.getParameter("email");
-        String pass = request.getParameter("pass");
+        String pass = request.getParameter("password");
         if(service.registration(email,pass)){
             router = new Router(JspPath.SIGN_IN, RouterType.FORWARD);
         }

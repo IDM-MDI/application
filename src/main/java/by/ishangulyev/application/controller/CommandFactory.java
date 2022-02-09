@@ -80,9 +80,16 @@ public class CommandFactory {
             case CPU -> {
                 switch(commandValue){
                     case ADD -> result = new AddCpuCommand();
-                    case UPDATE -> result = new UpdateCpyCommand();
+                    case UPDATE -> result = new UpdateCpuCommand();
                     case DELETE -> result = new DeleteCpuCommand();
                     case GET -> result = new GetCpuCommand();
+                }
+            }
+            case CART -> {
+                switch(commandValue){
+                    case ADD -> result = new AddCartCommand();
+                    case DELETE -> result = new DeleteCartCommand();
+                    case GET -> result = new GetCartCommand();
                 }
             }
             case LANGUAGE -> result = new LanguageCommand();

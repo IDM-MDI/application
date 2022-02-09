@@ -5,9 +5,10 @@ import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.dao.impl.DaoAudio;
 import by.ishangulyev.application.dao.impl.DaoBattery;
+import by.ishangulyev.application.dao.impl.DaoCategory;
 import by.ishangulyev.application.dao.impl.DaoMemory;
 import by.ishangulyev.application.exception.DaoException;
-import by.ishangulyev.application.model.entity.impl.Battery;
+import by.ishangulyev.application.model.entity.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
@@ -20,13 +21,19 @@ public class MemoryService {
         return instance;
     }
 
-    public boolean add(){
+    public boolean add(String name, String type, String size){
+        boolean result = true;
         DaoMemory daoMemory = new DaoMemory();
-        return daoMemory.create();
-    }
-    public boolean update(){
-        DaoMemory daoMemory = new DaoMemory();
-        return daoMemory.update();
+        try{
+            Memory update = new Memory();
+            update.setName(name);
+            update.setSize(size);
+            update.setType(MemoryType.valueOf(type.toUpperCase()));
+            daoMemory.create(update);
+        }catch (Exception e){
+            result = false;
+        }
+        return result;
     }
     public boolean delete(String id){
         DaoMemory daoMemory = new DaoMemory();
@@ -46,22 +53,38 @@ public class MemoryService {
         }
         int pageNumber = Integer.parseInt(page);
         int next = 0,prev = pageNumber-1;
-        List<Battery> batteryList = null;
-        DaoBattery daoBattery = new DaoBattery();
+        List<Memory> memoryList = null;
+        DaoMemory daoMemory = new DaoMemory();
         try {
             pageNumber--;
-            batteryList = daoBattery.findByCount(pageNumber);
-            if(batteryList.size() > 9){
+            memoryList = daoMemory.findByCount(pageNumber);
+            if(memoryList.size() > 9){
                 next = pageNumber+1;
-                batteryList.remove(batteryList.size()-1);
+                memoryList.remove(memoryList.size()-1);
             }
         } catch (DaoException e) {
             // TODO: 2/8/2022
         }
-        request.setAttribute("batteryList",batteryList);
+        request.setAttribute("memoryList",memoryList);
         request.setAttribute("currentPage",++pageNumber);
         request.setAttribute("nextPage",next);
         request.setAttribute("prevPage",prev);
         return new Router(JspPath.MEMORY_SETTINGS, RouterType.FORWARD);
+    }
+
+    public boolean update(String id, String name, String type, String size) {
+        boolean result = true;
+        DaoMemory daoMemory = new DaoMemory();
+        try{
+            Memory update = new Memory();
+            update.setName(name);
+            update.setId(Long.parseLong(id));
+            update.setSize(size);
+            update.setType(MemoryType.valueOf(type.toUpperCase()));
+            daoMemory.update(update);
+        }catch (Exception e){
+            result = false;
+        }
+        return result;
     }
 }

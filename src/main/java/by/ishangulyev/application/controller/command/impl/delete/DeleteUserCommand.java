@@ -16,23 +16,6 @@ public class DeleteUserCommand implements ActionCommand {
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
         String delete = request.getParameter("email");
         service.deleteAccount(delete);
-
-        String page = "1";
-        int pageNumber = Integer.parseInt(page);
-        int next = 0,prev = pageNumber-1;
-
-        List<User> userList = service.getAccounts(page);
-        if(userList.size() > 9){
-            userList.remove(userList.size() -1);
-            next = pageNumber+1;
-        }
-
-        request.setAttribute("userList",userList);
-        request.setAttribute("currentPage",pageNumber);
-        request.setAttribute("nextPage",next);
-        request.setAttribute("prevPage",prev);
-
-
-        return new Router(JspPath.USER_SETTINGS,RouterType.FORWARD);
+        return service.getAccounts(request);
     }
 }

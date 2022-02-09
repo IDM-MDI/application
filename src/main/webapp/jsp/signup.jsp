@@ -13,23 +13,19 @@
 </head>
 <body>
 <jsp:include page="header.jsp" />
-
+<h1>${registrTranslate}</h1>
 <form action="${pageContext.request.contextPath}/controller?user=add" method="post">
     <div class="form-group">
-        <label for="exampleInputEmail1">Email address</label>
-        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
+        <label for="exampleInputEmail1">${emailTranslate}</label>
+        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="${emailTranslate}">
         <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
     </div>
     <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
-        <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-    </div>
-    <div class="form-group form-check">
-        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+        <label for="exampleInputPassword1">${passwordTranslate}</label>
+        <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="${passwordTranslate}">
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">${addTranslate}</button>
     </div>
 </form>
 <jsp:include page="footer.jsp" />

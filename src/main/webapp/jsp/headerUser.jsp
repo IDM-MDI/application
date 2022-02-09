@@ -4,13 +4,11 @@
     <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a href="${pageContext.request.contextPath}/controller?jsp_switcher=index" class="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
-                <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"></use></svg>
+                <img src="${pageContext.request.contextPath}/img/m-letter.jpg" height="50" width="50"/>
             </a>
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                <li><a href="${pageContext.request.contextPath}/controller?gadget=get" class="nav-link px-2 text-white">${gadgetsTranslate}</a></li>
-                <li><a href="${pageContext.request.contextPath}/controller?jsp_switcher=pricing" class="nav-link px-2 text-white">${pricingTranslate}</a></li>
-                <li><a href="${pageContext.request.contextPath}/controller?jsp_switcher=faq" class="nav-link px-2 text-white">${faqTranslate}</a></li>
+                <li><a href="${pageContext.request.contextPath}/controller?jsp_switcher=gadgets" class="nav-link px-2 text-white">${gadgetsTranslate}</a></li>
                 <li><a href="${pageContext.request.contextPath}/controller?jsp_switcher=about" class="nav-link px-2 text-white">${aboutTranslate}</a></li>
             </ul>
 
@@ -33,6 +31,7 @@
                 </button>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?jsp_switcher=account">${profileTranslate}</a>
+                    <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?jsp_switcher=cart">${cartTranslate}</a>
                     <c:if test="${sessionScope.user.role == 'ADMIN'}">
                         <a class="dropdown-item" href="${pageContext.request.contextPath}/controller?jsp_switcher=settings">${settingsTranslate}</a>
                     </c:if>

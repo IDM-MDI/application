@@ -16,30 +16,30 @@
 <jsp:include page="header.jsp" />
 <form action="${pageContext.request.contextPath}/controller?user=update" method="post" enctype="multipart/form-data">
     <div class="form-group">
-        <label for="emailInput">Email</label>
+        <label for="emailInput">${emailTranslate}</label>
         <input type="text" readonly class="form-control-plaintext" id="emailInput" value="${sessionScope.user.email}" name="email">
     </div>
     <div class="form-group">
-        <label for="usernameInput">Username</label>
+        <label for="usernameInput">${usernameTranslate}</label>
         <c:if test="${empty sessionScope.user.name}">
-            <input type="text" name="username" class="form-control" id="usernameInput" placeholder="Username">
+            <input type="text" name="username" class="form-control" id="usernameInput" placeholder="${usernameTranslate}">
         </c:if>
         <c:if test="${not empty sessionScope.user.name}">
             <input type="text" name="username" class="form-control" id="usernameInput" placeholder="${sessionScope.user.name}">
         </c:if>
     </div>
     <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
-        <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+        <label for="exampleInputPassword1">${passwordTranslate}</label>
+        <input type="password" name="password" class="form-control" id="exampleInputPassword1" placeholder="${passwordTranslate}">
     </div>
     <div class="form-group">
         <div class="custom-file">
             <input type="file" name="userPhoto" accept="image/*" class="custom-file-input" id="customFile">
-            <label class="custom-file-label" for="customFile">Choose file</label>
+            <label class="custom-file-label" for="customFile">${fileTranslate}</label>
         </div>
     </div>
     <div class="form-group">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary">${submitTranslate}</button>
     </div>
 </form>
 

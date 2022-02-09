@@ -3,12 +3,10 @@ package by.ishangulyev.application.dao.impl;
 import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
 import by.ishangulyev.application.dao.query.MemoryQuery;
+import by.ishangulyev.application.dao.query.UserQuery;
 import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
-import by.ishangulyev.application.model.entity.impl.Audio;
-import by.ishangulyev.application.model.entity.impl.AudioType;
-import by.ishangulyev.application.model.entity.impl.Memory;
-import by.ishangulyev.application.model.entity.impl.MemoryType;
+import by.ishangulyev.application.model.entity.impl.*;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -46,6 +44,7 @@ public class DaoMemory extends DaoEntity<Long,Memory> {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(MemoryQuery.UPDATE.getValue())) {
             fillStatement(statement, entity);
+            statement.setLong(4,entity.getId());
             result = statement.executeUpdate() > 0;
         } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "Error while updating dao", e);
@@ -77,7 +76,20 @@ public class DaoMemory extends DaoEntity<Long,Memory> {
     }
 
     @Override public List<Memory> findByCount(int count) throws DaoException {
-        return null;
+        List<Memory> result = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(MemoryQuery.SELECT_BY_COUNT.getValue())) {
+            statement.setInt(1, count*9);
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                result.add(getValues(set));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
+        } finally {
+            releaseConnection();
+        }
+        return result;
     }
 
     @Override
@@ -112,7 +124,14 @@ public class DaoMemory extends DaoEntity<Long,Memory> {
 
     @Override
     public void fillStatement(PreparedStatement statement, Memory entity) throws DaoException {
-
+        try {
+            statement.setString(1, entity.getName());
+            statement.setString(2, entity.getSize());
+            statement.setString(3, entity.getType().name());
+        } catch (SQLException e) {
+            logger.error("query has failed", e); // TODO: 2/8/2022
+            throw new DaoException("query has failed");
+        }
     }
 
     @Override

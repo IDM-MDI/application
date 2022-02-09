@@ -14,27 +14,15 @@ public class UpdateBatteryCommand implements ActionCommand {
     private BatteryService service = BatteryService.getInstance();
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
         Router router;
-        try {
-            Battery battery = fillEntityInfo(request);
-            service.update(battery);
+        String id = request.getParameter("batteryId");
+        String name = request.getParameter("batteryName");
+        String mah = request.getParameter("batteryMah");
+        if(service.update(id,name,mah)){
             router = service.get(request);
-        } catch (Exception e) {
-            router = new Router(JspPath.ERROR400,RouterType.FORWARD);
+        }
+        else{
+            router = new Router(JspPath.ERROR400, RouterType.FORWARD);
         }
         return router;
-    }
-
-    private Battery fillEntityInfo(HttpServletRequest request) throws Exception {
-        Battery result = new Battery();
-        result.setName(request.getParameter("batteryName"));
-        try{
-            long id = Integer.parseInt(request.getParameter("batteryId"));
-            int mah = Integer.parseInt(request.getParameter("batteryMah"));
-            result.setId(id);
-            result.setMah(mah);
-        }catch (NumberFormatException e){
-            throw new Exception();
-        }
-        return result;
     }
 }

@@ -18,9 +18,8 @@ public class LanguageService {
             case SIGN_IN -> languageServiceHelper.setSignIn(request,router);
             case SIGN_UP -> languageServiceHelper.setSignUp(request,router);
             case GADGETS -> languageServiceHelper.setGadgets(request,router);
-            case USERS -> languageServiceHelper.setUsers(request,router);
             case ERROR400 -> languageServiceHelper.setError400(request,router);
-            case ERROR00 -> languageServiceHelper.setError500(request,router);
+            case ERROR500 -> languageServiceHelper.setError500(request,router);
             case ACCOUNT -> languageServiceHelper.setAccount(request,router);
             case CART -> languageServiceHelper.setCart(request,router);
             case SETTINGS -> languageServiceHelper.setSettings(request,router);

@@ -21,20 +21,19 @@
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                 <c:forEach var="gadget" items="${requestScope.gadgetList}">
-                    <li><c:out value="${gadget}" /></li>
-                    <div class="col">
-                        <div class="card shadow-sm">
-                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-
-                            <div class="card-body">
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                        <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-                                    </div>
-                                </div>
-                            </div>
+                    <div class="card">
+                        <c:if test="${gadget.mainPhoto[0] eq null}">
+                            <img src="${pageContext.request.contextPath}/img/question.png" class="card-img-top" alt="${gadget.id} image" width="250" height="250">
+                        </c:if>
+                        <c:if test="${gadget.mainPhoto[0] ne null}">
+                            <img src="data:image/jpg;base64,${gadget.photoToString}" class="card-img-top" alt="${gadget.id} image" width="250" height="250">
+                        </c:if>
+                        <div class="card-body">
+                            <h5 class="card-title">${gadget.name}</h5>
+                            <p class="card-text">${gadget.smallDescription}</p>
+                            <c:if test="${sessionScope.user.role ne null}">
+                                <a href="${pageContext.request.contextPath}/controller?cart=add&&id=${gadget.id}" class="btn btn-primary"><th>${atcTranslate}</th></a>
+                            </c:if>
                         </div>
                     </div>
                 </c:forEach>
@@ -44,10 +43,10 @@
 
     <ul class="pagination pagination-lg">
         <c:if test="${requestScope.prevPage > 0}">
-            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?gadget=get&&page=${requestScope.prevPage}">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?gadget=get&&page=${requestScope.prevPage}">${prevTranslate}</a></li>
         </c:if>
         <c:if test="${requestScope.prevPage <= 0}">
-            <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">Previous</a></li>
+            <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">${prevTranslate}</a></li>
         </c:if>
 
         <c:if test="${requestScope.prevPage > 0}">
@@ -61,10 +60,10 @@
         </c:if>
 
         <c:if test="${requestScope.nextPage > 0}">
-            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?gadget=get&&page=${requestScope.nextPage}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?gadget=get&&page=${requestScope.nextPage}"><th>${nextTranslate}</th></a></li>
         </c:if>
         <c:if test="${requestScope.nextPage <= 0}">
-            <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">Next</a></li>
+            <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">${nextTranslate}</a></li>
         </c:if>
     </ul>
 

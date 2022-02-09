@@ -1,3 +1,10 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: ishan
+  Date: 1/6/2022
+  Time: 5:58 PM
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
@@ -12,17 +19,15 @@
     <table class="table">
         <thead class="thead-dark">
         <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>MAH</th>
+            <th>${idTranslate}</th>
+            <th>${nameTranslate}</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach var="battery" items="${requestScope.batteryList}">
+        <c:forEach var="category" items="${requestScope.categoryList}">
             <tr>
-                <th scope="row">${battery.id}</th>
-                <td>${battery.name}</td>
-                <td>${battery.mah}</td>
+                <th scope="row">${category.id}</th>
+                <td>${category.name}</td>
             </tr>
         </c:forEach>
         </tbody>
@@ -30,76 +35,68 @@
 
     <ul class="pagination pagination-lg">
         <c:if test="${requestScope.prevPage > 0}">
-            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?battery=get&&page=${requestScope.prevPage}">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?category=get&&page=${requestScope.prevPage}">${prevTranslate}</a></li>
         </c:if>
         <c:if test="${requestScope.prevPage <= 0}">
-            <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">Previous</a></li>
+            <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">${prevTranslate}</a></li>
         </c:if>
 
         <c:if test="${requestScope.prevPage > 0}">
-            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?battery=get&&page=${requestScope.prevPage}">${requestScope.prevPage}</a></li>
+            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?category=get&&page=${requestScope.prevPage}">${requestScope.prevPage}</a></li>
         </c:if>
 
-        <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?battery=get&&page=${requestScope.currentPage}">${requestScope.currentPage}</a></li>
+        <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?category=get&&page=${requestScope.currentPage}">${requestScope.currentPage}</a></li>
 
         <c:if test="${requestScope.nextPage > 0}">
-            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?battery=get&&page=${requestScope.nextPage}">${requestScope.nextPage}</a></li>
+            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?category=get&&page=${requestScope.nextPage}">${requestScope.nextPage}</a></li>
         </c:if>
 
         <c:if test="${requestScope.nextPage > 0}">
-            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?battery=get&&page=${requestScope.nextPage}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?category=get&&page=${requestScope.nextPage}">${nextTranslate}</a></li>
         </c:if>
         <c:if test="${requestScope.nextPage <= 0}">
-            <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">Next</a></li>
+            <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">${nextTranslate}</a></li>
         </c:if>
     </ul>
 
     <div class="d-flex justify-content-around">
         <div class="p-2">
-            <div class="alert alert-dark" role="alert">Add</div>
-            <form action="${pageContext.request.contextPath}/controller?battery=add" method="post">
+            <div class="alert alert-dark" role="alert">${addTranslate}</div>
+            <form action="${pageContext.request.contextPath}/controller?category=add" method="post">
                 <div class="form-group">
-                    <label for="batteryNameAdd">Name</label>
-                    <input type="text" name="batteryName" class="form-control" id="batteryNameAdd" placeholder="Name">
+                    <label for="categoryNameAdd">${nameTranslate}</label>
+                    <input type="text" name="categoryName" class="form-control" id="categoryNameAdd" placeholder="${nameTranslate}">
                 </div>
                 <div class="form-group">
-                    <label for="batteryMahAdd">MA/H</label>
-                    <input type="number" name="batteryMah" class="form-control" id="batteryMahAdd" placeholder="MAH">
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="submit" class="btn btn-primary">${addTranslate}</button>
                 </div>
             </form>
         </div>
         <div class="p-2">
-            <div class="alert alert-dark" role="alert">Update</div>
-            <form action="${pageContext.request.contextPath}/controller?battery=update" method="post">
+            <div class="alert alert-dark" role="alert">${updateTranslate}</div>
+            <form action="${pageContext.request.contextPath}/controller?category=update" method="post">
                 <div class="form-group">
-                    <label for="batteryIdUpdate">ID</label>
-                    <input type="number" name="batteryId" class="form-control" id="batteryIdUpdate" placeholder="ID">
+                    <label for="categoryIdUpdate">${idTranslate}</label>
+                    <input type="number" name="categoryId" class="form-control" id="categoryIdUpdate" placeholder="${idTranslate}">
                 </div>
                 <div class="form-group">
-                    <label for="batteryNameUpdate">Name</label>
-                    <input type="text" name="batteryName" class="form-control" id="batteryNameUpdate" placeholder="Name">
+                    <label for="categoryNameUpdate">${nameTranslate}</label>
+                    <input type="text" name="categoryName" class="form-control" id="categoryNameUpdate" placeholder="${nameTranslate}">
                 </div>
                 <div class="form-group">
-                    <label for="batteryMahUpdate">MA/H</label>
-                    <input type="number" name="batteryMah" class="form-control" id="batteryMahUpdate" placeholder="MAH">
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">${updateTranslate}</button>
                 </div>
             </form>
         </div>
         <div class="p-2">
-            <div class="alert alert-dark" role="alert">Delete</div>
-            <form action="${pageContext.request.contextPath}/controller?battery=delete" method="post">
+            <div class="alert alert-dark" role="alert">${deleteTranslate}</div>
+            <form action="${pageContext.request.contextPath}/controller?category=delete" method="post">
                 <div class="form-group">
-                    <label for="batteryIdDelete">ID</label>
-                    <input type="number" name="batteryId" class="form-control" id="batteryIdDelete" placeholder="ID">
+                    <label for="categoryIdDelete">${idTranslate}</label>
+                    <input type="number" name="categoryId" class="form-control" id="categoryIdDelete" placeholder="${idTranslate}">
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Delete</button>
+                    <button type="submit" class="btn btn-primary">${deleteTranslate}</button>
                 </div>
             </form>
         </div>

@@ -6,6 +6,8 @@ import by.ishangulyev.application.controller.command.JspPath;
 import by.ishangulyev.application.dao.impl.DaoAudio;
 import by.ishangulyev.application.dao.impl.DaoBattery;
 import by.ishangulyev.application.exception.DaoException;
+import by.ishangulyev.application.model.entity.impl.Audio;
+import by.ishangulyev.application.model.entity.impl.AudioType;
 import by.ishangulyev.application.model.entity.impl.Battery;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -19,13 +21,34 @@ public class AudioService {
         return instance;
     }
 
-    public boolean add(){
+    public boolean add(String name,String type,String frequency){
+        boolean result = true;
         DaoAudio daoAudio = new DaoAudio();
-        return daoAudio.create();
+        Audio audio = new Audio();
+        try{
+            audio.setName(name);
+            audio.setType(AudioType.valueOf(type.toUpperCase()));
+            audio.setFrequency(Integer.parseInt(frequency));
+            daoAudio.create(audio);
+        }catch (Exception e){
+            result = false;
+        }
+        return result;
     }
-    public boolean update(){
+    public boolean update(String id,String name,String type,String frequency){
+        boolean result = true;
         DaoAudio daoAudio = new DaoAudio();
-        return daoAudio.update();
+        Audio audio = new Audio();
+        try{
+            audio.setId(Long.parseLong(id));
+            audio.setName(name);
+            audio.setType(AudioType.valueOf(type.toUpperCase()));
+            audio.setFrequency(Integer.parseInt(frequency));
+            daoAudio.update(audio);
+        }catch (Exception e){
+            result = false;
+        }
+        return result;
     }
     public boolean delete(String id){
         DaoAudio daoAudio = new DaoAudio();
@@ -45,19 +68,19 @@ public class AudioService {
         }
         int pageNumber = Integer.parseInt(page);
         int next = 0,prev = pageNumber-1;
-        List<Battery> batteryList = null;
-        DaoBattery daoBattery = new DaoBattery();
+        List<Audio> audioList = null;
+        DaoAudio daoAudio = new DaoAudio();
         try {
             pageNumber--;
-            batteryList = daoBattery.findByCount(pageNumber);
-            if(batteryList.size() > 9){
+            audioList = daoAudio.findByCount(pageNumber);
+            if(audioList.size() > 9){
                 next = pageNumber+1;
-                batteryList.remove(batteryList.size()-1);
+                audioList.remove(audioList.size()-1);
             }
         } catch (DaoException e) {
             // TODO: 2/8/2022
         }
-        request.setAttribute("batteryList",batteryList);
+        request.setAttribute("audioList",audioList);
         request.setAttribute("currentPage",++pageNumber);
         request.setAttribute("nextPage",next);
         request.setAttribute("prevPage",prev);

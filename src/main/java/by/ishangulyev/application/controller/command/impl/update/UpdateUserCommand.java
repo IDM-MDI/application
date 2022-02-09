@@ -26,69 +26,32 @@ public class UpdateUserCommand implements ActionCommand {
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
         Router router;
         HttpSession session = request.getSession();
-        User updateUser = fillEntityInfo(request);
+        String email = request.getParameter("email");
+        String password = request.getParameter("password");
+        String username = request.getParameter("username");
+        String role = request.getParameter("role");
+        Part part;
+        try {
+            part = request.getPart("userPhoto");
+        } catch (IOException | ServletException e) {
+            part = null;
+        }
         User sessionUser= (User) session.getAttribute("user");
-        service.updateAccount(updateUser);
-        if(updateUser.getEmail().equals(sessionUser.getEmail())){
+        User user = service.updateAccount(email,password,username,role,part);
+        if(user.getEmail().equals(sessionUser.getEmail())){
             SessionService sessionService = SessionService.getInstance();
-            sessionService.updateUser(request.getSession(),updateUser);
+            sessionService.updateUser(request.getSession(),user);
 
             CookieService cookieService = CookieService.getInstance();
-            cookieService.addUser(request,response,updateUser);
+            cookieService.addUser(request,response,user);
             router = new Router(JspPath.ACCOUNT,RouterType.FORWARD);
         }
-        else if(updateUser.getRole() != null){
-            router = new Router(JspPath.USER_SETTINGS,RouterType.FORWARD);
-            String page = "1";
-            int pageNumber = Integer.parseInt(page);
-            int next = 0,prev = pageNumber-1;
-
-            List<User> userList = service.getAccounts(page);
-            if(userList.size() > 9){
-                userList.remove(userList.size() -1);
-                next = pageNumber+1;
-            }
-
-            request.setAttribute("userList",userList);
-            request.setAttribute("currentPage",pageNumber);
-            request.setAttribute("nextPage",next);
-            request.setAttribute("prevPage",prev);
+        else if(user.getRole() != null){
+            router = service.getAccounts(request);
         }
         else{
             router = new Router(JspPath.ERROR400,RouterType.FORWARD);
         }
         return router;
-    }
-
-    private User fillEntityInfo(HttpServletRequest request){
-        UserValidator validator = UserValidator.getInstance();
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String username = request.getParameter("username");
-        String role = request.getParameter("role");
-
-        User result = new User();
-        result.setEmail(email);
-        try {
-            Part part = request.getPart("userPhoto");
-            if(part != null){
-                if(validator.isPhotoValid(part)){
-                    try(InputStream inputStream = part.getInputStream()){
-                        result.setPhoto(inputStream.readAllBytes());
-                    }
-                }
-            }
-        } catch (IOException | ServletException e) {
-            e.printStackTrace();
-        }
-        result.setName(username);
-        if(role != null) {
-            result.setRole(Role.valueOf(role.toUpperCase()));
-        }
-        if(!password.isEmpty()) {
-            result.setPass(HashPassGenerator.generate(password));
-        }
-
-        return result;
     }
 }

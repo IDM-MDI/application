@@ -3,11 +3,13 @@ package by.ishangulyev.application.dao.impl;
 import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
 import by.ishangulyev.application.dao.query.CpuQuery;
+import by.ishangulyev.application.dao.query.UserQuery;
 import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.Audio;
 import by.ishangulyev.application.model.entity.impl.AudioType;
 import by.ishangulyev.application.model.entity.impl.Cpu;
+import by.ishangulyev.application.model.entity.impl.User;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -45,6 +47,7 @@ public class DaoCpu extends DaoEntity<Long,Cpu> {
         boolean result = true;
         try (PreparedStatement statement = connection.prepareStatement(CpuQuery.UPDATE.getValue())) {
             fillStatement(statement, entity);
+            statement.setLong(5,entity.getId());
             result = statement.executeUpdate() > 0;
         } catch (SQLException | DaoException e) {
             logger.log(Level.WARN, "Error while updating dao", e);
@@ -76,7 +79,20 @@ public class DaoCpu extends DaoEntity<Long,Cpu> {
     }
 
     @Override public List<Cpu> findByCount(int count) throws DaoException {
-        return null;
+        List<Cpu> result = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(CpuQuery.SELECT_BY_COUNT.getValue())) {
+            statement.setInt(1, count*9);
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                result.add(getValues(set));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
+        } finally {
+            releaseConnection();
+        }
+        return result;
     }
 
     @Override
@@ -111,7 +127,15 @@ public class DaoCpu extends DaoEntity<Long,Cpu> {
 
     @Override
     public void fillStatement(PreparedStatement statement, Cpu entity) throws DaoException {
-
+        try {
+            statement.setString(1, entity.getName());
+            statement.setString(2, entity.getCore());
+            statement.setString(3, entity.getFrequency());
+            statement.setString(4, entity.getBit());
+        } catch (SQLException e) {
+            logger.log(Level.ERROR,"");     // TODO: 2/8/2022
+            throw new DaoException("",e);
+        }
     }
 
     @Override

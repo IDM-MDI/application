@@ -7,8 +7,7 @@ import by.ishangulyev.application.dao.impl.DaoAudio;
 import by.ishangulyev.application.dao.impl.DaoBattery;
 import by.ishangulyev.application.dao.impl.DaoVideo;
 import by.ishangulyev.application.exception.DaoException;
-import by.ishangulyev.application.model.entity.impl.Battery;
-import by.ishangulyev.application.model.entity.impl.Video;
+import by.ishangulyev.application.model.entity.impl.*;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
@@ -21,13 +20,21 @@ public class VideoService {
         return instance;
     }
 
-    public boolean add(Video add){
+    public boolean add(String name, String resolution, String ratio, String brightness, String type){
+        boolean result = true;
         DaoVideo daoVideo = new DaoVideo();
-        return daoVideo.create(add);
-    }
-    public boolean update(Video update){
-        DaoVideo daoVideo = new DaoVideo();
-        return daoVideo.update(update);
+        Video video = new Video();
+        try{
+            video.setName(name);
+            video.setType(VideoType.valueOf(type));
+            video.setResolution(resolution);
+            video.setRatio(ratio);
+            video.setBrightness(Integer.parseInt(brightness));
+            daoVideo.create(video);
+        }catch (Exception e){
+            result = false;
+        }
+        return result;
     }
     public boolean delete(String id){
         DaoVideo daoVideo = new DaoVideo();
@@ -64,5 +71,23 @@ public class VideoService {
         request.setAttribute("nextPage",next);
         request.setAttribute("prevPage",prev);
         return new Router(JspPath.VIDEO_SETTINGS, RouterType.FORWARD);
+    }
+
+    public boolean update(String id, String name, String resolution, String ratio, String brightness, String type) {
+        DaoVideo daoVideo = new DaoVideo();
+        Video video = new Video();
+        boolean result = true;
+        try{
+            video.setId(Long.parseLong(id));
+            video.setName(name);
+            video.setType(VideoType.valueOf(type.toUpperCase()));
+            video.setRatio(ratio);
+            video.setResolution(resolution);
+            video.setBrightness(Integer.parseInt(brightness));
+            daoVideo.update(video);
+        }catch (Exception e){
+            result = false;
+        }
+        return result;
     }
 }

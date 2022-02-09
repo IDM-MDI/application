@@ -20,13 +20,31 @@ public class CategoryService {
         return instance;
     }
 
-    public boolean add(Category add){
+    public boolean add(String name){
+        boolean result = true;
         DaoCategory daoCategory = new DaoCategory();
-        return daoCategory.create(add);
+        if(name != null){
+            Category add = new Category();
+            add.setName(name);
+            daoCategory.create(add);
+        }
+        else{
+            result = false;
+        }
+        return result;
     }
-    public boolean update(Category update){
+    public boolean update(String id, String name){
+        boolean result = true;
         DaoCategory daoCategory = new DaoCategory();
-        return daoCategory.update(update);
+        try{
+            Category update = new Category();
+            update.setName(name);
+            update.setId(Long.parseLong(id));
+            daoCategory.update(update);
+        }catch (Exception e) {
+            result = false;
+        }
+        return result;
     }
     public boolean delete(String id){
         DaoCategory daoCategory = new DaoCategory();
@@ -34,7 +52,7 @@ public class CategoryService {
         try{
             realId = Long.parseLong(id);
         }
-        catch (NumberFormatException e){
+        catch (Exception e){
             realId = -1;
         }
         return daoCategory.delete(realId);

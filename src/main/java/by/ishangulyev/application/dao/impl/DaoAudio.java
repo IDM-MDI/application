@@ -3,10 +3,12 @@ package by.ishangulyev.application.dao.impl;
 import by.ishangulyev.application.dao.ColumnName;
 import by.ishangulyev.application.dao.DaoEntity;
 import by.ishangulyev.application.dao.query.AudioQuery;
+import by.ishangulyev.application.dao.query.UserQuery;
 import by.ishangulyev.application.exception.DaoException;
 import by.ishangulyev.application.exception.DataBaseException;
 import by.ishangulyev.application.model.entity.impl.Audio;
 import by.ishangulyev.application.model.entity.impl.AudioType;
+import by.ishangulyev.application.model.entity.impl.User;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -80,7 +82,20 @@ public class DaoAudio extends DaoEntity<Long,Audio> {
     }
 
     @Override public List<Audio> findByCount(int count) throws DaoException {
-        return null; // TODO: 2/8/2022  
+        List<Audio> result = new ArrayList<>();
+        try (PreparedStatement statement = connection.prepareStatement(AudioQuery.SELECT_BY_COUNT.getValue())) {
+            statement.setInt(1, count*9);
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                result.add(getValues(set));
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, "Error executing query get all category", e);
+            throw new DaoException("Error executing query get all category", e);
+        } finally {
+            releaseConnection();
+        }
+        return result;
     }
 
     @Override
@@ -123,7 +138,6 @@ public class DaoAudio extends DaoEntity<Long,Audio> {
             logger.log(Level.ERROR,"");     // TODO: 2/8/2022  
             throw new DaoException("",e);
         }
-        
     }
 
     @Override

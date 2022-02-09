@@ -11,10 +11,10 @@
     <table class="table">
         <thead class="thead-dark">
         <tr>
-            <th>Photo</th>
-            <th>Email</th>
-            <th>Name</th>
-            <th>Password</th>
+            <th>${photoTranslate}</th>
+            <th>${emailTranslate}</th>
+            <th>${usernameTranslate}</th>
+            <th>${roleTranslate}</th>
         </tr>
         </thead>
         <tbody>
@@ -29,22 +29,20 @@
                     <td>
                         <img src="data:image/jpg;base64,${user.photoToString}" alt="mdo" width="32" height="32" class="rounded-circle">
                     </td>
-                    <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?user=get&&page=${requestScope.prevPage}">Previous</a></li>
                 </c:if>
                 <th scope="row">${user.email}</th>
                 <td>${user.name}</td>
-                <td>${user.pass}</td>
+                <td>${user.role}</td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
-
     <ul class="pagination pagination-lg">
         <c:if test="${requestScope.prevPage > 0}">
-            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?user=get&&page=${requestScope.prevPage}">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?user=get&&page=${requestScope.prevPage}">${prevTranslate}</a></li>
         </c:if>
         <c:if test="${requestScope.prevPage <= 0}">
-            <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">Previous</a></li>
+            <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">${prevTranslate}</a></li>
         </c:if>
 
         <c:if test="${requestScope.prevPage > 0}">
@@ -58,31 +56,31 @@
         </c:if>
 
         <c:if test="${requestScope.nextPage > 0}">
-            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?user=get&&page=${requestScope.nextPage}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?user=get&&page=${requestScope.nextPage}">${nextTranslate}</a></li>
         </c:if>
         <c:if test="${requestScope.nextPage <= 0}">
-            <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">Next</a></li>
+            <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">${nextTranslate}</a></li>
         </c:if>
     </ul>
 
     <div class="d-flex justify-content-around">
         <div class="p-2">
-            <div class="alert alert-dark" role="alert">Update</div>
+            <div class="alert alert-dark" role="alert">${updateTranslate}</div>
             <form action="${pageContext.request.contextPath}/controller?user=update" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="userEmailUpdate">Email</label>
-                    <input type="email" name="email" class="form-control" id="userEmailUpdate" aria-describedby="emailHelp" placeholder="Enter email">
+                    <label for="userEmailUpdate">${emailTranslate}</label>
+                    <input type="email" name="email" class="form-control" id="userEmailUpdate" aria-describedby="emailHelp" placeholder="${emailTranslate}">
                 </div>
                 <div class="form-group">
-                    <label for="userNameUpdate">Name</label>
-                    <input type="text" name="username" class="form-control" id="userNameUpdate" placeholder="Name">
+                    <label for="userNameUpdate">${usernameTranslate}</label>
+                    <input type="text" name="username" class="form-control" id="userNameUpdate" placeholder="${usernameTranslate}">
                 </div>
                 <div class="form-group">
-                    <label for="userPasswordUpdate">Password</label>
-                    <input type="password" name="password" class="form-control" id="userPasswordUpdate" placeholder="Password">
+                    <label for="userPasswordUpdate">${passwordTranslate}</label>
+                    <input type="password" name="password" class="form-control" id="userPasswordUpdate" placeholder="${passwordTranslate}">
                 </div>
                 <div class="form-group">
-                    <label for="userRoleUpdate">Role</label>
+                    <label for="userRoleUpdate">${roleTranslate}</label>
                     <select class="form-control" id="userRoleUpdate" name="role">
                         <option>Admin</option>
                         <option>User</option>
@@ -91,23 +89,23 @@
                 <div class="form-group">
                     <div class="custom-file">
                         <input type="file" name="userPhoto" accept="image/*" class="custom-file-input" id="customFile">
-                        <label class="custom-file-label" for="customFile">Choose file</label>
+                        <label class="custom-file-label" for="customFile">${fileTranslate}</label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Update</button>
+                    <button type="submit" class="btn btn-primary">${updateTranslate}</button>
                 </div>
             </form>
         </div>
         <div class="p-2">
-            <div class="alert alert-dark" role="alert">Delete</div>
+            <div class="alert alert-dark" role="alert">${deleteTranslate}</div>
             <form action="${pageContext.request.contextPath}/controller?user=delete" method="post">
                 <div class="form-group">
-                    <label for="userEmailDelete">Email</label>
-                    <input type="email" name="email" class="form-control" id="userEmailDelete" aria-describedby="emailHelp" placeholder="Enter email">
+                    <label for="userEmailDelete">${emailTranslate}</label>
+                    <input type="email" name="email" class="form-control" id="userEmailDelete" aria-describedby="emailHelp" placeholder="${emailTranslate}">
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Delete</button>
+                    <button type="submit" class="btn btn-primary">${deleteTranslate}</button>
                 </div>
             </form>
         </div>

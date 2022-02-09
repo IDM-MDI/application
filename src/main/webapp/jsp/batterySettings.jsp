@@ -19,9 +19,9 @@
         <table class="table">
             <thead class="thead-dark">
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>MAH</th>
+                <th>${idTranslate}</th>
+                <th>${nameTranslate}</th>
+                <th>${mahTranslate}</th>
             </tr>
             </thead>
             <tbody>
@@ -37,10 +37,10 @@
 
         <ul class="pagination pagination-lg">
             <c:if test="${requestScope.prevPage > 0}">
-                <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?battery=get&&page=${requestScope.prevPage}">Previous</a></li>
+                <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?battery=get&&page=${requestScope.prevPage}">${prevTranslate}</a></li>
             </c:if>
             <c:if test="${requestScope.prevPage <= 0}">
-                <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">Previous</a></li>
+                <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">${prevTranslate}</a></li>
             </c:if>
 
             <c:if test="${requestScope.prevPage > 0}">
@@ -54,59 +54,59 @@
             </c:if>
 
             <c:if test="${requestScope.nextPage > 0}">
-                <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?battery=get&&page=${requestScope.nextPage}">Next</a></li>
+                <li class="page-item"><a class="page-link" href="${pageContext.request.contextPath}/controller?battery=get&&page=${requestScope.nextPage}">${nextTranslate}</a></li>
             </c:if>
             <c:if test="${requestScope.nextPage <= 0}">
-                <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">Next</a></li>
+                <li class="page-item disabled"><a class="page-link" href="#!" tabindex="-1">${nextTranslate}</a></li>
             </c:if>
         </ul>
 
         <div class="d-flex justify-content-around">
             <div class="p-2">
-                <div class="alert alert-dark" role="alert">Add</div>
+                <div class="alert alert-dark" role="alert">${addTranslate}</div>
                 <form action="${pageContext.request.contextPath}/controller?battery=add" method="post">
                     <div class="form-group">
-                        <label for="batteryNameAdd">Name</label>
-                        <input type="text" name="batteryName" class="form-control" id="batteryNameAdd" placeholder="Name">
+                        <label for="batteryNameAdd">${nameTranslate}</label>
+                        <input type="text" name="batteryName" class="form-control" id="batteryNameAdd" placeholder="${nameTranslate}">
                     </div>
                     <div class="form-group">
-                        <label for="batteryMahAdd">MA/H</label>
-                        <input type="number" name="batteryMah" class="form-control" id="batteryMahAdd" placeholder="MAH">
+                        <label for="batteryMahAdd">${mahTranslate}</label>
+                        <input type="number" name="batteryMah" class="form-control" id="batteryMahAdd" placeholder="${mahTranslate}">
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Add</button>
+                        <button type="submit" class="btn btn-primary">${addTranslate}</button>
                     </div>
                 </form>
             </div>
             <div class="p-2">
-                <div class="alert alert-dark" role="alert">Update</div>
+                <div class="alert alert-dark" role="alert">${updateTranslate}</div>
                 <form action="${pageContext.request.contextPath}/controller?battery=update" method="post">
                     <div class="form-group">
-                        <label for="batteryIdUpdate">ID</label>
-                        <input type="number" name="batteryId" class="form-control" id="batteryIdUpdate" placeholder="ID">
+                        <label for="batteryIdUpdate">${idTranslate}</label>
+                        <input type="number" name="batteryId" class="form-control" id="batteryIdUpdate" placeholder="${idTranslate}">
                     </div>
                     <div class="form-group">
-                        <label for="batteryNameUpdate">Name</label>
-                        <input type="text" name="batteryName" class="form-control" id="batteryNameUpdate" placeholder="Name">
+                        <label for="batteryNameUpdate">${nameTranslate}</label>
+                        <input type="text" name="batteryName" class="form-control" id="batteryNameUpdate" placeholder="${nameTranslate}">
                     </div>
                     <div class="form-group">
-                        <label for="batteryMahUpdate">MA/H</label>
-                        <input type="number" name="batteryMah" class="form-control" id="batteryMahUpdate" placeholder="MAH">
+                        <label for="batteryMahUpdate">${mahTranslate}</label>
+                        <input type="number" name="batteryMah" class="form-control" id="batteryMahUpdate" placeholder="${mahTranslate}">
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Update</button>
+                        <button type="submit" class="btn btn-primary">${updateTranslate}</button>
                     </div>
                 </form>
             </div>
             <div class="p-2">
-                <div class="alert alert-dark" role="alert">Delete</div>
+                <div class="alert alert-dark" role="alert">${deleteTranslate}</div>
                 <form action="${pageContext.request.contextPath}/controller?battery=delete" method="post">
                     <div class="form-group">
-                        <label for="batteryIdDelete">ID</label>
-                        <input type="number" name="batteryId" class="form-control" id="batteryIdDelete" placeholder="ID">
+                        <label for="batteryIdDelete">${idTranslate}</label>
+                        <input type="number" name="batteryId" class="form-control" id="batteryIdDelete" placeholder="${idTranslate}">
                     </div>
                     <div class="form-group">
-                        <button type="submit" class="btn btn-primary">Delete</button>
+                        <button type="submit" class="btn btn-primary">${deleteTranslate}</button>
                     </div>
                 </form>
             </div>
