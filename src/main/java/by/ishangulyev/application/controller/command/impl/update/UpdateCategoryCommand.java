@@ -1,5 +1,6 @@
 package by.ishangulyev.application.controller.command.impl.update;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
@@ -13,8 +14,8 @@ public class UpdateCategoryCommand implements ActionCommand {
     private CategoryService service = CategoryService.getInstance();
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
         Router router;
-        String name = request.getParameter("categoryName");
-        String id = request.getParameter("categoryId");
+        String name = request.getParameter(AttributeName.CATEGORY_NAME);
+        String id = request.getParameter(AttributeName.CATEGORY_ID);
         if(service.update(id,name)){
             router = service.get(request);
         }

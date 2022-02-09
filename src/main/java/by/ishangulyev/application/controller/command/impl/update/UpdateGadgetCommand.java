@@ -1,5 +1,6 @@
 package by.ishangulyev.application.controller.command.impl.update;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
@@ -31,17 +32,17 @@ public class UpdateGadgetCommand implements ActionCommand {
 
     private Gadget fillEntityInfo(HttpServletRequest request){
         Gadget gadget = new Gadget();
-        String id = request.getParameter("gadgetId");
-        String name = request.getParameter("gadgetName");
-        String bDes = request.getParameter("gadgetBigDescription");
-        String sDes = request.getParameter("gadgetSmallDescription");
-        String price = request.getParameter("gadgetPrice");
-        String audio = request.getParameter("gadgetAudio");
-        String video = request.getParameter("gadgetVideo");
-        String category = request.getParameter("gadgetCategory");
-        String battery = request.getParameter("gadgetBattery");
-        String cpu = request.getParameter("gadgetCpu");
-        String memory = request.getParameter("gadgetMemory");
+        String id = request.getParameter(AttributeName.GADGET_ID);
+        String name = request.getParameter(AttributeName.GADGET_NAME);
+        String bDes = request.getParameter(AttributeName.GADGET_BD);
+        String sDes = request.getParameter(AttributeName.GADGET_SD);
+        String price = request.getParameter(AttributeName.GADGET_PRICE);
+        String audio = request.getParameter(AttributeName.GADGET_AUDIO);
+        String video = request.getParameter(AttributeName.GADGET_VIDEO);
+        String category = request.getParameter(AttributeName.GADGET_CATEGORY);
+        String battery = request.getParameter(AttributeName.GADGET_BATTERY);
+        String cpu = request.getParameter(AttributeName.GADGET_CPU);
+        String memory = request.getParameter(AttributeName.GADGET_MEMORY);
         try{
             gadget.setId(Long.parseLong(id));
             gadget.setName(name);

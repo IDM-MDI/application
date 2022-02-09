@@ -1,5 +1,6 @@
 package by.ishangulyev.application.controller.command.impl;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
@@ -16,8 +17,8 @@ public class LanguageCommand implements ActionCommand {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-        JspPath path = (JspPath) session.getAttribute("page");
-        String language = request.getParameter("language");
+        JspPath path = (JspPath) session.getAttribute(AttributeName.PAGE);
+        String language = request.getParameter(AttributeName.LANGUAGE);
         SessionService sessionService = SessionService.getInstance();
         CookieService cookieService = CookieService.getInstance();
         LanguageType type = LanguageType.valueOf(language.toUpperCase());

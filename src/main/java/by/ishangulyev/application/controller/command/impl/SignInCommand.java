@@ -1,5 +1,6 @@
 package by.ishangulyev.application.controller.command.impl;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
@@ -25,8 +26,8 @@ public class SignInCommand implements ActionCommand {
         Router router;
         SessionService sessionService = SessionService.getInstance();
         CookieService cookieService = CookieService.getInstance();
-        String email = request.getParameter("email");
-        String pass = request.getParameter("password");
+        String email = request.getParameter(AttributeName.USER_EMAIL);
+        String pass = request.getParameter(AttributeName.USER_PASSWORD);
         User user = service.login(email,pass);
 
         if(user == null){

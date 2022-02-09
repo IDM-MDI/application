@@ -1,5 +1,6 @@
 package by.ishangulyev.application.controller.command.impl.update;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
@@ -13,10 +14,10 @@ public class UpdateMemoryCommand implements ActionCommand {
     private MemoryService service = MemoryService.getInstance();
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
         Router router;
-        String name = request.getParameter("memoryName");
-        String id = request.getParameter("memoryId");
-        String type = request.getParameter("memoryType");
-        String size = request.getParameter("memorySize");
+        String name = request.getParameter(AttributeName.MEMORY_NAME);
+        String id = request.getParameter(AttributeName.MEMORY_ID);
+        String type = request.getParameter(AttributeName.MEMORY_TYPE);
+        String size = request.getParameter(AttributeName.MEMORY_SIZE);
         if(service.update(id,name,type,size)){
             router = service.get(request);
         }

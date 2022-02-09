@@ -1,5 +1,6 @@
 package by.ishangulyev.application.controller.command.impl.update;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
@@ -26,17 +27,17 @@ public class UpdateUserCommand implements ActionCommand {
     @Override public Router execute(HttpServletRequest request, HttpServletResponse response) {
         Router router;
         HttpSession session = request.getSession();
-        String email = request.getParameter("email");
-        String password = request.getParameter("password");
-        String username = request.getParameter("username");
-        String role = request.getParameter("role");
+        String email = request.getParameter(AttributeName.USER_EMAIL);
+        String password = request.getParameter(AttributeName.USER_PASSWORD);
+        String username = request.getParameter(AttributeName.USER_USERNAME);
+        String role = request.getParameter(AttributeName.USER_ROLE);
         Part part;
         try {
-            part = request.getPart("userPhoto");
+            part = request.getPart(AttributeName.USER_PHOTO);
         } catch (IOException | ServletException e) {
             part = null;
         }
-        User sessionUser= (User) session.getAttribute("user");
+        User sessionUser= (User) session.getAttribute(AttributeName.USER);
         User user = service.updateAccount(email,password,username,role,part);
         if(user.getEmail().equals(sessionUser.getEmail())){
             SessionService sessionService = SessionService.getInstance();

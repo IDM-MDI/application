@@ -4,11 +4,14 @@ public class AttributeName {
     public static final String ID = "id";
     public static final String CART = "cart";
     public static final String LANGUAGE = "language";
+    public static final String USER = "user";
+    public static final String PAGE = "page";
 
     public static final String USER_EMAIL = "email";
-    public static final String USER_PASSWORD = "language";
-    public static final String USER_ROLE = "language";
-    public static final String USER_PHOTO = "language";
+    public static final String USER_PASSWORD = "password";
+    public static final String USER_USERNAME = "username";
+    public static final String USER_ROLE = "role";
+    public static final String USER_PHOTO = "userPhoto";
 
     public static final String AUDIO_ID = "audioId";
     public static final String AUDIO_NAME = "audioName";

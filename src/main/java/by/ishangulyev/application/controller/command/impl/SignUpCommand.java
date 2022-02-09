@@ -1,5 +1,6 @@
 package by.ishangulyev.application.controller.command.impl;
 
+import by.ishangulyev.application.controller.AttributeName;
 import by.ishangulyev.application.controller.Router;
 import by.ishangulyev.application.controller.RouterType;
 import by.ishangulyev.application.controller.command.ActionCommand;
@@ -13,8 +14,8 @@ public class SignUpCommand implements ActionCommand {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) {
         Router router;
-        String email =  request.getParameter("email");
-        String pass = request.getParameter("password");
+        String email =  request.getParameter(AttributeName.USER_EMAIL);
+        String pass = request.getParameter(AttributeName.USER_PASSWORD);
         if(service.registration(email,pass)){
             router = new Router(JspPath.SIGN_IN, RouterType.FORWARD);
         }
